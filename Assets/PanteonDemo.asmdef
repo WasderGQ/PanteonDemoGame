@@ -1,0 +1,16 @@
+{
+    "name": "PanteonDemo",
+    "rootNamespace": "",
+    "references": [
+        "GUID:07e1642b967a90d4d895118cc159f68c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
