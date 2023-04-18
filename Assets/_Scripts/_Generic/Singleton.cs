@@ -62,7 +62,7 @@ namespace WasderGQ.PanteonDemo.Generic
         {
             if (_persistent)
                 DontDestroyOnLoad(gameObject);
-            OnAwake();
+                OnAwake();
         }
 
         protected virtual void OnAwake()
