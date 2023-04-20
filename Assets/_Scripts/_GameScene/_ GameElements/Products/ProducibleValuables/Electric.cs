@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Electric : IProducibleValuables
+namespace _Scripts._GameScene.__GameElements.Products.ProducibleValuables
 {
-   private int amount;
-
-   public Electric(int createAmount)
-   {
-      amount = createAmount;
-   }
+    public class Electric : IProducibleValuables
+    {
+   
+   
+  
+    }
 }

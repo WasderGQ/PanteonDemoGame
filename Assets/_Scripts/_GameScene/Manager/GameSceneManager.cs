@@ -1,19 +1,23 @@
+using _Scripts._GameScene._Logic;
+using _Scripts._Generic;
 using UnityEngine;
-using WasderGQ.PanteonDemo.Generic;
 
-public class GameSceneManager : Singleton<GameSceneManager>
+namespace _Scripts._GameScene.Manager
 {
-   [SerializeField] private GameBoard _gameBoard;
-
-   private void Start()
+   public class GameSceneManager : Singleton<GameSceneManager>
    {
-      init();
-   }
+      [SerializeField] private GameBoard _gameBoard;
 
-   private void init()
-   {
-      _gameBoard.InIt();
+      private void Start()
+      {
+         init();
+      }
+
+      private void init()
+      {
+         _gameBoard.InIt();
 
 
+      }
    }
 }

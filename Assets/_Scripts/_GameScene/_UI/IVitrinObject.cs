@@ -1,8 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class IVitrinObject : MonoBehaviour
+namespace _Scripts._GameScene._UI
 {
+    public class IVitrinObject : MonoBehaviour
+    {
     
+    }
 }

@@ -1,13 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using WasderGQ.PanteonDemo.GameElements;
+using _Scripts._GameScene.__GameElements.Features;
 
-namespace WasderGQ.PanteonDemo.GameElements.Products.Soldiers
+namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 {
     public class HeavySoldier : Soldier
     {
-    
+        private int _damage = 10;
+
+        public int Damage
+        {
+            get => _damage;
+        }
+        public void GiveDamage(IVulnerable vulnerable)
+        {
+            vulnerable.TakeDamage(Damage);
+
+        }
+
+        
     }
 }
 

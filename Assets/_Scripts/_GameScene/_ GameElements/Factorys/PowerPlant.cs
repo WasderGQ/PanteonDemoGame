@@ -1,19 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using WasderGQ.PanteonDemo.GameElements.Products;
-using WasderGQ.PanteonDemo.GameElements.Products.Soldiers;
+using _Scripts._GameScene.__GameElements.Factorys.Creater;
+using _Scripts._GameScene.__GameElements.Products;
 
-namespace WasderGQ.PanteonDemo.GameElements.Factory
+namespace _Scripts._GameScene.__GameElements.Factorys
 {
-    public class PowerPlant : Factory
+    public class PowerPlant : FactoryHave1Creater<PowerPlant>
     {
-        Electric
-        
-        public override IProduct MakeProduct(int amount)
-        {
-            return new Electric();
+        private List<IProduct> _product;
 
-        }
+        private ICreater _creater;
+        
+        
+        
     }
 }

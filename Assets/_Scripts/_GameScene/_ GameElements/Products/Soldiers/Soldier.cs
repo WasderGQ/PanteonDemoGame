@@ -1,21 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using WasderGQ.PanteonDemo.GameElements;
+using _Scripts._GameScene.__GameElements.Features;
 
-namespace WasderGQ.PanteonDemo.GameElements
+namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 {
-    public abstract class Soldier : IProduct , IAttacker  
+    
+    public abstract class Soldier : IProduct , IAttacker
     {
-        public int Damage { get; }
-        
-        
-        public void GiveDamage(IVulnerable vulnerable)
+        private int _damage;
+        public int Damage
         {
-            vulnerable.TakeDamage(Damage);
-
+            get => _damage;
         }
-        
+
+
     }
 }
 

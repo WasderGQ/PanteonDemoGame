@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace WasderGQ.PanteonDemo.Generic
+namespace _Scripts._Generic
 {
       public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     {

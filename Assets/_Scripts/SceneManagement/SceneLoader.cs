@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
+using _Scripts._Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using WasderGQ.PanteonDemo.Generic;
-namespace WasderGQ.PanteonDemo.SceneManagement
+
+namespace _Scripts.SceneManagement
 {
     public class SceneLoader : Singleton<SceneLoader>
     {
