@@ -10,7 +10,7 @@ namespace _Scripts._GameScene.Manager
         [SerializeField] private GameSpace _gameSpace;
         [SerializeField] private RaycastHit2D _raycastHit;
         [SerializeField] private Vector3 _mouseWorldPositionOnDown;
-        [SerializeField] private Vector3 _mouseWorldPositionOnUp;
+        [SerializeField] private Vector3 _mouseWorldPositionOnHold;
         [SerializeField] private Vector3 _cameraAreaBorderStart;
         [SerializeField] private Vector3 _cameraAreaBorderEnd;
 
@@ -56,31 +56,27 @@ namespace _Scripts._GameScene.Manager
             transform.position = new Vector3(500, 500, 0);
             
         }
-        private void GetOnClickDownMousePosition()
+        private void GetMousePosition(Vector3 positionsavevalue)
         {
-            _mouseWorldPositionOnDown = Input.mousePosition;
+            positionsavevalue = Input.mousePosition;
         
         }
-        private void GetOnClickUpMousePosition()
-        {
-            _mouseWorldPositionOnUp = Input.mousePosition;
         
-        }
         private Vector3 GetTwoPointDistance()
         {
-            return _mouseWorldPositionOnDown - _mouseWorldPositionOnUp;
+            return _mouseWorldPositionOnDown - _mouseWorldPositionOnHold;
         
         }
         private void PanCamera()
         {
             if (Input.GetKeyDown(KeyCode.Mouse0) && _gameBoard.IsMouseDownClickOnGameBoard)
             {
-                GetOnClickDownMousePosition();
+                GetMousePosition(_mouseWorldPositionOnDown);
             }
-            if (Input.GetKeyUp(KeyCode.Mouse0) && _gameBoard.IsMouseUpClickOnGameBoard)
+            if (Input.GetKeyUp(KeyCode.Mouse0) && _gameBoard.IsMouseHoldClickOnGameBoard)
             {
                 
-                GetOnClickUpMousePosition();
+                GetMousePosition(_mouseWorldPositionOnHold);
                 Vector3 newcameraPosition = transform.position + GetTwoPointDistance();
                 transform.position = KeeperOfCameraInGameArea(newcameraPosition);
 
