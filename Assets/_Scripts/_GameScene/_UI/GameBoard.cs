@@ -10,7 +10,7 @@ namespace _Scripts._GameScene._Logic
         [SerializeField] private Tile _tile;
         [SerializeField] private bool _isMouseDownClickOnGameBoard;
         [SerializeField] private bool _isMouseUpClickOnGameBoard;
-        [SerializeField] private Grid_2 _grid;
+        [SerializeField] private Grid _grid;
         
         
         

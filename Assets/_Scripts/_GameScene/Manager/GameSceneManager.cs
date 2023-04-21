@@ -7,7 +7,7 @@ namespace _Scripts._GameScene.Manager
    public class GameSceneManager : Singleton<GameSceneManager>
    {
       [SerializeField] private GameBoard _gameBoard;
-
+      [SerializeField] private GameSpace _gameSpace;
       private void Start()
       {
          init();
@@ -15,6 +15,7 @@ namespace _Scripts._GameScene.Manager
 
       private void init()
       {
+         _gameSpace.InIt();
          _gameBoard.InIt();
 
 

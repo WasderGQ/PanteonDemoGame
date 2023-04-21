@@ -17,9 +17,18 @@ public class GameSpace : MonoBehaviour
     get => _gameSpaceEndArea;
   }
 
-  private void Start()
+  public void InIt()
+  {
+    SetGameSpaceAreaCoordinate();
+  }
+
+  private void SetGameSpaceAreaCoordinate()
   {
     _gameSpaceEndArea = new Vector3(1000, 1000,100);
     _gameSpaceStartArea = new Vector3(0, 0,100);
+    
   }
+  
+  
+  
 }

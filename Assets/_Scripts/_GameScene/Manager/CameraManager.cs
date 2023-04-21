@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using _Scripts._GameScene._Logic;
 using UnityEngine;
 
@@ -13,12 +14,14 @@ namespace _Scripts._GameScene.Manager
         [SerializeField] private Vector3 _cameraAreaBorderStart;
         [SerializeField] private Vector3 _cameraAreaBorderEnd;
 
+      
+        #region UnityEvents
+
         private void Start()
         {
             CameraStartPosition();
             SetCameraBorder();
         }
-
         private void Update()
         {
 
@@ -26,55 +29,49 @@ namespace _Scripts._GameScene.Manager
 
         }
 
+        #endregion
 
+        
+        #region Private func.
         private void SetCameraBorder()
         {
             Vector3 cameraViewSize = CalculateCameraViewSize(GetComponent<Camera>().fieldOfView,GetComponent<Camera>().aspect, _gameBoard.transform.position.z);
             _cameraAreaBorderStart = _gameSpace.GameSpaceStartArea + cameraViewSize/2;
             _cameraAreaBorderEnd =  _gameSpace.GameSpaceEndArea - cameraViewSize/2;
-
-
-
+            Debug.Log($"start{_cameraAreaBorderStart}");
+            Debug.Log($"end{_cameraAreaBorderEnd}");
+            Debug.Log($"startgameboard{_gameSpace.GameSpaceStartArea}");
+            Debug.Log($"endgameboard{_gameSpace.GameSpaceEndArea}");
 
         }
-        
-        
-        
-        public Vector3 CalculateCameraViewSize(float fov, float aspectRatio, float distanceToPlane)
+        private Vector3 CalculateCameraViewSize(float fov, float aspectRatio, float distanceToPlane)
         {
             float height = 2.0f * distanceToPlane * Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad);
             float width = height * aspectRatio;
             return new Vector3(width, height,0);
         }
-        
-        
-        void CameraStartPosition()
+        private void CameraStartPosition()
         {
             
             transform.position = new Vector3(500, 500, 0);
             
         }
-    
-        void GetOnClickDownMousePosition()
+        private void GetOnClickDownMousePosition()
         {
             _mouseWorldPositionOnDown = Input.mousePosition;
         
         }
-
-        void GetOnClickUpMousePosition()
+        private void GetOnClickUpMousePosition()
         {
             _mouseWorldPositionOnUp = Input.mousePosition;
         
         }
-
-        Vector3 GetTwoPointDistance()
+        private Vector3 GetTwoPointDistance()
         {
             return _mouseWorldPositionOnDown - _mouseWorldPositionOnUp;
         
         }
-    
-    
-        void PanCamera()
+        private void PanCamera()
         {
             if (Input.GetKeyDown(KeyCode.Mouse0) && _gameBoard.IsMouseDownClickOnGameBoard)
             {
@@ -85,21 +82,45 @@ namespace _Scripts._GameScene.Manager
                 
                 GetOnClickUpMousePosition();
                 Vector3 newcameraPosition = transform.position + GetTwoPointDistance();
-                if (IsAreaRange(newcameraPosition))
-                {
-                    transform.position = newcameraPosition;
-                }
+                transform.position = KeeperOfCameraInGameArea(newcameraPosition);
+
             }
         }
-        
-        bool IsAreaRange(Vector3 cameraposition)
+        private Vector3 KeeperOfCameraInGameArea(Vector3 cameraposition)
         {
-            if (_cameraAreaBorderStart.x < cameraposition.x && _cameraAreaBorderStart.y < cameraposition.y && _cameraAreaBorderEnd.x > cameraposition.x && _cameraAreaBorderEnd.y > cameraposition.y)
-            { return true;}
-
-            return false;
-
+            
+            
+           
+                if (_cameraAreaBorderStart.x > cameraposition.x )
+                {
+                    cameraposition.x = _cameraAreaBorderStart.x;
+                    
+                }
+                if (_cameraAreaBorderStart.y > cameraposition.y)
+                { 
+                    cameraposition.y  = _cameraAreaBorderStart.y;
+                    
+                }
+                if (_cameraAreaBorderEnd.x < cameraposition.x)
+                { 
+                    cameraposition.x = _cameraAreaBorderEnd.x;
+                    
+                }
+                if (_cameraAreaBorderEnd.y < cameraposition.y)
+                {
+                    cameraposition.y = _cameraAreaBorderEnd.y;
+                    
+                }
+            
+            return cameraposition;
+            
         }
+        
+        #endregion
+        
+        
+        
+        
         
         
     }
