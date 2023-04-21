@@ -1,9 +1,7 @@
-﻿
-
-using System;
+﻿using System;
 using UnityEngine;
 
-namespace WasderGQ.MonoBehaviours {
+namespace Third_Party_Packages.Helpers.WasderGQ.MonoBehaviours {
 
     /*
      * Trigger Actions on MonoBehaviour Component events

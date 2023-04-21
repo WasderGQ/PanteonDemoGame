@@ -1,8 +1,10 @@
+
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WasderGQ.Utils {
+namespace Third_Party_Packages.Helpers.WasderGQ.Utils {
 
     /*
      * Executes a Function periodically
@@ -134,20 +136,11 @@ namespace WasderGQ.Utils {
             this.useUnscaledDeltaTime = useUnscaledDeltaTime;
             baseTimer = timer;
         }
-
         public void SkipTimerTo(float timer) {
             this.timer = timer;
         }
 
-        public void SetBaseTimer(float baseTimer) {
-            this.baseTimer = baseTimer;
-        }
-
-        public float GetBaseTimer() {
-            return baseTimer;
-        }
-
-        private void Update() {
+        void Update() {
             if (useUnscaledDeltaTime) {
                 timer -= Time.unscaledDeltaTime;
             } else {
@@ -164,7 +157,6 @@ namespace WasderGQ.Utils {
                 }
             }
         }
-
         public void DestroySelf() {
             RemoveTimer(this);
             if (gameObject != null) {

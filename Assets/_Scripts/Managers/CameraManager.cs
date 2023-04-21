@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices.WindowsRuntime;
 using _Scripts._GameScene._Logic;
+using _Scripts._GameScene._UI;
 using UnityEngine;
 
 namespace _Scripts._GameScene.Manager

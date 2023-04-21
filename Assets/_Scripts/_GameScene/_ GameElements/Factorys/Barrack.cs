@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using _Scripts._GameScene.__GameElements.Factorys.Creater;
 using _Scripts._GameScene.__GameElements.Products;
-using _Scripts._GameScene._Logic;
 
 namespace _Scripts._GameScene.__GameElements.Factorys
 {

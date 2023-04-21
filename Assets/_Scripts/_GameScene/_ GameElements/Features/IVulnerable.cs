@@ -1,20 +1,17 @@
+using System.Runtime.Serialization;
+using Codice.Client.Common;
+using UnityEngine;
+using UnityEngine.Events;
+
 namespace _Scripts._GameScene.__GameElements.Features
 {
-    public abstract class IVulnerable
+    public interface IVulnerable 
     {
-        private int _health;
+        public int CurrentHealth { get; }
+        public UnityEvent<IAttacker> EventTakeDamage { get; }
+        public void TakeDamage(IAttacker attacker);
+       
         
-        public int health
-        {
-            get => _health;
-        }
-
-        public void TakeDamage(int damage)
-        {
-
-            _health -= damage;
-
-        }
     } 
 }
 

@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace WasderGQ.MonoBehaviours {
+namespace Third_Party_Packages.Helpers.WasderGQ.MonoBehaviours {
 
     /*
      * Automatically sort a Renderer (SpriteRenderer, MeshRenderer) based on his Y position

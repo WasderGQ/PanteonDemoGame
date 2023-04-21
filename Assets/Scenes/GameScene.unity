@@ -298,6 +298,51 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &61330649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 61330650}
+  - component: {fileID: 61330651}
+  m_Layer: 0
+  m_Name: Testing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &61330650
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 61330649}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1930090893}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &61330651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 61330649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 859798c48902bdc458adf270d8c5270a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterPathfinding: {fileID: 2133233501}
 --- !u!1 &66585622
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,7 +910,7 @@ GameObject:
   - component: {fileID: 607397450}
   m_Layer: 0
   m_Name: MainCamera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -984,7 +1029,7 @@ MonoBehaviour:
   _gameBoard: {fileID: 1995668864}
   _gameSpace: {fileID: 2133233500}
   _mouseWorldPositionOnDown: {x: 0, y: 0, z: 0}
-  _mouseWorldPositionOnUp: {x: 0, y: 0, z: 0}
+  _mouseWorldPositionOnHold: {x: 0, y: 0, z: 0}
   _cameraAreaBorderStart: {x: 0, y: 0, z: 0}
   _cameraAreaBorderEnd: {x: 0, y: 0, z: 0}
 --- !u!1 &626743486
@@ -2537,7 +2582,6 @@ GameObject:
   - component: {fileID: 1281077025}
   - component: {fileID: 1281077027}
   - component: {fileID: 1281077026}
-  - component: {fileID: 1281077028}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -102687,20 +102731,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &1281077028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1281077024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf0070a1d5f78cd4fba1fe582933492b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemap: {fileID: 1281077027}
-  tile: {fileID: 0}
 --- !u!1 &1328463767
 GameObject:
   m_ObjectHideFlags: 0
@@ -103934,6 +103964,7 @@ Transform:
   - {fileID: 607397449}
   - {fileID: 282154954}
   - {fileID: 2133233499}
+  - {fileID: 61330650}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -104047,10 +104078,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831aadbe44758f842878bb18e876fb08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tile: {fileID: 1260388926816086314, guid: b47a8e4a76b79ad4cbc7b349e3e2032d, type: 3}
   _isMouseDownClickOnGameBoard: 0
   _isMouseUpClickOnGameBoard: 0
   _grid: {fileID: 0}
+  _isMouseHoldClickOnGameBoard: 0
 --- !u!61 &1995668865
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -104217,6 +104248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2133233499}
   - component: {fileID: 2133233500}
+  - component: {fileID: 2133233501}
   m_Layer: 0
   m_Name: GameSpace
   m_TagString: Untagged
@@ -104254,3 +104286,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameSpaceStartArea: {x: 0, y: 0, z: 0}
   _gameSpaceEndArea: {x: 0, y: 0, z: 0}
+--- !u!114 &2133233501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133233498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b62a5d33cc1ef9e4e96862f8e78af80d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

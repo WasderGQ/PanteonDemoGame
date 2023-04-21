@@ -1,13 +1,11 @@
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace _Scripts._GameScene._Logic
+namespace _Scripts._GameScene._UI
 {
     public class GameBoard : MonoBehaviour
     {
         
-        [SerializeField] private Tile _tile;
         [SerializeField] private bool _isMouseDownClickOnGameBoard;
         [SerializeField] private bool _isMouseUpClickOnGameBoard;
         [SerializeField] private Grid _grid;
@@ -69,7 +67,7 @@ namespace _Scripts._GameScene._Logic
                
                 }
             }
-        }*/
+        }
 
         private Vector2 GetPositionRange(Tile positionObject)
         {
@@ -79,7 +77,7 @@ namespace _Scripts._GameScene._Logic
             return ranges;
 
         }
-    
+    */
     
     
     }

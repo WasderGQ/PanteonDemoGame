@@ -1,20 +1,14 @@
-﻿/* 
-    ------------------- Code Monkey -------------------
-
-    Thank you for downloading this package
-    I hope you find it useful in your projects
-    If you have any questions let me know
-    Cheers!
-
-               unitycodemonkey.com
-    --------------------------------------------------
- */
-
+﻿
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts._GameScene._Logic;
 using UnityEngine;
 
-public class Pathfinding {
+
+
+namespace _Scripts._GameScene._PlayerControl.Pathfinder
+{
+    public class Pathfinding {
 
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
@@ -75,15 +69,12 @@ public class Pathfinding {
         startNode.hCost = CalculateDistanceCost(startNode, endNode);
         startNode.CalculateFCost();
         
-        PathfindingDebugStepVisual.Instance.ClearSnapshots();
-        PathfindingDebugStepVisual.Instance.TakeSnapshot(grid, startNode, openList, closedList);
+       
 
         while (openList.Count > 0) {
             PathNode currentNode = GetLowestFCostNode(openList);
             if (currentNode == endNode) {
-                // Reached final node
-                PathfindingDebugStepVisual.Instance.TakeSnapshot(grid, currentNode, openList, closedList);
-                PathfindingDebugStepVisual.Instance.TakeSnapshotFinalPath(grid, CalculatePath(endNode));
+                
                 return CalculatePath(endNode);
             }
 
@@ -108,7 +99,7 @@ public class Pathfinding {
                         openList.Add(neighbourNode);
                     }
                 }
-                PathfindingDebugStepVisual.Instance.TakeSnapshot(grid, currentNode, openList, closedList);
+                
             }
         }
 
@@ -177,3 +168,6 @@ public class Pathfinding {
     }
 
 }
+}
+
+

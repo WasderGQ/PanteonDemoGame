@@ -1,13 +1,16 @@
 namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 {
     
-    public class LightSoldier : Soldier 
+    public  class LightSoldier : Soldier 
     {
-        private int _damage = 2;
-
-        public int Damage
+        protected override void SetMaxHealthOnStart()
         {
-            get => _damage;
+            throw new System.NotImplementedException();
+        }
+
+        protected override void SetDamageOnStart()
+        {
+            throw new System.NotImplementedException();
         }
     }
     
