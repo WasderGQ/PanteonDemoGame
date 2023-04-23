@@ -1,9 +1,9 @@
 ﻿using System;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace WasderGQ.Utils {
+namespace Third_Party_Packages.Helpers.WasderGQ.Utils {
 
     /*
      * Button Actions on a World BoxCollider
@@ -55,7 +55,7 @@ namespace WasderGQ.Utils {
         public bool triggerMouseOutFuncOnClick = false;
         public bool clickThroughUI = false;
 
-        private Action internalOnMouseDownFunc = null, internalOnMouseEnterFunc = null, internalOnMouseExitFunc = null;
+        private Action internalOnMouseDownFunc, internalOnMouseEnterFunc, internalOnMouseExitFunc;
 
 #if SOUND_MANAGER
         public Sound_Manager.Sound mouseOverSound, mouseClickSound;
@@ -80,7 +80,6 @@ namespace WasderGQ.Utils {
 
             if (internalOnMouseDownFunc != null) internalOnMouseDownFunc();
             if (ClickFunc != null) ClickFunc();
-            if (MouseDownOnceFunc != null) MouseDownOnceFunc();
             if (triggerMouseOutFuncOnClick) OnMouseExit();
         }
         public void Manual_OnMouseExit() {

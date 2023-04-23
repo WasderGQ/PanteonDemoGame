@@ -1,8 +1,10 @@
-using System;
-using UnityEngine;
-using System.Collections.Generic;
 
-namespace WasderGQ.Utils {
+
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Third_Party_Packages.Helpers.WasderGQ.Utils {
 
     /*
      * Triggers a Action after a certain time 
@@ -39,15 +41,12 @@ namespace WasderGQ.Utils {
         public static FunctionTimer Create(Action action, float timer) {
             return Create(action, timer, "", false, false);
         }
-
         public static FunctionTimer Create(Action action, float timer, string functionName) {
             return Create(action, timer, functionName, false, false);
         }
-
         public static FunctionTimer Create(Action action, float timer, string functionName, bool useUnscaledDeltaTime) {
             return Create(action, timer, functionName, useUnscaledDeltaTime, false);
         }
-
         public static FunctionTimer Create(Action action, float timer, string functionName, bool useUnscaledDeltaTime, bool stopAllWithSameName) {
             InitIfNeeded();
 
@@ -63,12 +62,10 @@ namespace WasderGQ.Utils {
 
             return funcTimer;
         }
-
         public static void RemoveTimer(FunctionTimer funcTimer) {
             InitIfNeeded();
             timerList.Remove(funcTimer);
         }
-
         public static void StopAllTimersWithName(string functionName) {
             InitIfNeeded();
             for (int i = 0; i < timerList.Count; i++) {
@@ -78,7 +75,6 @@ namespace WasderGQ.Utils {
                 }
             }
         }
-
         public static void StopFirstTimerWithName(string functionName) {
             InitIfNeeded();
             for (int i = 0; i < timerList.Count; i++) {
@@ -122,7 +118,6 @@ namespace WasderGQ.Utils {
                 DestroySelf();
             }
         }
-
         private void DestroySelf() {
             RemoveTimer(this);
             if (gameObject != null) {
@@ -146,17 +141,13 @@ namespace WasderGQ.Utils {
                 this.timer = timer;
             }
 
-            public bool Update() {
-                return Update(Time.deltaTime);
+            public void Update() {
+                Update(Time.deltaTime);
             }
-
-            public bool Update(float deltaTime) {
+            public void Update(float deltaTime) {
                 timer -= deltaTime;
                 if (timer <= 0) {
                     callback();
-                    return true;
-                } else {
-                    return false;
                 }
             }
         }
@@ -165,7 +156,5 @@ namespace WasderGQ.Utils {
         public static FunctionTimerObject CreateObject(Action callback, float timer) {
             return new FunctionTimerObject(callback, timer);
         }
-
     }
-
 }

@@ -1,17 +1,15 @@
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace _Scripts._GameScene._Logic
+namespace _Scripts._GameScene._UI
 {
     public class GameBoard : MonoBehaviour
     {
         
-        [SerializeField] private Tile _tile;
         [SerializeField] private bool _isMouseDownClickOnGameBoard;
         [SerializeField] private bool _isMouseUpClickOnGameBoard;
         [SerializeField] private Grid _grid;
-        
+        [SerializeField] private bool _isMouseHoldClickOnGameBoard;
         
         
         public bool IsMouseDownClickOnGameBoard
@@ -22,13 +20,16 @@ namespace _Scripts._GameScene._Logic
         {
             get => _isMouseUpClickOnGameBoard;
         }
-        
+        public bool IsMouseHoldClickOnGameBoard
+        {
+            get => _isMouseHoldClickOnGameBoard;
+        }
         
         
         public void InIt()
         {
-            _grid.InIt();
-            // GenerateGrid(10,9);
+           
+            
 
         }
 
@@ -36,14 +37,16 @@ namespace _Scripts._GameScene._Logic
         public async void OnMouseDown()
         {
             _isMouseDownClickOnGameBoard = true;
-            
+            await Task.Delay(200);
+            _isMouseDownClickOnGameBoard = false;
+            _isMouseHoldClickOnGameBoard = true;
         }
 
         public async void OnMouseUp()
         {
-            _isMouseDownClickOnGameBoard = false;
+            _isMouseHoldClickOnGameBoard = false;
             _isMouseUpClickOnGameBoard = true;
-            await Task.Delay(100);
+            await Task.Delay(200);
             _isMouseUpClickOnGameBoard = false;
         }
 
@@ -64,7 +67,7 @@ namespace _Scripts._GameScene._Logic
                
                 }
             }
-        }*/
+        }
 
         private Vector2 GetPositionRange(Tile positionObject)
         {
@@ -74,7 +77,7 @@ namespace _Scripts._GameScene._Logic
             return ranges;
 
         }
-    
+    */
     
     
     }

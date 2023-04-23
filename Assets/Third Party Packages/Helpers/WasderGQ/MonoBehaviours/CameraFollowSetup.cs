@@ -1,9 +1,6 @@
-﻿
- 
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace WasderGQ.MonoBehaviours {
+namespace Third_Party_Packages.Helpers.WasderGQ.MonoBehaviours {
 
     /*
      * Easy set up for CameraFollow, it will follow the transform with zoom

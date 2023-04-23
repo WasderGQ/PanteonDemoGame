@@ -1,10 +1,7 @@
-﻿
- 
-using System;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-namespace WasderGQ.MonoBehaviours {
+namespace Third_Party_Packages.Helpers.WasderGQ.MonoBehaviours {
 
     /*
      * Script to handle Camera Movement and Zoom

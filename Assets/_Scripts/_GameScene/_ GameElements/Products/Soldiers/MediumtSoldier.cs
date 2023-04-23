@@ -1,13 +1,22 @@
+using _Scripts.Data.Enums;
+using _Scripts.Data.ScriptableObjects;
+using UnityEngine;
+
 namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 {
     
-    public class MediumSoldier : Soldier 
+    public  class MediumSoldier : Soldier 
     {
-        private int _damage = 5;
+        [SerializeField]private SoldierTypeData _soldierTypes;
 
-        public int Damage
+        protected override void SetMaxHealthOnStart()
         {
-            get => _damage;
+            base._maxHealth = _soldierTypes._soldierTypeList[(int)EnumSoldierTyper.MediumSoldier].Health;
+        }
+
+        protected override void SetDamageOnStart()
+        {
+            base._damage = _soldierTypes._soldierTypeList[(int)EnumSoldierTyper.MediumSoldier].Damage;
         }
     }
     

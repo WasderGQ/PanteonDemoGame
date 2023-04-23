@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WasderGQ.Utils {
+namespace Third_Party_Packages.Helpers.WasderGQ.Utils {
     
     /*
      * UI Container with multiple bars, useful for displaying one bar with multiple inner bars like success chance and failure chance
@@ -41,7 +41,6 @@ namespace WasderGQ.Utils {
             barImageArr = barImageList.ToArray();
             SetSizes(defaultSizeList.ToArray());
         }
-
         private void SetupParent(Transform parent, Vector2 anchoredPosition, Vector2 size) {
             gameObject = new GameObject("UI_BarMultiple", typeof(RectTransform));
             rectTransform = gameObject.GetComponent<RectTransform>();
@@ -52,11 +51,9 @@ namespace WasderGQ.Utils {
             rectTransform.pivot = new Vector2(0, .5f);
             rectTransform.anchoredPosition = anchoredPosition;
         }
-
         private void SetupOutline(Outline outline, Vector2 size) {
             UtilsClass.DrawSprite(outline.color, gameObject.transform, Vector2.zero, size + new Vector2(outline.size, outline.size), "Outline");
         }
-
         private RectTransform SetupBar(Color barColor) {
             RectTransform bar = UtilsClass.DrawSprite(barColor, gameObject.transform, Vector2.zero, Vector2.zero, "Bar");
             bar.anchorMin = new Vector2(0,0);
@@ -64,7 +61,6 @@ namespace WasderGQ.Utils {
             bar.pivot = new Vector2(0,.5f);
             return bar;
         }
-
         public void SetSizes(float[] sizeArr) {
             if (sizeArr.Length != barArr.Length) {
                 throw new System.Exception("Length doesn't match!");
@@ -77,18 +73,11 @@ namespace WasderGQ.Utils {
                 pos.x += scaledSize;
             }
         }
-
-        public RectTransform GetBar(int index) {
-            return barArr[index];
-        }
-
         public Vector2 GetSize() {
             return size;
         }
-
         public void DestroySelf() {
             UnityEngine.Object.Destroy(gameObject);
         }
-
     }
 }
