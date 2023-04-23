@@ -1,7 +1,9 @@
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using _Scripts._GameScene._Logic;
 using _Scripts._GameScene._UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace _Scripts._GameScene.Manager
 {
@@ -14,18 +16,28 @@ namespace _Scripts._GameScene.Manager
         [SerializeField] private Vector3 _mouseWorldPositionOnHold;
         [SerializeField] private Vector3 _cameraAreaBorderStart;
         [SerializeField] private Vector3 _cameraAreaBorderEnd;
-
-      
+        [SerializeField] private ClickRay _clickRay;
+        [SerializeField] private bool isHoldingKey;
         #region UnityEvents
 
         private void Start()
         {
+            ObjectInstantiation();
             CameraStartPosition();
             SetCameraBorder();
+            
         }
+
+        private void ObjectInstantiation()
+        {
+            _clickRay = new ClickRay();
+            _mouseWorldPositionOnDown = new Vector3();
+            _mouseWorldPositionOnHold = new Vector3();
+        }
+        
+        
         private void Update()
         {
-
             PanCamera();
 
         }
@@ -39,10 +51,7 @@ namespace _Scripts._GameScene.Manager
             Vector3 cameraViewSize = CalculateCameraViewSize(GetComponent<Camera>().fieldOfView,GetComponent<Camera>().aspect, _gameBoard.transform.position.z);
             _cameraAreaBorderStart = _gameSpace.GameSpaceStartArea + cameraViewSize/2;
             _cameraAreaBorderEnd =  _gameSpace.GameSpaceEndArea - cameraViewSize/2;
-            Debug.Log($"start{_cameraAreaBorderStart}");
-            Debug.Log($"end{_cameraAreaBorderEnd}");
-            Debug.Log($"startgameboard{_gameSpace.GameSpaceStartArea}");
-            Debug.Log($"endgameboard{_gameSpace.GameSpaceEndArea}");
+            
 
         }
         private Vector3 CalculateCameraViewSize(float fov, float aspectRatio, float distanceToPlane)
@@ -57,10 +66,11 @@ namespace _Scripts._GameScene.Manager
             transform.position = new Vector3(500, 500, 0);
             
         }
-        private void GetMousePosition(Vector3 positionsavevalue)
+        private async Task<Vector3> GetMousePosition()
         {
-            positionsavevalue = Input.mousePosition;
-        
+             return await _clickRay.GetRayWorldPosition();
+            
+
         }
         
         private Vector3 GetTwoPointDistance()
@@ -68,19 +78,36 @@ namespace _Scripts._GameScene.Manager
             return _mouseWorldPositionOnDown - _mouseWorldPositionOnHold;
         
         }
-        private void PanCamera()
+        private async void PanCamera()
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && _gameBoard.IsMouseDownClickOnGameBoard)
+            
+            
+            if (Input.GetKeyDown(KeyCode.Mouse2) && _mouseWorldPositionOnDown == new Vector3())
             {
-                GetMousePosition(_mouseWorldPositionOnDown);
+               // Debug.Log("key down cagrıldım.");
+                _mouseWorldPositionOnDown = await GetMousePosition();
+               // Debug.Log("press: " + _mouseWorldPositionOnDown);
+                isHoldingKey = true;
             }
-            if (Input.GetKeyUp(KeyCode.Mouse0) && _gameBoard.IsMouseHoldClickOnGameBoard)
+            
+            if (isHoldingKey)
             {
-                
-                GetMousePosition(_mouseWorldPositionOnHold);
+               // Debug.Log(" key hold cagrıldım.");
+                _mouseWorldPositionOnHold = await GetMousePosition();
+               // Debug.Log("hold: "+ _mouseWorldPositionOnHold);
                 Vector3 newcameraPosition = transform.position + GetTwoPointDistance();
+               // Debug.Log("new camera position: " + newcameraPosition);
                 transform.position = KeeperOfCameraInGameArea(newcameraPosition);
-
+               // Debug.Log("setted new position: " +transform.position);
+            }
+            
+            
+            if (Input.GetKeyUp(KeyCode.Mouse2))
+            {
+               // Debug.Log(" key up cagrıldım.");
+                isHoldingKey = false;
+                _mouseWorldPositionOnDown = new Vector3();
+                _mouseWorldPositionOnHold = new Vector3();
             }
         }
         private Vector3 KeeperOfCameraInGameArea(Vector3 cameraposition)

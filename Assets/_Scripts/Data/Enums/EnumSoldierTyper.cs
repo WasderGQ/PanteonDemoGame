@@ -6,5 +6,5 @@ public enum EnumSoldierTyper
 {
     HeavySoldier = 0,
     MediumSoldier = 1,
-    SmallSoldier =2
+    LightSoldier =2
 }

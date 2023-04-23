@@ -6,7 +6,7 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 {
     
     
-    public abstract class Soldier : MonoBehaviour,IAttacker,IVulnerable,IProduct,IPlayableHero
+    public abstract class Soldier : MonoBehaviour,IAttacker,IVulnerable,IProduct,IControllableHero
     {
         
         
@@ -23,6 +23,12 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         {
             get => _gameSpacePosition;
         }
+
+        public void Move()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public int Damage
         {
             get => _damage;

@@ -29,7 +29,7 @@ namespace _Scripts._GameScene._UI
         public void InIt()
         {
            
-            // GenerateGrid(10,9);
+            
 
         }
 
