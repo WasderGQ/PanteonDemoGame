@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum EnumSoldierTyper 
+namespace _Scripts.Data.Enums
 {
-    HeavySoldier = 0,
-    MediumSoldier = 1,
-    LightSoldier =2
+    public enum EnumSoldierTyper 
+    {
+        HeavySoldier = 0,
+        MediumSoldier = 1,
+        LightSoldier =2
+    }
 }

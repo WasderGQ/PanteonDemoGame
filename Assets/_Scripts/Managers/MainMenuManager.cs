@@ -1,4 +1,4 @@
-namespace _Scripts._MainMenuScene
+namespace _Scripts.Managers
 {
     public class MainMenuManager 
     {

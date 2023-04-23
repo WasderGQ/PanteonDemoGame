@@ -1,31 +1,33 @@
-using System.Collections;
 using System.Collections.Generic;
+using _Scripts.Data.ScriptableObjects;
 using UnityEditor;
-using UnityEngine;
 
-[CustomEditor(typeof(SoldierTypeData))]
-public class EditorManager : Editor
+namespace _Scripts.Managers
 {
-
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(SoldierTypeData))]
+    public class EditorManager : Editor
     {
-        serializedObject.Update();
 
-        SoldierTypeData myScriptableObject = (SoldierTypeData)target;
-        if (myScriptableObject._soldierTypeList == null)
+        public override void OnInspectorGUI()
         {
-            myScriptableObject._soldierTypeList = new List<SoldierTypeData.SoldierData>();
+            serializedObject.Update();
+
+            SoldierTypeData myScriptableObject = (SoldierTypeData)target;
+            if (myScriptableObject._soldierTypeList == null)
+            {
+                myScriptableObject._soldierTypeList = new List<SoldierTypeData.SoldierData>();
+            }
+
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_soldierTypeList"), true);
+
+            serializedObject.ApplyModifiedProperties();
         }
-
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_soldierTypeList"), true);
-
-        serializedObject.ApplyModifiedProperties();
+    
+    
+    
+    
+    
+    
     }
-    
-    
-    
-    
-    
-    
 }
         

@@ -3,7 +3,7 @@ using _Scripts._Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace _Scripts.SceneManagement
+namespace _Scripts.Managers
 {
     public class SceneLoader : Singleton<SceneLoader>
     {

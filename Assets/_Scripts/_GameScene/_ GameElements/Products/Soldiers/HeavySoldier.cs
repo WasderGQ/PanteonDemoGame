@@ -1,5 +1,7 @@
 using System;
 using _Scripts._GameScene.__GameElements.Features;
+using _Scripts.Data.Enums;
+using _Scripts.Data.ScriptableObjects;
 using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Products.Soldiers

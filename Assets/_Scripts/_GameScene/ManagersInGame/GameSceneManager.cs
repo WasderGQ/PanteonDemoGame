@@ -3,8 +3,7 @@ using _Scripts._GameScene._UI;
 using _Scripts._Generic;
 using UnityEngine;
 
-
-namespace _Scripts._GameScene.Manager
+namespace _Scripts._GameScene.ManagersInGame
 {
    public class GameSceneManager : Singleton<GameSceneManager>
    {
