@@ -1,5 +1,7 @@
 
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using _Scripts._GameScene.__GameElements.Factorys.Creater;
 using _Scripts._GameScene.__GameElements.Features;
 using _Scripts._GameScene.__GameElements.Products;
@@ -7,14 +9,14 @@ using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Factorys
 {
-    public class Barracks : FactoryHave3Creater<Barracks> , IMovable
+    public class Barracks : FactoryHave3Creater<Barracks>, IMovable
     {
-        
-            
+
+
         private List<IProduct> _lightSoldier;
-        
+
         private List<IProduct> _mediumSoldier;
-        
+
         private List<IProduct> _heavySoldier;
 
         private ICreater _lightSoldierCreater;
@@ -22,19 +24,39 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         private ICreater _mediumSoldierCreater;
 
         private ICreater _heavySoldierCreater;
-        
-        
-        
-        private Vector3 _myStartWorldPosition;
-        
-        private Vector3 _myEndWorldPosition;
 
-        private Vector2 _mySizeOccupiedInSpace;
+
+
+        
+    
+
+        [SerializeField]private Vector3 _myStartWorldPosition;
+        
+        [SerializeField]private Vector3 _myEndWorldPosition;
+
+        [SerializeField]private Vector2 _mySizeOccupiedInSpace;
         public Vector3 MyStartWorldPosition { get => _myStartWorldPosition; }
         public Vector3 MyEndWorldPosition { get => _myEndWorldPosition; }
         public Vector3 MySizeOccupiedInSpace { get => _myEndWorldPosition; }
+
         
         
+        
+        
+        public Vector3 PositionChanger
+        {//use when you move object to another cell
+            get => transform.position;
+            set
+            {
+                transform.position = OffsetSpawnPositionBySize(value);
+                OffsetSpawnPositionBySize(value);
+                GetMyStartWorldPosition();
+                GetMyEndWorldPosition();
+            }
+        }
+
+        
+
         public void InIt()
         {
             GetMyStartWorldPosition();
@@ -54,14 +76,15 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         
         private void GetMyStartWorldPosition()
         {
-            _myStartWorldPosition = OffsetCreatePosition(transform.position);
+            Vector2 offsetSize = _mySizeOccupiedInSpace / 2;
+            _myEndWorldPosition = new Vector3(transform.position.x - offsetSize.x, transform.position.y - offsetSize.y, transform.position.z);
 
         }
         
         private void GetMyEndWorldPosition()
         {
             Vector2 offsetSize = _mySizeOccupiedInSpace / 2;
-            _myEndWorldPosition = new Vector3(transform.position.x - offsetSize.x, transform.position.y - offsetSize.y, transform.position.z);
+            _myEndWorldPosition = new Vector3(transform.position.x + offsetSize.x, transform.position.y + offsetSize.y, transform.position.z);
 
         }
 
@@ -69,13 +92,15 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         
         
         
-        public Vector3 OffsetCreatePosition(Vector3 CreatePosition)
+
+        private Vector3 OffsetSpawnPositionBySize(Vector3 value)
         {
-            Vector2 offsetSize = _mySizeOccupiedInSpace / 2;
-            return new Vector3(CreatePosition.x - offsetSize.x, CreatePosition.y - offsetSize.y, CreatePosition.z);
+            
+            return new Vector3(value.x - MySizeOccupiedInSpace.x/2, value.y - MySizeOccupiedInSpace.y/2, value.z);
+            
+            
+            
         }
-        
-        
         
     }
 }

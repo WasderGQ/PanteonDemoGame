@@ -1,13 +1,14 @@
-using System.Threading.Tasks;
 using _Scripts._GameScene._Logic;
 using _Scripts._GameScene._UI;
-using _Scripts._GameScene._UI.Features;
 using UnityEngine;
 
 namespace _Scripts.Managers
 {
     public class CameraManager : MonoBehaviour
     {
+        
+        #region Private Variable
+        
         [SerializeField] private GameBoard _gameBoard;
         [SerializeField] private GameSpace _gameSpace;
         [SerializeField] private RaycastHit2D _raycastHit;
@@ -15,6 +16,7 @@ namespace _Scripts.Managers
         [SerializeField] private Vector3 _cameraAreaBorderEnd;
         [SerializeField] private Pan _pan;
         
+        #endregion
         
         #region UnityEvents
 
@@ -25,34 +27,52 @@ namespace _Scripts.Managers
             SetCameraBorder();
             
         }
-
         private void ObjectInstantiation()
         {
             _pan = new Pan();
             _pan.InIt();
         }
-        
-        
         private void Update()
         {
             UsePanFunction();
-
+            Zoom();
         }
-
+        
         #endregion
-
         
         #region Private func.
 
 
+        private void Zoom()
+        {
+           float currentScrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
+            if (currentScrollWheelAxis != 0f)
+            {
+               float tempAxis = Camera.main.fieldOfView - currentScrollWheelAxis;
+               Camera.main.fieldOfView = CheckZoomValue(tempAxis);
+               SetCameraBorder();
+            }
+        }
+
+        private float CheckZoomValue(float fov)
+        {
+            if(fov < 60)
+            {
+                return 60;
+            }
+            if(120 < fov)
+            {
+                return 120;
+            }
+
+            return fov;
+        }
+        
         private async void UsePanFunction()
         {
           transform.position = KeeperOfCameraInGameArea(await _pan.PanCamera() + transform.position);
-            
-            
+          
         }
-        
-        
         
         private void SetCameraBorder()
         {
@@ -74,7 +94,6 @@ namespace _Scripts.Managers
             transform.position = new Vector3(500, 500, 0);
             
         }
-        
         private Vector3 KeeperOfCameraInGameArea(Vector3 newcameraposition)
         {
             if (_cameraAreaBorderStart.x > newcameraposition.x )
@@ -102,8 +121,6 @@ namespace _Scripts.Managers
         }
         
         #endregion
-        
-        
         
     }
 }

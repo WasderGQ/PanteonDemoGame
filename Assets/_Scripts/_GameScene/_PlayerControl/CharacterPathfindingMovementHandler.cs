@@ -20,7 +20,7 @@ namespace _Scripts._GameScene._PlayerControl
           HandleMovement();
           
   
-          if (Input.GetMouseButtonDown(0)) {
+          if (Input.GetKeyDown(KeyCode.E)) {
               SetTargetPosition(UtilsClass.GetMouseWorldPosition());
           }
       }

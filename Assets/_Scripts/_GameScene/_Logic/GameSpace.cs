@@ -76,11 +76,6 @@ namespace _Scripts._GameScene._Logic
 
     #endregion
 
-
-
-
-  
-
     private Vector3Int GetCellFromWorldPosition(Vector3 worldPos)
     {
       worldPos = new Vector3(10, 10, _gameGrid.transform.position.z);
@@ -118,9 +113,20 @@ namespace _Scripts._GameScene._Logic
     }
 
     #endregion
-    
+
+
+    #region ProductListCreate Func.
+
+    public void CreateCreatableOnGameSpace()
+    {
+      
+      
+      
+      
+    }
     
 
+    #endregion
 
   }
 }
