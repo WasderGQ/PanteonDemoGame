@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Task = UnityEditor.VersionControl.Task;
 
 namespace _Scripts._GameScene._UI.Features
 {
@@ -19,39 +20,22 @@ namespace _Scripts._GameScene._UI.Features
             }
             catch
             {
-                Debug.Log("Rail no crash anything");
+                Debug.LogWarning("Rail no crash anything");
 
             }
 
             hittedColliders = Physics.RaycastAll(ray);
             return hittedColliders;
-
         }
 
         public async Task<Vector3> GetRayWorldPosition()
         {
             RaycastHit[] hittedRayLayers = await ThrowRayTryCatchGameColliders();
             RaycastHit hittedlayer = new RaycastHit();
-            bool IsGetPosition;
-            try
-            {
-                foreach (var hittedLayer in hittedRayLayers)
-                {
-                    if (hittedLayer.collider.gameObject.tag == "GameBoard")
-                    {
-                        IsGetPosition = true;
-                    }
-
-                }
-            }
-            catch
-            {
-                Debug.LogWarning("Mouse isn't on GameBoard");
-            }
+            
 
             if (true)
             {
-
                 try
                 {
                     foreach (var hittedLayer in hittedRayLayers)
@@ -60,21 +44,37 @@ namespace _Scripts._GameScene._UI.Features
                         {
                             hittedlayer = hittedLayer;
                         }
-
                     }
                 }
                 catch
                 {
                     Debug.LogWarning("GameSpace cant found");
                 }
-
-
-
+                
             }
-
             return hittedlayer.point;
         }
 
+        public async Task<(RaycastHit, bool)> TakeSpecificHit(string gameObjectTag)
+        {
+            RaycastHit[] hittedRayLayers = await ThrowRayTryCatchGameColliders();
+            try
+            {
+                foreach (var hittedLayer in hittedRayLayers)
+                {
+                    if (hittedLayer.collider.gameObject.tag == gameObjectTag)
+                    {
+                        return (hittedLayer, true);
+                    }
+                }
+            }
+            catch
+            {
+                Debug.LogWarning("Mouse isn't on GameBoard");
+            }
+
+            return (new RaycastHit(), false);
+        }
     }
 }
   

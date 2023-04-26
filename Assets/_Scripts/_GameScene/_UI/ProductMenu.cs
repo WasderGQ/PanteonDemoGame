@@ -3,11 +3,13 @@ using System.Reflection;
 using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Factorys.Creater;
 using _Scripts._GameScene.__GameElements.Products;
+using _Scripts._GameScene.__GameElements.Products.ProducibleValuables;
 using _Scripts._GameScene.__GameElements.Products.Soldiers;
 using _Scripts._GameScene._Logic;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = System.Object;
 
 namespace _Scripts._GameScene._UI
 {
@@ -20,6 +22,7 @@ namespace _Scripts._GameScene._UI
         [SerializeField] private Button _heavySoldier;
         [SerializeField] private Button _mediumSoldier;
         [SerializeField] private Button _lightSoldier;
+        [SerializeField] private Button _electric;
         
         public void InIt()
         {
@@ -29,76 +32,103 @@ namespace _Scripts._GameScene._UI
 
         }
 
-        public void deneme()
-        {
-            
-            Debug.Log("çalıştım.");
-            
-            
-        }
+        
         private void AddButtonToListener()
         {
-            _barracks.onClick.AddListener(() => DoAboutTheGameObject(new Barracks().gameObject));
-            _powerPlant.onClick.AddListener(() => DoAboutTheGameObject(new PowerPlant().gameObject));
-            _heavySoldier.onClick.AddListener(() => DoAboutTheGameObject(new HeavySoldier().gameObject));
-            _mediumSoldier.onClick.AddListener(() => DoAboutTheGameObject(new MediumSoldier().gameObject));
-            _lightSoldier.onClick.AddListener(() => DoAboutTheGameObject(new LightSoldier().gameObject));
+            _barracks.onClick.AddListener(() => DoAboutTheGameObject(new Barracks()));
+            _powerPlant.onClick.AddListener(() => DoAboutTheGameObject(new PowerPlant()));
+            _heavySoldier.onClick.AddListener(() => DoAboutTheGameObject(new HeavySoldier()));
+            _mediumSoldier.onClick.AddListener(() => DoAboutTheGameObject(new MediumSoldier()));
+            _lightSoldier.onClick.AddListener(() => DoAboutTheGameObject(new LightSoldier()));
+            _electric.onClick.AddListener(() => DoAboutTheGameObject(new Electric()));
         }
 
-        private void DoAboutTheGameObject(GameObject gameObject)
+        private void DoAboutTheGameObject(object obj)
         {
-            Debug.Log("did the game object ");
-            if (gameObject is Factory)
+            switch (obj)
             {
-                DoAboutFactorys(gameObject);
-                Debug.Log("this game object factory");
+                case Factory:
+                    DoAboutFactorys(obj);
+                    break;
+                case Soldier:
+                    DoAboutSoldiers(obj);
+                    break;
+                case IProducibleVariable:
+                    DoAboutProductiableVariable(obj);
+                    break;
             }
 
-            if (gameObject is IProduct)
+
+        }
+
+
+
+
+        private void DoAboutFactorys(object obj)
+        {
+            switch (obj)
             {
-                DoAboutProducts(gameObject);
-                Debug.Log("this game object product");
+                case Barracks:
+                    DoAboutBarracks();
+                    break;
+                case PowerPlant:
+                    DoAboutPowerPlant();
+                    break;
+            }
+        }
+
+        private void DoAboutSoldiers(object obj)
+        {
+            switch (obj)
+            {
+                case HeavySoldier:
+                    DoAboutHeavySolder();
+                    break;
+                case MediumSoldier:
+                    DoAboutMediumSolder();
+                    break;
+                case LightSoldier:
+                    DoAboutLightSolder();
+                    break;
             }
             
         }
-        
-        
-        
-        
-        private void DoAboutFactorys(GameObject gameObject)
+        private void DoAboutProductiableVariable(object obj)
         {
-            Debug.Log("Did factory");
-        }
-
-        private void DoAboutProducts(GameObject gameObject)
-        {
-            Debug.Log("Did product");
-            
-            
-        }
-
-
-        private int HowMuchProductTypeYouHave(Factory factory)//Every ICreater creating one product type.
-        {
-            Type factorType = factory.GetType();
-            int variableCount = 0;
-
-            foreach (FieldInfo field in factorType.GetFields(BindingFlags.Public | BindingFlags.Instance))
+            switch (obj)
             {
-                if (field.FieldType == typeof(ICreater))
-                {
-                    variableCount++;
-                }
+                case Electric:
+                    DoAboutElectric();
+                    break;
+                
             }
-
-            return variableCount;
+            
+            
         }
-        
-        
-        
-        
-        
-        
-        
+
+        private void DoAboutBarracks()
+        {
+            _information.SelectBarracksPanel();
+        }
+        private void DoAboutPowerPlant()
+        {
+            _information.SelectPowerPlantPanel();
+        }
+        private void DoAboutLightSolder()
+        {
+            _information.SelectLightSoldierPanel();
+        }
+        private void DoAboutMediumSolder()
+        {
+            _information.SelectMediumSoldierPanel();
+        }
+        private void DoAboutHeavySolder()
+        {
+            _information.SelectHeavySoldierPanel();
+        }
+        private void DoAboutElectric()
+        {
+            _information.SelectElectricPanel();
+        }
     }
 }

@@ -80,7 +80,7 @@ namespace _Scripts._GameScene._Logic
     {
       worldPos = new Vector3(10, 10, _gameGrid.transform.position.z);
       Vector3Int cellPos = _gameGrid.WorldToCell(worldPos);
-      Debug.Log(cellPos);
+      //Debug.Log(cellPos);
       return cellPos;
     }
 

@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 2582028671820737421}
   - component: {fileID: -346031157655494527}
   m_Layer: 0
-  m_Name: Barracks
-  m_TagString: Untagged
+  m_Name: HeavySoldier
+  m_TagString: HeavySoldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -49
-  m_Sprite: {fileID: 21300000, guid: 1d53eacc38517704cab262d37a82319b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 62f7a05a7dea63444bdfe90a391d9dbe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,12 +118,12 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 40, y: 40}
+    oldSize: {x: 10, y: 10}
     newSize: {x: 40, y: 40}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 40, y: 40}
+  m_Size: {x: 10, y: 10}
   m_EdgeRadius: 0

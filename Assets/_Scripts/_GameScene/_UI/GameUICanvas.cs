@@ -9,21 +9,17 @@ namespace _Scripts._GameScene._UI
 
 
         [SerializeField] private GameSpace _gameSpace;
-        [SerializeField] private StaticText _staticText;
         [SerializeField] private Information _information;
         [SerializeField] private ProductMenu _productMenu;
 
 
         public void InIt()
         {
+            
         _gameSpace.InIt();
-        _staticText.InIt(); 
         _information.InIt(); 
-        _productMenu.InIt(); 
-            
-            
+        _productMenu.InIt();
+        
         }
-
-
     }
 }

@@ -1,6 +1,6 @@
 namespace _Scripts._GameScene.__GameElements.Products.ProducibleValuables
 {
-    public class Electric : IProducibleValuables
+    public class Electric : IProducibleVariable
     {
    
    

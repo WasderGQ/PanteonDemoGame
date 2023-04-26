@@ -14,7 +14,7 @@ namespace _Scripts.Managers
         [SerializeField] private RaycastHit2D _raycastHit;
         [SerializeField] private Vector3 _cameraAreaBorderStart;
         [SerializeField] private Vector3 _cameraAreaBorderEnd;
-        [SerializeField] private Pan _pan;
+        [SerializeField] private CameraMovement _cameraMovement;
         
         #endregion
         
@@ -29,12 +29,12 @@ namespace _Scripts.Managers
         }
         private void ObjectInstantiation()
         {
-            _pan = new Pan();
-            _pan.InIt();
+            _cameraMovement = new CameraMovement();
+            _cameraMovement.InIt();
         }
         private void Update()
         {
-            UsePanFunction();
+            Pan();
             Zoom();
         }
         
@@ -42,18 +42,20 @@ namespace _Scripts.Managers
         
         #region Private func.
 
-
-        private void Zoom()
+        private void CameraStartPosition()
         {
-           float currentScrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
-            if (currentScrollWheelAxis != 0f)
-            {
-               float tempAxis = Camera.main.fieldOfView - currentScrollWheelAxis;
-               Camera.main.fieldOfView = CheckZoomValue(tempAxis);
-               SetCameraBorder();
-            }
+            
+            transform.position = new Vector3(500, 500, 0);
+            
         }
-
+        
+        
+        #region Zoom Func.
+        private async void Zoom()
+        {
+            Camera.main.fieldOfView = CheckZoomValue(await _cameraMovement.ZoomCamera(Camera.main));
+            SetCameraBorder();
+        }
         private float CheckZoomValue(float fov)
         {
             if(fov < 60)
@@ -67,13 +69,16 @@ namespace _Scripts.Managers
 
             return fov;
         }
+
+        #endregion
         
-        private async void UsePanFunction()
+        #region Pan Func.
+
+        private async void Pan()
         {
-          transform.position = KeeperOfCameraInGameArea(await _pan.PanCamera() + transform.position);
+            transform.position = KeeperOfCameraInGameArea(await _cameraMovement.PanCamera() + transform.position);
           
         }
-        
         private void SetCameraBorder()
         {
             Vector3 cameraViewSize = CalculateCameraViewSize(GetComponent<Camera>().fieldOfView,GetComponent<Camera>().aspect, _gameBoard.transform.position.z);
@@ -87,12 +92,6 @@ namespace _Scripts.Managers
             float height = 2.0f * distanceToPlane * Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad);
             float width = height * aspectRatio;
             return new Vector3(width, height,0);
-        }
-        private void CameraStartPosition()
-        {
-            
-            transform.position = new Vector3(500, 500, 0);
-            
         }
         private Vector3 KeeperOfCameraInGameArea(Vector3 newcameraposition)
         {
@@ -119,6 +118,8 @@ namespace _Scripts.Managers
             return newcameraposition;
             
         }
+
+        #endregion
         
         #endregion
         

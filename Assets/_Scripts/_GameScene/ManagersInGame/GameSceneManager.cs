@@ -16,10 +16,10 @@ namespace _Scripts._GameScene.ManagersInGame
 
       private void InIt()
       {
+         
          _gameSpace.InIt();
          _gameUICanvas.InIt();
-
-
+         
       }
    }
 }
