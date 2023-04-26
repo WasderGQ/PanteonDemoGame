@@ -1,12 +1,7 @@
-﻿using UnityEngine;
-
-namespace _Scripts._GameScene.__GameElements.Features
+﻿namespace _Scripts._GameScene._PlayerControl
 {
     public interface IMovable
     {
-        public Vector3 MyStartWorldPosition { get; }
-        public Vector3 MyEndWorldPosition { get; }
-        public Vector3 MySizeOccupiedInSpace { get; }
-        public Vector3 PositionChanger{ get; set; }
+        
     }
 }

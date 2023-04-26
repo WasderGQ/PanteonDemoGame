@@ -16,9 +16,23 @@ namespace _Scripts._GameScene._UI
         
         public void InIt()
         {
-            
+            OnStartCloseAllPanels();
         }
 
+        void OnStartCloseAllPanels()
+        {
+            _infoBarracks.SetActive(false);
+            _infoPowerPlant.SetActive(false);
+            _infoHeavySoldier.SetActive(false);
+            _infoMediumSoldier.SetActive(false);
+            _infoLightSoldier.SetActive(false);
+            _infoElectric.SetActive(false);
+
+        }
+        
+        
+        
+        
         public void SelectBarracksPanel()
         {
             SelectedInfoClose();

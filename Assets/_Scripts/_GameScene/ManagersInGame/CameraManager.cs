@@ -84,7 +84,6 @@ namespace _Scripts.Managers
             Vector3 cameraViewSize = CalculateCameraViewSize(GetComponent<Camera>().fieldOfView,GetComponent<Camera>().aspect, _gameBoard.transform.position.z);
             _cameraAreaBorderStart = _gameSpace.GameSpaceStartArea + cameraViewSize/2;
             _cameraAreaBorderEnd =  _gameSpace.GameSpaceEndArea - cameraViewSize/2;
-            
 
         }
         private Vector3 CalculateCameraViewSize(float fov, float aspectRatio, float distanceToPlane)

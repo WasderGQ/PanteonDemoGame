@@ -50,28 +50,24 @@ public class CameraMovement
                 _panDistance = Vector3.zero;
             }
             return _panDistance;
-        
+            
+    }
 
-        return _panDistance = Vector3.zero;
+
+    private async Task<Vector3> GetMousePosition()
+    {
+        return await _clickRay.GetRayWorldPosition();
 
 
     }
-    
-    
-    private async Task<Vector3> GetMousePosition()
-        {
-             return await _clickRay.GetRayWorldPosition();
-            
 
-        }
-        
     private Vector3 GetTwoPointDistance()
-        {
-            return _mouseWorldPositionOnDown - _mouseWorldPositionOnHold;
-        
-        }
-    
-    
+    {
+        return _mouseWorldPositionOnDown - _mouseWorldPositionOnHold;
+
+    }
+
+
     public async Task<float> ZoomCamera(Camera camera)
     {
         if (await CheckMouseInTruePosition())
@@ -86,6 +82,8 @@ public class CameraMovement
            return camera.fieldOfView;
     }
         
+    
+    
     private async Task<bool> CheckMouseInTruePosition() //In my game this must be gameboard.
     {
         var result = await _clickRay.TakeSpecificHit("GameBoard");

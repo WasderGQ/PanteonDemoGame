@@ -9,9 +9,22 @@ using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Factorys
 {
-    public class Barracks : FactoryHave3Creater<Barracks>, IMovable
+    public class Barracks : FactoryHave3Creater<Barracks>, IPortable, IGameObject
     {
+        private readonly string _uniqueID = Guid.NewGuid().ToString("N");
+        
+        public string ID
+        {
+            get { return _uniqueID; }
+        }
 
+        public Vector3Int CellSize
+        {
+            get { return StaticCellSize; }
+        }
+        
+        
+        public static readonly Vector3Int StaticCellSize = new Vector3Int(4, 4);
 
         private List<IProduct> _lightSoldier;
 
