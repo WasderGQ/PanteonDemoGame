@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reflection;
 using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Factorys.Creater;
@@ -66,6 +67,7 @@ namespace _Scripts._GameScene._UI
 
         private void DoAboutFactorys(object obj)
         {
+            _gameSpace.CreateCreatableOnGameSpace(obj);
             switch (obj)
             {
                 case Barracks:

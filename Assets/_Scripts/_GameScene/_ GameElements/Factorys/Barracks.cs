@@ -5,26 +5,25 @@ using System.Runtime.CompilerServices;
 using _Scripts._GameScene.__GameElements.Factorys.Creater;
 using _Scripts._GameScene.__GameElements.Features;
 using _Scripts._GameScene.__GameElements.Products;
+using Third_Party_Packages.Helpers.WasderGQ.CustomAttributes;
 using UnityEngine;
+using UnityEngine.Pool;
+using Object = UnityEngine.Object;
 
 namespace _Scripts._GameScene.__GameElements.Factorys
 {
     public class Barracks : FactoryHave3Creater<Barracks>, IPortable, IGameObject
     {
-        private readonly string _uniqueID = Guid.NewGuid().ToString("N");
         
-        public string ID
-        {
-            get { return _uniqueID; }
-        }
+        
 
-        public Vector3Int CellSize
+        public static Vector2Int GameObjectSizeByCell
         {
-            get { return StaticCellSize; }
+            get { return _staticGameObjectSizeByCell; }
         }
         
         
-        public static readonly Vector3Int StaticCellSize = new Vector3Int(4, 4);
+        private readonly static  Vector2Int _staticGameObjectSizeByCell = new Vector2Int(4, 4);
 
         private List<IProduct> _lightSoldier;
 
@@ -55,12 +54,13 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         
         
         
-        
+
         public Vector3 PositionChanger
         {//use when you move object to another cell
             get => transform.position;
             set
             {
+                
                 transform.position = OffsetSpawnPositionBySize(value);
                 OffsetSpawnPositionBySize(value);
                 GetMyStartWorldPosition();
@@ -75,13 +75,15 @@ namespace _Scripts._GameScene.__GameElements.Factorys
             GetMyStartWorldPosition();
             GetMyEndWorldPosition();
             GetMyWorldSize();
-            
-            
+            transform.position = OffsetSpawnPositionBySize(transform.position);
+
         }
 
         
         #region Start Func.
 
+        
+        
         private void GetMyWorldSize()
         {
             _mySizeOccupiedInSpace = GetComponent<BoxCollider2D>().size;

@@ -1,10 +1,12 @@
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Features;
-using _Scripts._GameScene._PlayerControl;
 using UnityEngine;
+using Third_Party_Packages.Helpers.WasderGQ.CustomAttributes;
+using UnityEngine.Pool;
 using UnityEngine.Serialization;
 
 namespace _Scripts._GameScene._Logic
@@ -16,15 +18,24 @@ namespace _Scripts._GameScene._Logic
 
     #region Private Variable
 
-    [SerializeField] private Transform _playableGameObject;
-    [SerializeField] private Vector3 _gameSpaceStartArea;
-    [SerializeField] private Vector3 _gameSpaceEndArea;
-    [SerializeField] private Vector3 _gameSpaceNumberOfCells;
-    [SerializeField] private Vector3 _gridCellSize;
+    #region Factory Prefabs
+
+    [SerializeField] private Barracks _barracksPrefab;
+    [SerializeField] private PowerPlant _powerPlantPrefab;
+
+    #endregion
+
+
+    [SerializeField] private ObjectPool<Barracks> _barracks;
     [SerializeField] private Grid _gameGrid;
-    [SerializeField] private Vector3Int _firstSearchCellPosition;
+    [SerializeField] private Transform _playableGameObject;
+    [SerializeField] private Vector3 _gameSpaceStartPoint;
+    [SerializeField] private Vector3 _gameSpaceEndPoint;
+    [SerializeField] private static Vector2 _gridCellSize;
+    [SerializeField] private Vector2Int _firstSearchCellPosition;
+    [SerializeField] private Vector2Int _gameSpaceSizeByCell;
     [SerializeField] private Dictionary<string,Vector3Int> _filledCells;
-    [SerializeField] private List<IPlayable> _playables;
+    [SerializeField] private List<Vector2Int> _DEBUGfilledCells;
     
 
     #endregion
@@ -33,181 +44,161 @@ namespace _Scripts._GameScene._Logic
 
     public Vector3 GameSpaceStartArea
     {
-      get => _gameSpaceStartArea;
+      get => _gameSpaceStartPoint;
     }
     
     public Vector3 GameSpaceEndArea
     {
-      get => _gameSpaceEndArea;
+      get => _gameSpaceEndPoint;
     }
 
-    #endregion
-
-    #region Private Property (For Control)
-    private Vector3 SelectedLocation
+    public static Vector2 GameSpaceCellSize
     {
-      get => _selectedLocation;
-      set
-      {
-
-        if (IsLocationAcceptable(value))
-        {
-          _selectedLocation = value;
-        }
-
-        _selectedLocation = new Vector3();
-      }
+      get => _gridCellSize;
     }
-    
     #endregion
+    
 
     
     public void InIt()
     {
       GetCellFromWorldPosition(Vector3.zero);
       SetGameSpaceAreaCoordinate();
-      
     }
    
-
-    #region Start Func.
     
+    #region Start Func.
+
     private void SetGameSpaceAreaCoordinate()
     {
-      _gameSpaceEndArea = new Vector3(1000, 1000,100);
-      _gameSpaceStartArea = new Vector3(0, 0,100);
-      _gridCellSize = new Vector3(10, 10, 0);
-      _gameSpaceNumberOfCells = new Vector3(_gameSpaceEndArea.x / _gridCellSize.x, _gameSpaceEndArea.y / _gridCellSize.y,
-        0);
-      _firstSearchCellPosition = GetCellFromWorldPosition(Camera.main.transform.position);
-      
-      
-    }
-    
-    
-    
-    #endregion
-
-    #region Control Func.
-
-    private bool IsLocationAcceptable(Vector3 value)
-    {
-      bool IsValidX = default(bool);
-      bool IsValidY = default(bool);
-      if (value.x <= _gameSpaceEndArea.x && value.x >= _gameSpaceStartArea.x)
-      {
-        IsValidX = true;
-      }
-
-      if (value.y <= _gameSpaceEndArea.y && value.y >= _gameSpaceStartArea.y)
-      {
-        IsValidY = true;
-      }
-
-      return IsValidX && IsValidY;
+      _gameSpaceEndPoint = new Vector3(1000, 1000,100);
+      _gameSpaceStartPoint = transform.position;
+      _gridCellSize = new Vector2(_gameGrid.cellSize.x, _gameGrid.cellSize.y);
+      _gameSpaceSizeByCell = new Vector2Int(  Convert.ToInt32((_gameSpaceEndPoint.x - _gameSpaceStartPoint.x) / _gridCellSize.x)  ,
+        Convert.ToInt32((_gameSpaceEndPoint.y - _gameSpaceStartPoint.y) / _gridCellSize.y));
+      Debug.Log(_gameSpaceSizeByCell);
     }
 
     #endregion
+
     
     
-    
-    private Vector3Int GetCellFromWorldPosition(Vector3 worldPos)
+    private Vector2Int GetCellFromWorldPosition(Vector3 worldPos)
     {
       Vector3Int cellPos = _gameGrid.WorldToCell(worldPos);
-      //Debug.Log(cellPos);
-      return cellPos;
+      return new Vector2Int(cellPos.x,cellPos.y);
     }
 
-    private Vector3 GetWorldPositionFromCell(Vector3Int cellPos)
+    private Vector3 GetWorldPositionFromCell(Vector2Int cellPos)
     {
       return new Vector3(cellPos.x * _gridCellSize.x,cellPos.y*_gridCellSize.y,transform.position.z);
     }
-    private void SaveFilledCells(Vector3Int spawnCellPosition,IPortable portableObject)
-    {
-      Vector2Int endPoint =new Vector2Int(spawnCellPosition.x + portableObject.CellSize.x ,spawnCellPosition.y + portableObject.CellSize.y);
-      for (int i = spawnCellPosition.x; i <= endPoint.x; i++)
-      {
-        for (int j = spawnCellPosition.y; j <= endPoint.y; j++)
-        {
-          _filledCells.Add(portableObject.ID,new Vector3Int(i,j,0));
-        }
-      }
-      
-    }
     
     
- 
-
-   
-
-    #region CreateGameObject                 /// <summary>
-                                            /// ////////////////
-                                            /// </summary>
+    
+    
+    #region CreateGameObject                 
 
     private void CreateBarracks()
     {
-      Vector3Int spawnCellPosition = FindEmphtyCells(Barracks.StaticCellSize, _firstSearchCellPosition, _filledCells);
-      Vector3 spawnWorldPosition = GetWorldPositionFromCell(spawnCellPosition);
-      Barracks newBarracks = Instantiate<Barracks>(new Barracks(), spawnWorldPosition, Quaternion.identity, _playableGameObject);
-      SaveFilledCells(spawnCellPosition, newBarracks);
+      Vector2Int spawnCellPosition = FindEmphtyCellsToCreate(Barracks.GameObjectSizeByCell, _firstSearchCellPosition, _DEBUGfilledCells);
+      Barracks barracks = BarracksPool.SharedInstance.GetPooledObject(); 
+      if (barracks != null) {
+        barracks.transform.position = GetWorldPositionFromCell(spawnCellPosition);
+        barracks.transform.rotation = Quaternion.identity;
+        barracks.gameObject.SetActive(true);
+        barracks.transform.SetParent(_playableGameObject);
+      }
+      SaveFilledCells(spawnCellPosition,new Vector2Int(spawnCellPosition.x+Barracks.GameObjectSizeByCell.x,spawnCellPosition.y+Barracks.GameObjectSizeByCell.y));
 
 
     }
 
-    private Vector3Int FindEmphtyCells(Vector3Int gameObjectSizes , Vector3Int startPoint, Dictionary<string,Vector3Int> filledCells)
+    private void CreatePowerPlant()
+    {
+      Vector2Int spawnCellPosition = FindEmphtyCellsToCreate(PowerPlant.GameObjectSizeByCell, _firstSearchCellPosition, _DEBUGfilledCells);
+      PowerPlant powerPlant = PowerPlantPool.SharedInstance.GetPooledObject(); 
+      if (powerPlant != null) {
+        powerPlant.transform.position = GetWorldPositionFromCell(spawnCellPosition);
+        powerPlant.transform.rotation = Quaternion.identity;
+        powerPlant.gameObject.SetActive(true);
+        powerPlant.transform.SetParent(_playableGameObject);
+      }
+      SaveFilledCells(spawnCellPosition,new Vector2Int(spawnCellPosition.x+PowerPlant.GameObjectSizeByCell.x,spawnCellPosition.y+PowerPlant.GameObjectSizeByCell.y));
+    }
+    
+    
+    private void SaveFilledCells(Vector2Int sizeStartCell,Vector2Int sizeEndCell)
+    {
+      for (int i = sizeStartCell.x; i <= sizeEndCell.x; i++)
+      {
+        for (int j = sizeStartCell.y; j <= sizeEndCell.y; j++)
+        {
+          Vector2Int newFilledCell = new Vector2Int(i, j);
+          //_filledCells.Add($"{newFilledCell.x},{newFilledCell.y},{newFilledCell.z}",newFilledCell);
+          _DEBUGfilledCells.Add(newFilledCell);
+        }
+      }
+      
+    }
+    
+    private Vector2Int FindEmphtyCellsToCreate(Vector2Int gameObjectSizeByCell , Vector2Int startPointByCell, List<Vector2Int> filledCells)
     {
 
-      bool IsAreaEmphty = true;
       
-      Vector3Int searchCellPosition = startPoint;
-      Vector3Int firstPointMemento = new Vector3Int();
+      int containsCounter;
+      Vector2Int searchCellPosition = startPointByCell;
+      Vector2Int firstPointMemento = new Vector2Int();
       do
       {
-        if (searchCellPosition == firstPointMemento)
+        containsCounter = 0;
+        if (searchCellPosition == firstPointMemento && searchCellPosition != startPointByCell)
         {
           Debug.LogWarning("Cant find emphty cell");
-          return new Vector3Int();
+          return new Vector2Int();
         }
         
-        if (firstPointMemento != null)
+        if (firstPointMemento !=  new Vector2Int())
         {
-          searchCellPosition = CoordinateAdvanceFixer(searchCellPosition);
+          searchCellPosition = CoordinateAdvanceFixer(searchCellPosition,gameObjectSizeByCell);
         }
         
-        for (int i = searchCellPosition.x; i < gameObjectSizes.x; i++)
+        for (int i = searchCellPosition.x; i < gameObjectSizeByCell.x+searchCellPosition.x; i++)
         {
-          for (int j = searchCellPosition.y ; j < gameObjectSizes.y; j++)
+          for (int j = searchCellPosition.y ; j < gameObjectSizeByCell.y+searchCellPosition.y; j++)
           {
-            if (filledCells.ContainsValue(new Vector3Int(i, j, 0)))
+            if (filledCells.Contains(new Vector2Int(i, j)))
             {
-              IsAreaEmphty = false;
+              Debug.Log("Aynısı bulundu");
+              Debug.Log(filledCells.Contains(new Vector2Int(i, j)));
+              containsCounter++;
             }
           }
         }
-        if (firstPointMemento == null)
+        if (firstPointMemento == new Vector2Int())
         {
           firstPointMemento = searchCellPosition;
         }
-      } while (IsAreaEmphty == false);
+      } while (containsCounter != 0);
 
       return searchCellPosition;
     }
 
     
-    private Vector3Int CoordinateAdvanceFixer(Vector3Int searchCellPosition)
+    private Vector2Int CoordinateAdvanceFixer(Vector2Int searchPositionByCell,Vector2Int gameObjectSizeByCell)
     {
-      searchCellPosition.x += 1;
-      if (searchCellPosition.x > _gameSpaceNumberOfCells.x)
+      searchPositionByCell.x += 1;
+      if (searchPositionByCell.x+gameObjectSizeByCell.x >_gameSpaceSizeByCell.x)
       {
-        searchCellPosition.x = 0;
-        searchCellPosition.y += 1;
+        searchPositionByCell.x = 0;
+        searchPositionByCell.y += 1;
       }
 
-      if (searchCellPosition.y > _gameSpaceNumberOfCells.y)
+      if (searchPositionByCell.y+gameObjectSizeByCell.y > _gameSpaceSizeByCell.y)
       {
-        searchCellPosition.y = 0;
+        searchPositionByCell.y = 0;
       }
-      return searchCellPosition;
+      return searchPositionByCell;
     }
     
     
@@ -215,20 +206,19 @@ namespace _Scripts._GameScene._Logic
     
     
     
-    public void CreateCreatableOnGameSpace(Type type)
+    public void CreateCreatableOnGameSpace(object obj)
     {
-      if (type == typeof(Barracks))
+      switch (obj)
       {
-        CreateBarracks();
-      }
-      else if (type == typeof(PowerPlant))
-      {
+        case Barracks:
+          CreateBarracks();
+         
+          break;
         
+        case PowerPlant:
+          CreatePowerPlant();
+          break;
       }
-
-
-
-
     }
 
     #endregion
@@ -245,6 +235,7 @@ namespace _Scripts._GameScene._Logic
     
   
   }
-  
+
+
 }
 

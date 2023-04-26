@@ -2,10 +2,7 @@
 {
     public interface IGameObject
     {
-        public string ID
-        {
-            get;
-        }
+        
 
        
         

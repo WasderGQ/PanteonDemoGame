@@ -20,7 +20,7 @@ namespace _Scripts._GameScene._UI.Features
             }
             catch
             {
-                Debug.LogWarning("Rail no crash anything");
+               // Debug.LogWarning("Rail no crash anything");
 
             }
 
