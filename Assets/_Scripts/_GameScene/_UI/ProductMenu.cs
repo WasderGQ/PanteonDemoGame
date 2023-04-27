@@ -67,7 +67,7 @@ namespace _Scripts._GameScene._UI
 
         private void DoAboutFactorys(object obj)
         {
-            _gameSpace.CreateCreatableOnGameSpace(obj);
+            _gameSpace.CreateFactory(obj);
             switch (obj)
             {
                 case Barracks:

@@ -6,14 +6,22 @@ TagManager:
   tags:
   - GameBoard
   - GameSpace
+  - MediumSoldier
+  - PowerPlant
+  - HeavySoldier
+  - LightSolder
+  - Barracks
+  - HeavySoldierButton
+  - MediumSoldierButton
+  - LightSoldierButton
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - ddd
   - Water
   - UI
-  - 
+  - deneme
   - 
   - 
   - 

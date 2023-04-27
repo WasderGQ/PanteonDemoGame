@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6661554660978521302}
   - component: {fileID: 734312233293209467}
-  - component: {fileID: -346031157655494527}
   - component: {fileID: -2904277386774779252}
+  - component: {fileID: -3105187198971754825}
   m_Layer: 0
   m_Name: PowerPlant
   m_TagString: PowerPlant
@@ -86,32 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &-346031157655494527
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9151549921616853072}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 20, y: 30}
-    newSize: {x: 40, y: 40}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 20, y: 30}
-  m_EdgeRadius: 0
 --- !u!114 &-2904277386774779252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,3 +98,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 926995bb6a6edb54fb4585ecbddfa874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameSpace: {fileID: 0}
+--- !u!65 &-3105187198971754825
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151549921616853072}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 20, y: 30, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}

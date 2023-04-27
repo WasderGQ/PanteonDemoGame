@@ -22,12 +22,16 @@ public class CameraMovement
     public async Task<Vector3> PanCamera()
     {
         
-            if (Input.GetKeyDown(KeyCode.Mouse2) && _mouseWorldPositionOnDown == new Vector3() && await CheckMouseInTruePosition())
+            if (Input.GetKeyDown(KeyCode.Mouse2) && _mouseWorldPositionOnDown == new Vector3())
             {
-                // Debug.Log("key down summoned.");
-                _mouseWorldPositionOnDown = await GetMousePosition();
-                // Debug.Log("press: " + _mouseWorldPositionOnDown);
-                _isHoldingKey = true;
+                if (await CheckMouseInTruePosition())
+                {
+                    // Debug.Log("key down summoned.");
+                    _mouseWorldPositionOnDown = await GetMousePosition();
+                    // Debug.Log("press: " + _mouseWorldPositionOnDown);
+                    _isHoldingKey = true; 
+                }
+                
             }
             
             if (_isHoldingKey)
@@ -86,7 +90,7 @@ public class CameraMovement
     
     private async Task<bool> CheckMouseInTruePosition() //In my game this must be gameboard.
     {
-        var result = await _clickRay.TakeSpecificHit("GameBoard");
+        var result = await _clickRay.TakeSpecificRaycastHitWithTaskBool("GameBoard");
         if(result.Item2)
         {
             return true;

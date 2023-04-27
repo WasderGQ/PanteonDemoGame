@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using _Scripts._GameScene.__GameElements.Factorys.Creater;
 using _Scripts._GameScene.__GameElements.Features;
 using _Scripts._GameScene.__GameElements.Products;
+using _Scripts._GameScene._Logic;
 using Third_Party_Packages.Helpers.WasderGQ.CustomAttributes;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -14,9 +15,8 @@ namespace _Scripts._GameScene.__GameElements.Factorys
 {
     public class Barracks : FactoryHave3Creater<Barracks>, IPortable, IGameObject
     {
-        
-        
-
+        [SerializeField] private GameSpace _gameSpace;
+       
         public static Vector2Int GameObjectSizeByCell
         {
             get { return _staticGameObjectSizeByCell; }
@@ -38,84 +38,12 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         private ICreater _heavySoldierCreater;
 
 
-
-        
-    
-
-        [SerializeField]private Vector3 _myStartWorldPosition;
-        
-        [SerializeField]private Vector3 _myEndWorldPosition;
-
-        [SerializeField]private Vector2 _mySizeOccupiedInSpace;
-        public Vector3 MyStartWorldPosition { get => _myStartWorldPosition; }
-        public Vector3 MyEndWorldPosition { get => _myEndWorldPosition; }
-        public Vector3 MySizeOccupiedInSpace { get => _myEndWorldPosition; }
-
-        
-        
-        
-
-        public Vector3 PositionChanger
-        {//use when you move object to another cell
-            get => transform.position;
-            set
-            {
-                
-                transform.position = OffsetSpawnPositionBySize(value);
-                OffsetSpawnPositionBySize(value);
-                GetMyStartWorldPosition();
-                GetMyEndWorldPosition();
-            }
-        }
-
-        
-
-        public void InIt()
-        {
-            GetMyStartWorldPosition();
-            GetMyEndWorldPosition();
-            GetMyWorldSize();
-            transform.position = OffsetSpawnPositionBySize(transform.position);
-
-        }
-
-        
-        #region Start Func.
-
-        
-        
-        private void GetMyWorldSize()
-        {
-            _mySizeOccupiedInSpace = GetComponent<BoxCollider2D>().size;
-        }
-        
-        private void GetMyStartWorldPosition()
-        {
-            Vector2 offsetSize = _mySizeOccupiedInSpace / 2;
-            _myEndWorldPosition = new Vector3(transform.position.x - offsetSize.x, transform.position.y - offsetSize.y, transform.position.z);
-
-        }
-        
-        private void GetMyEndWorldPosition()
-        {
-            Vector2 offsetSize = _mySizeOccupiedInSpace / 2;
-            _myEndWorldPosition = new Vector3(transform.position.x + offsetSize.x, transform.position.y + offsetSize.y, transform.position.z);
-
-        }
-
-        #endregion
-        
-        
-        
-
-        private Vector3 OffsetSpawnPositionBySize(Vector3 value)
+        public void InIt(/*Vector2Int startPointByCell ,Vector2Int endPoint*/)
         {
             
-            return new Vector3(value.x - MySizeOccupiedInSpace.x/2, value.y - MySizeOccupiedInSpace.y/2, value.z);
             
             
             
         }
-        
     }
 }

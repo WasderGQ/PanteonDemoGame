@@ -9,7 +9,6 @@ namespace _Scripts.Managers
         
         #region Private Variable
         
-        [SerializeField] private GameBoard _gameBoard;
         [SerializeField] private GameSpace _gameSpace;
         [SerializeField] private RaycastHit2D _raycastHit;
         [SerializeField] private Vector3 _cameraAreaBorderStart;
@@ -24,8 +23,8 @@ namespace _Scripts.Managers
         {
             ObjectInstantiation();
             CameraStartPosition();
-            SetCameraBorder();
-            
+            SetCameraBorder(transform.position);
+            GameSpace.SaveMyPlace.Invoke(Vector2Int.zero, new Vector2Int(5,5));
         }
         private void ObjectInstantiation()
         {
@@ -45,7 +44,7 @@ namespace _Scripts.Managers
         private void CameraStartPosition()
         {
             
-            transform.position = new Vector3(500, 500, 0);
+            transform.position = new Vector3(250, 250, 0);
             
         }
         
@@ -54,7 +53,7 @@ namespace _Scripts.Managers
         private async void Zoom()
         {
             Camera.main.fieldOfView = CheckZoomValue(await _cameraMovement.ZoomCamera(Camera.main));
-            SetCameraBorder();
+            SetCameraBorder(transform.position);
         }
         private float CheckZoomValue(float fov)
         {
@@ -76,42 +75,47 @@ namespace _Scripts.Managers
 
         private async void Pan()
         {
-            transform.position = KeeperOfCameraInGameArea(await _cameraMovement.PanCamera() + transform.position);
-          
+            Vector3 newposition = await _cameraMovement.PanCamera() + transform.position;
+            SetCameraBorder(newposition);
+            transform.position = KeeperOfCameraInGameArea(newposition,CalculateCameraViewSize(GetComponent<Camera>().fieldOfView,GetComponent<Camera>().aspect, _gameSpace.transform.position.z));
         }
-        private void SetCameraBorder()
+        private void SetCameraBorder(Vector3 Position)
         {
-            Vector3 cameraViewSize = CalculateCameraViewSize(GetComponent<Camera>().fieldOfView,GetComponent<Camera>().aspect, _gameBoard.transform.position.z);
-            _cameraAreaBorderStart = _gameSpace.GameSpaceStartArea + cameraViewSize/2;
-            _cameraAreaBorderEnd =  _gameSpace.GameSpaceEndArea - cameraViewSize/2;
-
+            Vector3 cameraViewSize = CalculateCameraViewSize(GetComponent<Camera>().fieldOfView,GetComponent<Camera>().aspect, _gameSpace.transform.position.z);
+            _cameraAreaBorderStart = new Vector3(Position.x - (cameraViewSize.x/2), Position.y - (cameraViewSize.y/2),0) ;
+            _cameraAreaBorderEnd =  new Vector3(Position.x + (cameraViewSize.x/2), Position.y + (cameraViewSize.y/2),0) ;
         }
+
+        
         private Vector3 CalculateCameraViewSize(float fov, float aspectRatio, float distanceToPlane)
         {
-            float height = 2.0f * distanceToPlane * Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad);
+            float windowsfov = fov / 1.5f; // Camera cant see all plane because of canvas
+            float height =  2.0f * distanceToPlane * Mathf.Tan(windowsfov * 0.5f * Mathf.Deg2Rad);
             float width = height * aspectRatio;
             return new Vector3(width, height,0);
+            
         }
-        private Vector3 KeeperOfCameraInGameArea(Vector3 newcameraposition)
+        
+        private Vector3 KeeperOfCameraInGameArea(Vector3 newcameraposition, Vector3 cameraViewSize)
         {
-            if (_cameraAreaBorderStart.x > newcameraposition.x )
+            if (_gameSpace.GameSpaceStartArea.x > newcameraposition.x-(cameraViewSize.x/2))
             {
-                newcameraposition.x = _cameraAreaBorderStart.x;
+                newcameraposition.x = _gameSpace.GameSpaceStartArea.x+(cameraViewSize.x/2);
                     
             }
-            if (_cameraAreaBorderStart.y > newcameraposition.y)
+            if (_gameSpace.GameSpaceStartArea.y > newcameraposition.y-(cameraViewSize.y/2))
             { 
-                newcameraposition.y  = _cameraAreaBorderStart.y;
+                newcameraposition.y  = _gameSpace.GameSpaceStartArea.y+(cameraViewSize.y/2);
                     
             }
-            if (_cameraAreaBorderEnd.x < newcameraposition.x)
+            if (_gameSpace.GameSpaceEndArea.x < newcameraposition.x+(cameraViewSize.x/2))
             { 
-                newcameraposition.x = _cameraAreaBorderEnd.x;
+                newcameraposition.x = _gameSpace.GameSpaceEndArea.x-(cameraViewSize.x/2);
                     
             }
-            if (_cameraAreaBorderEnd.y < newcameraposition.y)
+            if (_gameSpace.GameSpaceEndArea.y < newcameraposition.y+(cameraViewSize.y/2))
             {
-                newcameraposition.y = _cameraAreaBorderEnd.y;
+                newcameraposition.y = _gameSpace.GameSpaceEndArea.y-(cameraViewSize.y/2);
                     
             }
             return newcameraposition;

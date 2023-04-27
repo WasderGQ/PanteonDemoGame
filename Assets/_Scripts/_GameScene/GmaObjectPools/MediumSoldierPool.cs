@@ -8,5 +8,4 @@ using UnityEngine.Pool;
 
 public class MediumSoldierPool : GObjectPool<MediumSoldier>
 {
-    
 }

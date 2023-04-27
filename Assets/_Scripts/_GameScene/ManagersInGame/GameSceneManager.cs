@@ -9,6 +9,7 @@ namespace _Scripts._GameScene.ManagersInGame
    {
       [SerializeField] private GameUICanvas _gameUICanvas;
       [SerializeField] private GameSpace _gameSpace;
+      [SerializeField] private MouseManager _mouseManager;
       private void Start()
       {
          InIt();
@@ -16,7 +17,7 @@ namespace _Scripts._GameScene.ManagersInGame
 
       private void InIt()
       {
-         
+         _mouseManager.InIt();
          _gameSpace.InIt();
          _gameUICanvas.InIt();
          

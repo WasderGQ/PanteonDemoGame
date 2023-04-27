@@ -6,42 +6,58 @@ namespace _Scripts._Generic
 {
 public class GObjectPool<T> : GObjectPool where T : MonoBehaviour
 {
-    public static GObjectPool<T> SharedInstance;
-    public List<T> pooledObjects;
-    public T objectToPool;
-    public int amountToPool;
-
+    private static GObjectPool<T> _sharedInstance;
+    [SerializeField]private List<T> _pooledobjects;
+    [SerializeField]private T _objectToPool;
+    [SerializeField]private int _amountToPool;
+    [SerializeField]protected Transform _parentPoolObject;
+    public List<T> PooledObjects
+    {
+        get => _pooledobjects;
+    }
+    public static GObjectPool<T> SharedInstance
+    {
+        get => _sharedInstance;
+    }
     void Awake()
     {
-        SharedInstance = this;
+        _sharedInstance = this;
     }
 
     void Start()
     {
-        pooledObjects = new List<T>();
-        T tmp;
-        for(int i = 0; i < amountToPool; i++)
-        {
-            tmp = Instantiate(objectToPool);
-            tmp.gameObject.SetActive(false);
-            pooledObjects.Add(tmp);
-        }
+        _pooledobjects = new List<T>();
+        FilledList();
     }
     public T GetPooledObject()
     {
-        for(int i = 0; i < amountToPool; i++)
+        for(int i = 0; i < _amountToPool; i++)
         {
-            if(!pooledObjects[i].gameObject.activeInHierarchy)
+            if(!_pooledobjects[i].gameObject.activeInHierarchy)
             {
-                return pooledObjects[i];
+                return _pooledobjects[i];
             }
         }
         return null;
     }
+
+    public void FilledList()
+    {
+        T tmp;
+        for (int i = 0; i < _amountToPool; i++)
+        {
+            tmp = Instantiate(_objectToPool);
+            tmp.transform.SetParent(_parentPoolObject);
+            tmp.gameObject.SetActive(false);
+            _pooledobjects.Add(tmp);
+        }
+    }
+
 }
 
 public class GObjectPool : MonoBehaviour
 {
+    
     
 }
 

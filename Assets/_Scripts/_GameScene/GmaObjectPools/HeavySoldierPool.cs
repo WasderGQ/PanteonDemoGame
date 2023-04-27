@@ -6,7 +6,7 @@ using _Scripts._Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class LightSoldierPool : GObjectPool<LightSoldier>
+public class HeavySoldierPool : GObjectPool<HeavySoldier>
 {
     
 }

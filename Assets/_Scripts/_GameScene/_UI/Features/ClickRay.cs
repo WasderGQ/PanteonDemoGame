@@ -8,7 +8,7 @@ namespace _Scripts._GameScene._UI.Features
     public class ClickRay
     {
 
-        private async Task<RaycastHit[]> ThrowRayTryCatchGameColliders()
+        public async Task<RaycastHit[]> ThrowRayTryCatchGameColliders()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             bool result;
@@ -19,8 +19,8 @@ namespace _Scripts._GameScene._UI.Features
                 Assert.IsTrue(result);
             }
             catch
-            {
-               // Debug.LogWarning("Rail no crash anything");
+            { 
+                Debug.LogWarning("Rail no crash anything");
 
             }
 
@@ -55,7 +55,7 @@ namespace _Scripts._GameScene._UI.Features
             return hittedlayer.point;
         }
 
-        public async Task<(RaycastHit, bool)> TakeSpecificHit(string gameObjectTag)
+        public async Task<(RaycastHit, bool)> TakeSpecificRaycastHitWithTaskBool(string gameObjectTag)
         {
             RaycastHit[] hittedRayLayers = await ThrowRayTryCatchGameColliders();
             try
@@ -75,6 +75,51 @@ namespace _Scripts._GameScene._UI.Features
 
             return (new RaycastHit(), false);
         }
+
+        public async Task<RaycastHit> TakeSpecificRaycastHit(string tag, RaycastHit[] raycastHitList)
+        {
+            try
+            {
+                foreach (var hittedLayer in raycastHitList)
+                {
+                    if (hittedLayer.collider.gameObject.tag == tag)
+                    {
+                        return (hittedLayer);
+                    }
+                }
+            }
+            catch
+            {
+                Debug.LogWarning("Raycast not found for the given tag name");
+            }
+
+            return (new RaycastHit());
+            
+        }
+
+        public async Task<bool> IsThereSpecificRaycastHit(string tag, RaycastHit[] raycastHitList)
+        {
+            try
+            {
+                foreach (var hittedLayer in raycastHitList)
+                {
+                    if (hittedLayer.collider.gameObject.tag == tag)
+                    {
+                        return (true);
+                    }
+                }
+            }
+            catch
+            {
+                Debug.LogWarning("There is nothing with the given tag name.");
+            }
+
+            return (false);
+            
+            
+            
+        }
     }
+    
 }
   
