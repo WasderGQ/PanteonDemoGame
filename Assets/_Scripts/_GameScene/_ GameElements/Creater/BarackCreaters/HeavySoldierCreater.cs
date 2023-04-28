@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Creater.BarackCreaters
 {
-    public class Creater_HeavySoldier : SoldierCreater
+    public class HeavySoldierCreater : SoldierCreater
     {
         private GameSpace _gameSpace;
         public override IProduct FactoryMethod()

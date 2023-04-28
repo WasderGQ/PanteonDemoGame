@@ -62,7 +62,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
 
         private List<IProduct> _heavySoldier;
 
-        private Creater_LightSoldier _lightSoldierCreater;
+        private LightSoldierCreater lightSoldierCreater;
 
         private Creater_MediumSoldier _mediumSoldierCreater;
 
