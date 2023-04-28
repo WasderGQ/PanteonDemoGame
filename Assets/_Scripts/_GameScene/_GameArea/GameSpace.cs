@@ -1,90 +1,112 @@
-
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using _Scripts._GameScene.__GameElements.Creater.BuildCreaters;
 using _Scripts._GameScene.__GameElements.Factorys;
-using _Scripts._GameScene.__GameElements.Features;
+using _Scripts._GameScene.__GameElements.Products;
+using _Scripts._GameScene.GameObjectPools;
 using UnityEngine;
-using Third_Party_Packages.Helpers.WasderGQ.CustomAttributes;
 using UnityEngine.Events;
-using UnityEngine.Pool;
 using UnityEngine.Serialization;
 
-namespace _Scripts._GameScene._Logic
+namespace _Scripts._GameScene._GameArea
 {
   public class GameSpace : MonoBehaviour
   {
+    #region UnityObjects
+    
+    [SerializeField] private Grid _gameGrid;
+    [SerializeField] private Transform _buildings;
 
-    #region Static Variable
+    #endregion
     
-    public static UnityEvent<Vector2Int, Vector2Int> SaveMyPlace , EraseMyPlace;
+    #region Public Propertys
     
+    public UnityEvent<Vector2Int, Vector2Int> SaveMyPlace , EraseMyPlace;
+    public Transform PlayableGameObject { get => _buildings; }
+    
+    #endregion
+
+    #region BuildCreaters
+
+    private BarracksCreater barracksCreater;
+    private PowerPlantCreater powerPlantCreater;
+
     #endregion
     
     #region Private Variable
-    [SerializeField] private Grid _gameGrid;
-    [SerializeField] private Vector3 _gameSpaceStartPoint;
-    [SerializeField] private Vector3 _gameSpaceEndPoint;
+
+    #region Static
+
     [SerializeField] private static Vector2 _cellSize;
-    [SerializeField] private Vector2Int _gameSpaceSizeByCell;
-    
-    [SerializeField] private List<Vector2Int> _filledCellList;
-    
-    [SerializeField] private Transform _playableGameObject;
+
+    #endregion
+
+    #region Changeable On Editör
+
     [SerializeField] private Vector2Int _firstSearchCellPosition; //Enter from Editör
+
+    #endregion
+    
+    [SerializeField] private Vector3 _gameSpaceStartByPoint;
+    [SerializeField] private Vector3 _gameSpaceEndByPoint;
+    [SerializeField] private Vector2Int _gameSpaceEndByCell;
+    [SerializeField] private Vector2Int _gameSpaceStartByCell;
+    [SerializeField] private Vector2Int _gameSpaceSizeByCell;
+    [SerializeField] private List<IProduct> _allCreatedProducts;
     #endregion
 
     #region Public Propert (Only Get)
-    public Vector3 GameSpaceStartArea { get => _gameSpaceStartPoint; }
-    public Vector3 GameSpaceEndArea { get => _gameSpaceEndPoint; }
+    
+    public List<IProduct> AllCreatedProducts { get => _allCreatedProducts; }
+    public Vector3 GameSpaceStartAreaByPoint { get => _gameSpaceStartByPoint; }
+    public Vector3 GameSpaceEndAreaByPoint { get => _gameSpaceEndByPoint; }
+    public Vector2Int GameSpaceStartAreaByCell { get => _gameSpaceStartByCell; }
+    public Vector2Int GameSpaceEndAreaByCell { get => _gameSpaceEndByCell; }
     public static Vector2 GameSpaceCellSize { get => _cellSize; }
     
     #endregion
     
+    #region Start Func.
+
     public void InIt()
     {
       SetVariable();
       SetGameSpaceAreaCoordinate();
       AddEvents();
     }
-    
-    #region Start Func.
-
     private void SetGameSpaceAreaCoordinate()
     {
-      _gameSpaceEndPoint = new Vector3(500, 500,100);
-      _gameSpaceStartPoint = transform.position;
+      _gameSpaceEndByPoint = new Vector3(500, 500,100);
+      _gameSpaceStartByPoint = transform.position;
       _cellSize = new Vector2(_gameGrid.cellSize.x, _gameGrid.cellSize.y);
-      _gameSpaceSizeByCell = new Vector2Int(  Convert.ToInt32((_gameSpaceEndPoint.x - _gameSpaceStartPoint.x) / GameSpaceCellSize.x),Convert.ToInt32((_gameSpaceEndPoint.y - _gameSpaceStartPoint.y) / GameSpaceCellSize.y));
-      
+      _gameSpaceSizeByCell = new Vector2Int( Convert.ToInt32((GameSpaceEndAreaByPoint.x - GameSpaceStartAreaByPoint.x) / GameSpaceCellSize.x),Convert.ToInt32((GameSpaceEndAreaByPoint.y - GameSpaceStartAreaByPoint.y) / GameSpaceCellSize.y));
+      _gameSpaceEndByCell = ConvertPointToCell(_gameSpaceStartByPoint);
+      _gameSpaceStartByCell = ConvertPointToCell(new Vector3(_gameSpaceEndByPoint.x - GameSpaceCellSize.x, _gameSpaceEndByPoint.y - GameSpaceCellSize.y, _gameSpaceEndByPoint.z));
     }
-
     private void SetVariable()
     {
-      
+      barracksCreater = new BarracksCreater();
+      powerPlantCreater = new PowerPlantCreater();
       SaveMyPlace = new UnityEvent<Vector2Int, Vector2Int>();
       EraseMyPlace = new UnityEvent<Vector2Int, Vector2Int>();
       
     }
-    
-    
     private void AddEvents()
     {
-      
       SaveMyPlace.AddListener(SaveFilledCells);
       EraseMyPlace.AddListener(EraseFromFilledCells);
     }
    
     #endregion
 
-    #region CellToPosition - PositionToCell
-    private Vector2Int GetCellFromWorldPosition(Vector3 worldPos)
+    #region Public CellToPosition - PositionToCell
+    public Vector2Int ConvertPointToCell(Vector3 worldPos)
     {
       Vector3Int cellPos = _gameGrid.WorldToCell(worldPos);
       return new Vector2Int(cellPos.x,cellPos.y);
     }
 
-    private Vector3 GetWorldPositionFromCell(Vector2Int cellPos)
+    public Vector3 ConvertCellToPoint(Vector2Int cellPos)
     {
       return new Vector3(cellPos.x * GameSpaceCellSize.x,cellPos.y*GameSpaceCellSize.y,transform.position.z);
     }
@@ -98,7 +120,7 @@ namespace _Scripts._GameScene._Logic
       switch (obj)
       {
         case Barracks:
-          CreateBarracks();
+          TriggerBarracksCreater();
          
           break;
         
@@ -108,41 +130,28 @@ namespace _Scripts._GameScene._Logic
       }
     }
     
-    private void CreateBarracks()
+    private void TriggerBarracksCreater()
     {
-      if (!IsBarracksPoolEmphty())
-      {
-        Vector2Int spawnCellPosition = SearchEmpthyCellForCreate(Barracks.GameObjectSizeByCell, _firstSearchCellPosition, _filledCellList);
-        Barracks barracks = BarracksPool.SharedInstance.GetPooledObject();
-        if (barracks != null)
-        {
-          barracks.InIt();
-          barracks.transform.position = SpawnPointFinder(GetWorldPositionFromCell(spawnCellPosition), Barracks.GameObjectSizeByCell);
-          barracks.transform.rotation = Quaternion.identity;
-          barracks.gameObject.SetActive(true);
-          barracks.transform.SetParent(_playableGameObject);
-          SaveFilledCells(spawnCellPosition, new Vector2Int(spawnCellPosition.x + Barracks.GameObjectSizeByCell.x, spawnCellPosition.y + Barracks.GameObjectSizeByCell.y));
-        }
-      }
-      else
-        {
-          Debug.LogWarning("Pool is Emphty. You cant spawn more Barracks");
-        }
+      Vector2Int spawnCellPosition = SearchEmpthyCellForSpawn(Barracks.GameObjectSizeByCell, _firstSearchCellPosition, AllCreatedProducts);
+      Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPosition), Barracks.GameObjectSizeByCell);
+      IProduct barracks = barracksCreater.FactoryCreate(spawnPositionByPoint);
+      barracks.Transform.SetParent(_buildings);
+      _allCreatedProducts.Add(barracks);
     }
     
     private void CreatePowerPlant()
     {
       if (!IsPowerPlantPoolEmphty())
       {
-        Vector2Int spawnCellPosition = SearchEmpthyCellForCreate(PowerPlant.GameObjectSizeByCell, _firstSearchCellPosition, _filledCellList);
+        Vector2Int spawnCellPosition = SearchEmpthyCellForSpawn(PowerPlant.GameObjectSizeByCell, _firstSearchCellPosition, AllCreatedProducts);
         PowerPlant powerPlant = PowerPlantPool.SharedInstance.GetPooledObject();
         if (powerPlant != null)
         {
           powerPlant.InIt();
-          powerPlant.transform.position = SpawnPointFinder(GetWorldPositionFromCell(spawnCellPosition),PowerPlant.GameObjectSizeByCell);
+          powerPlant.transform.position = SpawnPointFinder(ConvertCellToPoint(spawnCellPosition),PowerPlant.GameObjectSizeByCell);
           powerPlant.transform.rotation = Quaternion.identity;
           powerPlant.gameObject.SetActive(true);
-          powerPlant.transform.SetParent(_playableGameObject);
+          powerPlant.transform.SetParent(_buildings);
         }
         SaveFilledCells(spawnCellPosition, new Vector2Int(spawnCellPosition.x + PowerPlant.GameObjectSizeByCell.x, spawnCellPosition.y + PowerPlant.GameObjectSizeByCell.y));
       }
@@ -159,19 +168,7 @@ namespace _Scripts._GameScene._Logic
 
     #region FactoryPool Control Func. 
 
-    private bool IsBarracksPoolEmphty()
-    { 
-      List<Barracks> inActive = BarracksPool.SharedInstance.PooledObjects.FindAll(x => x.isActiveAndEnabled == true);
-      if (BarracksPool.SharedInstance.PooledObjects.Count - inActive.Count == 0)
-      {
-        return true;
-      }
-      if (BarracksPool.SharedInstance.PooledObjects.Count == 0)
-      {
-        return true;
-      }
-      return false;
-    }
+    
 
     private bool IsPowerPlantPoolEmphty()
     {
@@ -214,13 +211,35 @@ namespace _Scripts._GameScene._Logic
       
     }
     
-    private Vector2Int SearchEmpthyCellForCreate(Vector2Int gameObjectSizeByCell , Vector2Int startPointByCell, List<Vector2Int> filledCells)
+    private Vector2Int SearchEmpthyCellForSpawn(Vector2Int gameObjectSizeByCell , Vector2Int startPointByCell, List<IProduct> allCreatedProducts)
     {
 
-      
-      int containsCounter;
+      bool IsSpawnable = false;
+      int containsCounter = 0;
       Vector2Int searchCellPosition = startPointByCell;
       Vector2Int firstPointMemento = new Vector2Int();
+      while (IsSpawnable == false)
+      {
+        for (int i = searchCellPosition.x; i < gameObjectSizeByCell.x+searchCellPosition.x; i++)
+        {
+          for (int j = searchCellPosition.y ; j < gameObjectSizeByCell.y+searchCellPosition.y; j++)
+          {
+            if (filledCells.Contains(new Vector2Int(i, j)))
+            {
+              containsCounter++;
+            }
+          }
+        }
+        
+        
+        
+        
+        
+      }
+
+
+
+
       do
       {
         containsCounter = 0;
@@ -276,7 +295,8 @@ namespace _Scripts._GameScene._Logic
 
     private Vector3 SpawnPointFinder(Vector3 spawnpoint ,Vector2Int gameObjectSizeByCell)
     {
-      return new Vector3(spawnpoint.x + ((gameObjectSizeByCell.x / 2) * GameSpaceCellSize.x), spawnpoint.y + ((gameObjectSizeByCell.y / 2) * GameSpaceCellSize.y), spawnpoint.z);
+      Vector2 floatVector2 = new Vector2(gameObjectSizeByCell.x, gameObjectSizeByCell.y);
+      return new Vector3(spawnpoint.x + ((floatVector2.x / 2) * GameSpaceCellSize.x), spawnpoint.y + ((floatVector2.y / 2) * GameSpaceCellSize.y), spawnpoint.z);
 
     }
     

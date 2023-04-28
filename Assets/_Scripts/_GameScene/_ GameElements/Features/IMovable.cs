@@ -1,4 +1,4 @@
-﻿namespace _Scripts._GameScene._PlayerControl
+﻿namespace _Scripts._GameScene.__GameElements.Features
 {
     public interface IMovable
     {

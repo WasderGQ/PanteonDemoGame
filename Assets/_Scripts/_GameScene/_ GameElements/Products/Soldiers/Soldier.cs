@@ -6,7 +6,7 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 {
     
     
-    public abstract class Soldier : MonoBehaviour,IAttacker,IVulnerable,IProduct,IControllableHero
+    public abstract class Soldier : MonoBehaviour ,IAttacker,IVulnerable,IControllableHero,IProduct
     {
         
         
@@ -15,7 +15,7 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         protected int _damage;
         protected int _currentHealth;
         
-        public  int MaxHealth
+        public int MaxHealth
         {
             get => _maxHealth;
         }
@@ -23,11 +23,7 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         {
             get => _gameSpacePosition;
         }
-
-        public void Move()
-        {
-            throw new System.NotImplementedException();
-        }
+        
 
         public int Damage
         {
@@ -41,6 +37,11 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         
         public UnityEvent<IAttacker> EventTakeDamage => new UnityEvent<IAttacker>();
 
+        public UnityEvent MoveEvent;
+        public void Move()
+        {
+            throw new System.NotImplementedException();
+        }
         
         #region Start Func.
 
@@ -48,6 +49,12 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         {
             SetEvents();
             SetStartHealth();
+            AddListener();
+        }
+        private void AddListener()
+        {
+            EventTakeDamage.AddListener(TakeDamage);
+            MoveEvent.AddListener(Move);
         }
         protected void SetEvents()
         {
@@ -61,37 +68,26 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         #endregion
         
         #region Abstract Func.
-
         protected abstract void SetMaxHealthOnStart();
         protected abstract void SetDamageOnStart();
         
         #endregion
 
         #region Attacker Func.
-
         public void GiveDamage(IVulnerable vulnerable)
         {
             vulnerable.EventTakeDamage.Invoke(this);
         }
-
         #endregion
 
         #region Vulnerable Func.
-
-        
-        
         
         public void TakeDamage(IAttacker attacker)
         {
             _currentHealth -= attacker.Damage;
         }
 
-        
-        
-
         #endregion
-        
-
         
     }
 }

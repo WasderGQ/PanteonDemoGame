@@ -1,8 +1,8 @@
-using _Scripts._GameScene._Logic;
-using _Scripts._GameScene._UI;
+using _Scripts._GameScene._GameArea;
+using _Scripts._GameScene._UI.Features;
 using UnityEngine;
 
-namespace _Scripts.Managers
+namespace _Scripts._GameScene.ManagersInGame
 {
     public class CameraManager : MonoBehaviour
     {
@@ -24,7 +24,7 @@ namespace _Scripts.Managers
             ObjectInstantiation();
             CameraStartPosition();
             SetCameraBorder(transform.position);
-            GameSpace.SaveMyPlace.Invoke(Vector2Int.zero, new Vector2Int(5,5));
+           
         }
         private void ObjectInstantiation()
         {
@@ -98,24 +98,24 @@ namespace _Scripts.Managers
         
         private Vector3 KeeperOfCameraInGameArea(Vector3 newcameraposition, Vector3 cameraViewSize)
         {
-            if (_gameSpace.GameSpaceStartArea.x > newcameraposition.x-(cameraViewSize.x/2))
+            if (_gameSpace.GameSpaceStartAreaByPoint.x > newcameraposition.x-(cameraViewSize.x/2))
             {
-                newcameraposition.x = _gameSpace.GameSpaceStartArea.x+(cameraViewSize.x/2);
+                newcameraposition.x = _gameSpace.GameSpaceStartAreaByPoint.x+(cameraViewSize.x/2);
                     
             }
-            if (_gameSpace.GameSpaceStartArea.y > newcameraposition.y-(cameraViewSize.y/2))
+            if (_gameSpace.GameSpaceStartAreaByPoint.y > newcameraposition.y-(cameraViewSize.y/2))
             { 
-                newcameraposition.y  = _gameSpace.GameSpaceStartArea.y+(cameraViewSize.y/2);
+                newcameraposition.y  = _gameSpace.GameSpaceStartAreaByPoint.y+(cameraViewSize.y/2);
                     
             }
-            if (_gameSpace.GameSpaceEndArea.x < newcameraposition.x+(cameraViewSize.x/2))
+            if (_gameSpace.GameSpaceEndAreaByPoint.x < newcameraposition.x+(cameraViewSize.x/2))
             { 
-                newcameraposition.x = _gameSpace.GameSpaceEndArea.x-(cameraViewSize.x/2);
+                newcameraposition.x = _gameSpace.GameSpaceEndAreaByPoint.x-(cameraViewSize.x/2);
                     
             }
-            if (_gameSpace.GameSpaceEndArea.y < newcameraposition.y+(cameraViewSize.y/2))
+            if (_gameSpace.GameSpaceEndAreaByPoint.y < newcameraposition.y+(cameraViewSize.y/2))
             {
-                newcameraposition.y = _gameSpace.GameSpaceEndArea.y-(cameraViewSize.y/2);
+                newcameraposition.y = _gameSpace.GameSpaceEndAreaByPoint.y-(cameraViewSize.y/2);
                     
             }
             return newcameraposition;

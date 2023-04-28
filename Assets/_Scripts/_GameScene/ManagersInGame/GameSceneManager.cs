@@ -1,4 +1,4 @@
-using _Scripts._GameScene._Logic;
+using _Scripts._GameScene._GameArea;
 using _Scripts._GameScene._UI;
 using _Scripts._Generic;
 using UnityEngine;

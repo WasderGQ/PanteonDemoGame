@@ -1,26 +1,26 @@
 using System.Threading.Tasks;
-using _Scripts._GameScene._UI;
-using _Scripts._GameScene._UI.Features;
 using UnityEngine;
 
-public class CameraMovement 
+namespace _Scripts._GameScene._UI.Features
 {
-    private Vector3 _mouseWorldPositionOnDown;
-    private Vector3 _mouseWorldPositionOnHold;
-    private ClickRay _clickRay;
-    private bool _isHoldingKey;
-    private Vector3 _panDistance = new Vector3();
+    public class CameraMovement 
+    {
+        private Vector3 _mouseWorldPositionOnDown;
+        private Vector3 _mouseWorldPositionOnHold;
+        private ClickRay _clickRay;
+        private bool _isHoldingKey;
+        private Vector3 _panDistance = new Vector3();
 
-    public void InIt()
-    {
-        _clickRay = new ClickRay();
-        _mouseWorldPositionOnDown = new Vector3();
-        _mouseWorldPositionOnHold = new Vector3();
+        public void InIt()
+        {
+            _clickRay = new ClickRay();
+            _mouseWorldPositionOnDown = new Vector3();
+            _mouseWorldPositionOnHold = new Vector3();
         
-    }
+        }
     
-    public async Task<Vector3> PanCamera()
-    {
+        public async Task<Vector3> PanCamera()
+        {
         
             if (Input.GetKeyDown(KeyCode.Mouse2) && _mouseWorldPositionOnDown == new Vector3())
             {
@@ -55,50 +55,51 @@ public class CameraMovement
             }
             return _panDistance;
             
-    }
+        }
 
 
-    private async Task<Vector3> GetMousePosition()
-    {
-        return await _clickRay.GetRayWorldPosition();
-
-
-    }
-
-    private Vector3 GetTwoPointDistance()
-    {
-        return _mouseWorldPositionOnDown - _mouseWorldPositionOnHold;
-
-    }
-
-
-    public async Task<float> ZoomCamera(Camera camera)
-    {
-        if (await CheckMouseInTruePosition())
+        private async Task<Vector3> GetMousePosition()
         {
-            float currentScrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
-            if (currentScrollWheelAxis != 0f)
+            return await _clickRay.GetRayWorldPosition();
+
+
+        }
+
+        private Vector3 GetTwoPointDistance()
+        {
+            return _mouseWorldPositionOnDown - _mouseWorldPositionOnHold;
+
+        }
+
+
+        public async Task<float> ZoomCamera(Camera camera)
+        {
+            if (await CheckMouseInTruePosition())
             {
-                return camera.fieldOfView - currentScrollWheelAxis;
-            }
+                float currentScrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
+                if (currentScrollWheelAxis != 0f)
+                {
+                    return camera.fieldOfView - currentScrollWheelAxis;
+                }
             
+            }
+            return camera.fieldOfView;
         }
-           return camera.fieldOfView;
-    }
         
     
     
-    private async Task<bool> CheckMouseInTruePosition() //In my game this must be gameboard.
-    {
-        var result = await _clickRay.TakeSpecificRaycastHitWithTaskBool("GameBoard");
-        if(result.Item2)
+        private async Task<bool> CheckMouseInTruePosition() //In my game this must be gameboard.
         {
-            return true;
+            var result = await _clickRay.TakeSpecificRaycastHitWithTaskBool("GameBoard");
+            if(result.Item2)
+            {
+                return true;
+            }
+
+            return false;
+
         }
-
-        return false;
-
+        
+        
     }
-        
-        
 }

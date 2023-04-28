@@ -1,8 +1,7 @@
 ﻿using System;
-using _Scripts._GameScene.__GameElements.Products.Soldiers;
 using UnityEngine;
 
-namespace _Scripts._GameScene._Logic
+namespace _Scripts._GameScene._GameArea
 {
     public class Grid<TGridObject> {
 

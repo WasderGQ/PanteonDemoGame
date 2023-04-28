@@ -2,11 +2,10 @@
 using System.ComponentModel;
 using System.Reflection;
 using _Scripts._GameScene.__GameElements.Factorys;
-using _Scripts._GameScene.__GameElements.Factorys.Creater;
 using _Scripts._GameScene.__GameElements.Products;
 using _Scripts._GameScene.__GameElements.Products.ProducibleValuables;
 using _Scripts._GameScene.__GameElements.Products.Soldiers;
-using _Scripts._GameScene._Logic;
+using _Scripts._GameScene._GameArea;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,7 +53,7 @@ namespace _Scripts._GameScene._UI
                 case Soldier:
                     DoAboutSoldiers(obj);
                     break;
-                case IProducibleVariable:
+                case ProducibleVariable:
                     DoAboutProductiableVariable(obj);
                     break;
             }

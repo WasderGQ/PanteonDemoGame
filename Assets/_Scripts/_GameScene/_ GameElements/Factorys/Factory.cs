@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Factorys.Creater;
 using _Scripts._GameScene.__GameElements.Products;
+using _Scripts._GameScene.__GameElements.Creater;
 using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Factorys
@@ -118,7 +118,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
     
     public abstract class Factory : MonoBehaviour
     {
-        private ICreater[] _ıCreater;
+        
 
         //There must be at least one Mold and one Product, if desired, more than one. Because of that you mustn use generic class
 

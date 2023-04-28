@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using _Scripts._GameScene._Logic;
+using _Scripts._GameScene._GameArea;
 using UnityEngine;
 
 namespace _Scripts._GameScene._UI

@@ -1,8 +1,8 @@
 namespace _Scripts._GameScene.__GameElements.Products.ProducibleValuables
 {
-    public abstract class IProducibleVariable : IProduct
+    public abstract class ProducibleVariable : IProduct
     {
-        private int amount;
+        
 
     
     
