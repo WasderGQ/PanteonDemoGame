@@ -10,32 +10,57 @@ using UnityEngine.Events;
 
 namespace _Scripts._GameScene.__GameElements.Factorys
 {
-    public class PowerPlant : FactoryHave1Creater<PowerPlant>  ,IProduct
+    public class PowerPlant : FactoryHave1Creater<PowerPlant> ,IProduct
     {
+       
         
-        public Transform Transform { get => this.transform; }
+        #region Public Propertys
+
+        #region Regular 
+
+        public Transform MyTransform { get => this.transform; } 
+        public static Vector2Int GameObjectSizeByCell { get => _staticGameObjectSizeByCell; }
+        public List<IProduct> BuildingProductList { get => _electric; }
+        public Vector2Int StartPositionByCell { get; }
+        public Vector2Int EndPositionByCell { get; }
+        public List<IGameSpaceOccupanter> Occupanters { get; }
+
+        #endregion
         
+        #region Events
+
+        public UnityEvent CreateHeavySoldier;
+        public UnityEvent CreateMediumSoldier;
+        public UnityEvent CreateLightSoldier;
+
+        #endregion
+        
+        #endregion
+        
+        #region Private Variable
+        
+        #region Static
+       
+        private readonly static Vector2Int _staticGameObjectSizeByCell = new Vector2Int(4, 4);
+       
+        #endregion
+
+        #region Regular
+
+        private List<Vector2Int> _spawnPointList;
         private Vector2Int _startPositionByCell;
         private Vector2Int _endPositionByCell;
         private Vector2Int _spawnStartPositionByCell;
         private Vector2Int _spawnEndPositionByCell;
-        
-        private List<Vector2Int> _spawnPointList;
-        
-        public UnityEvent CreateHeavySoldier;
-        public UnityEvent CreateMediumSoldier;
-        public UnityEvent CreateLightSoldier;
-       
-        private readonly static Vector2Int _staticGameObjectSizeByCell = new Vector2Int(4, 4);
-
         private List<IProduct> _electric;
-
-        
-
         private ElectricCreater _electricCreater;
 
+        #endregion
         
-
+        
+        #endregion
+        
+        #region OnStart
 
         public void InIt(Vector2Int startPositionByCell ,Vector2Int endPositionByCell,Vector2Int spawnStartPositionByCell,Vector2Int spawnEndPositionByCell)
         {
@@ -58,16 +83,23 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         
         private void AddListener()
         {
-            CreateHeavySoldier.AddListener(TriggerHeavySoldierCreater);
+            CreateHeavySoldier.AddListener(TriggerElectricCreater);
            
         }
 
-        private void TriggerHeavySoldierCreater()
+        #endregion
+
+        #region Event Trigger Func.
+
+        private void TriggerElectricCreater()
         {
-           IProduct product  =_electricCreater.FactoryMethod();
-           _electric.Add(product);
+            IProduct product  =_electricCreater.FactoryMethod();
+            _electric.Add(product);
 
         }
+
+        #endregion
+        
         
 
        

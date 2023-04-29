@@ -15,18 +15,16 @@ namespace _Scripts._GameScene.__GameElements.Creater.BarackCreaters
         private GameSpace _gameSpace;
         public override IProduct FactoryMethod()
         {
-          /*  HeavySoldier heavySoldier = HeavySoldierPool.SharedInstance.GetPooledObject();
+            HeavySoldier heavySoldier = HeavySoldierPool.SharedInstance.GetPooledObject();
             if (heavySoldier != null)
             {
                 heavySoldier.InIt();
                 heavySoldier.transform.position = new Vector3();
                 heavySoldier.transform.rotation = Quaternion.identity;
                 heavySoldier.gameObject.SetActive(true);
-                heavySoldier.transform.SetParent(_gameSpace.);
-                GameSpace.SaveMyPlace.Invoke();
-                SaveFilledCells(spawnCellPosition, new Vector2Int(spawnCellPosition.x + Barracks.GameObjectSizeByCell.x, spawnCellPosition.y + Barracks.GameObjectSizeByCell.y));
+                heavySoldier.transform.SetParent(_gameSpace.BarracksStore);
             }
-            */
+            
          return new HeavySoldier();
         }
     }
