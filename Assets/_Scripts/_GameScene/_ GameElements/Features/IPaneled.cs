@@ -2,8 +2,8 @@
 
 namespace _Scripts._GameScene.__GameElements.Features
 {
-    public interface IMovable
+    public interface IPaneled
     {
-        public void Move(Vector3 Distance);
+        public GameObject MyPanel { get; }
     }
 }

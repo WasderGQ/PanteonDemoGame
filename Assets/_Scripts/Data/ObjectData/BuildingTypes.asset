@@ -16,4 +16,4 @@ MonoBehaviour:
   - _type: 0
     _health: 100
   - _type: 1
-    _health: 100
+    _health: 50

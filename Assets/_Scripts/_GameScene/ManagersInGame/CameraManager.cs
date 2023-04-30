@@ -75,7 +75,7 @@ namespace _Scripts._GameScene.ManagersInGame
 
         private async void Pan()
         {
-            Vector3 newposition = await _cameraMovement.PanCamera() + transform.position;
+            Vector3 newposition = await _cameraMovement.PanMovement() + transform.position;
             SetCameraBorder(newposition);
             transform.position = KeeperOfCameraInGameArea(newposition,CalculateCameraViewSize(GetComponent<Camera>().fieldOfView,GetComponent<Camera>().aspect, _gameSpace.transform.position.z));
         }
@@ -93,7 +93,6 @@ namespace _Scripts._GameScene.ManagersInGame
             float height =  2.0f * distanceToPlane * Mathf.Tan(windowsfov * 0.5f * Mathf.Deg2Rad);
             float width = height * aspectRatio;
             return new Vector3(width, height,0);
-            
         }
         
         private Vector3 KeeperOfCameraInGameArea(Vector3 newcameraposition, Vector3 cameraViewSize)

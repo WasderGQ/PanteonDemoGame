@@ -1120,17 +1120,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &337730247 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7611215383785642938, guid: cbec496de151d6748971cbc3ae0eca5d, type: 3}
-  m_PrefabInstance: {fileID: 1870606705}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &399630059
 GameObject:
   m_ObjectHideFlags: 0
@@ -2748,12 +2737,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameSpace: {fileID: 2133233500}
   _information: {fileID: 1262655291}
-  _barracks: {fileID: 5846554230087485987}
-  _powerPlant: {fileID: 7611215383394010213}
-  _heavySoldier: {fileID: 238879030}
-  _mediumSoldier: {fileID: 1682235628}
-  _lightSoldier: {fileID: 831519410}
-  _electric: {fileID: 337730247}
+  _btn_Barracks: {fileID: 5846554230087485987}
+  _btn_PowerPlant: {fileID: 7611215383394010213}
+  _btn_HeavySoldier: {fileID: 238879030}
+  _btn_MediumSoldier: {fileID: 831519410}
+  _btn_LightSoldier: {fileID: 831519410}
 --- !u!1 &1104474724
 GameObject:
   m_ObjectHideFlags: 0
@@ -29418,17 +29406,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1657415971}
   m_CullTransparentMesh: 1
---- !u!114 &1682235628 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7611215383785642938, guid: cbec496de151d6748971cbc3ae0eca5d, type: 3}
-  m_PrefabInstance: {fileID: 1774533847}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1697587639
 GameObject:
   m_ObjectHideFlags: 0
@@ -30550,7 +30527,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d51a49aec12a54fa9cbb5385ea6273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameSpace: {fileID: 0}
 --- !u!1 &1931075221
 GameObject:
   m_ObjectHideFlags: 0
@@ -31455,7 +31431,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2133233499}
   - component: {fileID: 2133233500}
-  - component: {fileID: 2133233501}
   - component: {fileID: 2133233502}
   m_Layer: 0
   m_Name: GameSpace
@@ -31497,20 +31472,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barracksStore: {fileID: 954965711}
   _powerPlantStore: {fileID: 1624915130}
-  _editableGrid: {fileID: 1974228144}
+  _setFormEditorGrid: {fileID: 1974228144}
   _firstSearchCellPosition: {x: 25, y: 25}
---- !u!114 &2133233501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2133233498}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b62a5d33cc1ef9e4e96862f8e78af80d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &2133233502
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ namespace _Scripts._GameScene._UI.Features
         private Vector3 _mouseWorldPositionOnHold;
         private ClickRay _clickRay;
         private bool _isHoldingKey;
-        private Vector3 _panDistance = new Vector3();
+        private Vector3 _panDistance;
 
         public void InIt()
         {
@@ -19,32 +19,27 @@ namespace _Scripts._GameScene._UI.Features
         
         }
     
-        public async Task<Vector3> PanCamera()
+        public async Task<Vector3> PanMovement()
         {
             
             if (Input.GetKeyDown(KeyCode.Mouse2) && _mouseWorldPositionOnDown == new Vector3())
             {
                 if(await _clickRay.CheckMouseInTruePosition("GameBoard"))
-                // Debug.Log("key down summoned.");
+                
                     _mouseWorldPositionOnDown = await GetMousePosition();
-                    // Debug.Log("press: " + _mouseWorldPositionOnDown);
                     _isHoldingKey = true;
             }
             
             if (_isHoldingKey)
             {
-                // Debug.Log(" key hold summoned.");
                 _mouseWorldPositionOnHold = await GetMousePosition();
-                // Debug.Log("hold: "+ _mouseWorldPositionOnHold);
                 _panDistance = GetTwoPointDistance();
-                // Debug.Log("new camera position: " + newcameraPosition);
-            
+
             }
             
             
             if (Input.GetKeyUp(KeyCode.Mouse2))
             {
-                // Debug.Log(" key up summoned.");
                 _isHoldingKey = false;
                 _mouseWorldPositionOnDown = new Vector3();
                 _mouseWorldPositionOnHold = new Vector3();

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 734312233293209467}
   - component: {fileID: 6041642275934237835}
   - component: {fileID: 3198704657826486106}
+  - component: {fileID: -4617073941679973175}
   m_Layer: 0
   m_Name: LightSolder
   m_TagString: LightSolder
@@ -115,3 +116,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 10, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4617073941679973175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151549921616853072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd04070701d9ac1409201b044d9498f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridSize: {x: 10, y: 10}
+  cellSize: 1
+  movementType: 0
+  speed: 5
+  showDetails: 0

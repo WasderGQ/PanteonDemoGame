@@ -1,4 +1,6 @@
-﻿namespace _Scripts._GameScene.__GameElements.Products
+﻿using UnityEngine;
+
+namespace _Scripts._GameScene.__GameElements.Products
 {
     public interface IProduct
     {

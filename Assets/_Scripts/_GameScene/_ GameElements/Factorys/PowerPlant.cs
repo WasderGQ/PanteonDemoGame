@@ -29,12 +29,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         public static Vector2Int GameObjectSizeByCell { get { return _staticGameObjectSizeByCell; } }
 
         #endregion
-
-        #region Events
         
-        public UnityEvent CreateElectric;
-        
-        #endregion
         #region Regular
 
         public List<IRealProduct> ProductList { get => _electric; }
@@ -43,6 +38,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         public Transform MyTransform { get => transform; }
 
         #endregion
+        
         #endregion
 
         #region Private Variable
@@ -74,23 +70,16 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         private void SetVariable()
         {
             _electric = new List<IRealProduct>();
-            _maxHealth = _buildingTypeData._buildingTypeList[(int)EnumBuildingType.Barracks].Health;
+            _maxHealth = _buildingTypeData._buildingTypeList[(int)EnumBuildingType.PowerPlant].Health;
             _currentHealth = _maxHealth;
-        }
-
-        private void OnStartAddListener()
-        {
             
-            EventTakeDamage.AddListener(TakeDamage);
-        }
-       
-        private void TriggerElectricCreater()
-        {
-           
         }
         
 
         #endregion
+        
+        
+
         
         
         private int _maxHealth;
@@ -102,11 +91,20 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         public UnityEvent<IAttacker> EventTakeDamage { get; }
         public void TakeDamage(IAttacker attacker)
         {
-            _currentHealth =- attacker.Damage;
-            Debug.Log($"Taken {attacker.Damage}");
+            _currentHealth = _currentHealth - attacker.Damage;
+            CheckAmIDead();
+        }
+        private void  CheckAmIDead()
+        {
+            if(_currentHealth <= 0)
+            {
+
+                Destroy(this.gameObject);
+                
+            }
         }
        
-
+        public  GameObject MyGameObject { get => gameObject;}
         
 
 

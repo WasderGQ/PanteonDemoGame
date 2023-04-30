@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BuildingCreaters
 {
-    public class PowerPlantCreater : BuildingCreater
+    public class PowerPlantCreater : Abs_BuildingCreater
     {
         public override IRealProduct FactoryMethod(Vector3 spawnPositionByPoint,Vector2Int startPositionByCell)
         {

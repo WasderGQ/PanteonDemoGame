@@ -7,7 +7,7 @@ namespace _Scripts._GameScene._UI.Features
     public class ClickRay
     {
 
-        public async Task<RaycastHit[]> ThrowRayTryCatchGameColliders()
+        public async Task<RaycastHit[]> ThrowRayTryCatchRaycastHits()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             bool result;
@@ -29,7 +29,7 @@ namespace _Scripts._GameScene._UI.Features
 
         public async Task<Vector3> GetRayWorldPosition()
         {
-            RaycastHit[] hittedRayLayers = await ThrowRayTryCatchGameColliders();
+            RaycastHit[] hittedRayLayers = await ThrowRayTryCatchRaycastHits();
             RaycastHit hittedlayer = new RaycastHit();
             
 
@@ -56,9 +56,8 @@ namespace _Scripts._GameScene._UI.Features
 
         public async Task<(RaycastHit, bool)> TakeSpecificRaycastHitWithTaskBool(string gameObjectTag)
         {
-            RaycastHit[] hittedRayLayers = await ThrowRayTryCatchGameColliders();
-            try
-            {
+            RaycastHit[] hittedRayLayers = await ThrowRayTryCatchRaycastHits();
+            
                 foreach (var hittedLayer in hittedRayLayers)
                 {
                     if (hittedLayer.collider.gameObject.tag == gameObjectTag)
@@ -66,15 +65,23 @@ namespace _Scripts._GameScene._UI.Features
                         return (hittedLayer, true);
                     }
                 }
-            }
-            catch
-            {
-                Debug.LogWarning("Mouse isn't on GameBoard");
-            }
-
-            return (new RaycastHit(), false);
+                return (new RaycastHit(), false);
         }
 
+        public async Task<(RaycastHit, bool)> TakeSpecificRaycastHitWithTaskBoolOnGivenList(string gameObjectTag,RaycastHit[] raycastHits)
+        {
+            foreach (var hittedLayer in raycastHits)
+                {
+                    if (hittedLayer.collider.gameObject.tag == gameObjectTag)
+                    {
+                        return (hittedLayer, true);
+                    }
+                }
+                return (new RaycastHit(), false);
+        }
+        
+        
+        
         public RaycastHit TakeSpecificRaycastHit(string tag, RaycastHit[] raycastHitList)
         {
             try

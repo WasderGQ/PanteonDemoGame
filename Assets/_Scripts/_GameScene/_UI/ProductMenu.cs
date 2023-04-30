@@ -8,6 +8,7 @@ using _Scripts._GameScene.__GameElements.Products.VirtualProduct;
 using _Scripts._GameScene._GameArea;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Object = System.Object;
 
@@ -17,30 +18,30 @@ namespace _Scripts._GameScene._UI
     { 
         [SerializeField] private GameSpace _gameSpace;
         [SerializeField] private Information _information;
-        [SerializeField] private Button _barracks;
-        [SerializeField] private Button _powerPlant;
-        [SerializeField] private Button _heavySoldier;
-        [SerializeField] private Button _mediumSoldier;
-        [SerializeField] private Button _lightSoldier;
-        [SerializeField] private Button _electric;
+        [SerializeField] private Button _btn_Barracks;
+        [SerializeField] private Button _btn_PowerPlant;
+        [SerializeField] private Button _btn_HeavySoldier;
+        [SerializeField] private Button _btn_MediumSoldier;
+        [SerializeField] private Button _btn_LightSoldier;
+        
         
         public void InIt()
         {
 
             AddButtonToListener();
-            
+           
 
         }
 
         
         private void AddButtonToListener()
         {
-            _barracks.onClick.AddListener(() => DoAboutTheGameObject(new Barracks()));
-            _powerPlant.onClick.AddListener(() => DoAboutTheGameObject(new PowerPlant()));
-            _heavySoldier.onClick.AddListener(() => DoAboutTheGameObject(new HeavySoldier()));
-            _mediumSoldier.onClick.AddListener(() => DoAboutTheGameObject(new MediumSoldier()));
-            _lightSoldier.onClick.AddListener(() => DoAboutTheGameObject(new LightSoldier()));
-            _electric.onClick.AddListener(() => DoAboutTheGameObject(new Electric()));
+            _btn_Barracks.onClick.AddListener(() => DoAboutTheGameObject(new Barracks()));
+            _btn_PowerPlant.onClick.AddListener(() => DoAboutTheGameObject(new PowerPlant()));
+            _btn_HeavySoldier.onClick.AddListener(() => DoAboutTheGameObject(new HeavySoldier()));
+            _btn_MediumSoldier.onClick.AddListener(() => DoAboutTheGameObject(new MediumSoldier()));
+            _btn_LightSoldier.onClick.AddListener(() => DoAboutTheGameObject(new LightSoldier()));
+            
         }
 
         private void DoAboutTheGameObject(object obj)
@@ -53,9 +54,7 @@ namespace _Scripts._GameScene._UI
                 case Soldier:
                     DoAboutSoldiers(obj);
                     break;
-                case IVirtualProduct:
-                    DoAboutProductiableVariable(obj);
-                    break;
+                
             }
 
 
@@ -94,18 +93,6 @@ namespace _Scripts._GameScene._UI
             }
             
         }
-        private void DoAboutProductiableVariable(object obj)
-        {
-            switch (obj)
-            {
-                case Electric:
-                    DoAboutElectric();
-                    break;
-                
-            }
-            
-            
-        }
 
         private void DoAboutBarracks()
         {
@@ -127,9 +114,6 @@ namespace _Scripts._GameScene._UI
         {
             _information.SelectHeavySoldierPanel();
         }
-        private void DoAboutElectric()
-        {
-            _information.SelectElectricPanel();
-        }
+        
     }
 }

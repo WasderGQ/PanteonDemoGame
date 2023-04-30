@@ -2,6 +2,7 @@ using _Scripts._GameScene._GameArea;
 using _Scripts._GameScene._UI;
 using _Scripts._Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Scripts._GameScene.ManagersInGame
 {
@@ -9,7 +10,7 @@ namespace _Scripts._GameScene.ManagersInGame
    {
       [SerializeField] private GameUICanvas _gameUICanvas;
       [SerializeField] private GameSpace _gameSpace;
-      [SerializeField] private MouseManager _mouseManager;
+      [FormerlySerializedAs("_mouseManager")] [SerializeField] private MouseController mouseController;
       private void Start()
       {
          InIt();
@@ -17,7 +18,7 @@ namespace _Scripts._GameScene.ManagersInGame
 
       private void InIt()
       {
-         _mouseManager.InIt();
+         mouseController.InIt();
          _gameSpace.InIt();
          _gameUICanvas.InIt();
          

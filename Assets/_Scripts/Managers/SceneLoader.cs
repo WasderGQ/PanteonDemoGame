@@ -14,7 +14,7 @@ namespace _Scripts.Managers
 
         private void Start()
         {
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += ActiveScenesChanged;
+            SceneManager.activeSceneChanged += ActiveScenesChanged;
             Application.targetFrameRate = 60;
             
             

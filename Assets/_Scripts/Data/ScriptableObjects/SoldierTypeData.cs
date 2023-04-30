@@ -16,7 +16,7 @@ namespace _Scripts.Data.ScriptableObjects
       public SoldierTypeData()
       {
          _soldierTypeList = new List<SoldierData>();
-         EnumSoldierTyper[] typers = (EnumSoldierTyper[])EnumSoldierTyper.GetValues(typeof(EnumSoldierTyper));
+         EnumSoldierTyper[] typers = (EnumSoldierTyper[])Enum.GetValues(typeof(EnumSoldierTyper));
          foreach (var variableTyper in typers)
          {
             _soldierTypeList.Add(new SoldierData(variableTyper));
@@ -33,15 +33,15 @@ namespace _Scripts.Data.ScriptableObjects
          [SerializeField] private int _damage = default(int);
          [SerializeField] private int _health = default(int); 
        
-         [field:Serializable]public EnumSoldierTyper Type
+         public EnumSoldierTyper Type
          {
             get => _type;
          }
-         [field:Serializable] public int Damage
+         public int Damage
          {
             get => _damage;
          }
-         [field:Serializable] public int Health
+          public int Health
          {
             get => _health;
          }
