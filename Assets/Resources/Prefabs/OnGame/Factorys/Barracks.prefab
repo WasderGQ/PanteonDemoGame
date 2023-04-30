@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2148572496925790600}
   - component: {fileID: 6087910480420859059}
   m_Layer: 0
-  m_Name: Sprite
+  m_Name: HeavySoldierSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -10, y: -10}
+  m_SizeDelta: {x: -10, y: -13.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2148572496925790600
 CanvasRenderer:
@@ -127,7 +127,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6661554660978521302}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2055521495799526308
 GameObject:
@@ -291,7 +291,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6661554660978521302}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4879834304202237192
 GameObject:
@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 2019949774136868402}
   - component: {fileID: 6625418653978222380}
   m_Layer: 0
-  m_Name: Sprite (2)
+  m_Name: LightSoldierSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -329,7 +329,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -10, y: -10}
+  m_SizeDelta: {x: -10, y: -13.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2019949774136868402
 CanvasRenderer:
@@ -454,7 +454,7 @@ GameObject:
   - component: {fileID: 8714543833307218508}
   - component: {fileID: 1804262579018163237}
   m_Layer: 0
-  m_Name: Sprite (1)
+  m_Name: MediumSolderSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -478,7 +478,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -10, y: -10}
+  m_SizeDelta: {x: -10, y: -13.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8714543833307218508
 CanvasRenderer:
@@ -550,9 +550,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5581608345343969072}
   - component: {fileID: 7475964798936539991}
+  - component: {fileID: 5136652477672193794}
   m_Layer: 0
   m_Name: BackGround
-  m_TagString: Untagged
+  m_TagString: SoldierCreateMenu
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -566,7 +567,7 @@ RectTransform:
   m_GameObject: {fileID: 8112592337454096708}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.32, y: 0.1, z: 1}
+  m_LocalScale: {x: 0.32, y: 0.105, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8609814298596505882}
@@ -574,8 +575,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 0, y: 0.000015258789}
+  m_SizeDelta: {x: 250, y: 252.38}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &7475964798936539991
 SpriteRenderer:
@@ -629,6 +630,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &5136652477672193794
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8112592337454096708}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 250, y: 250, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9129262295627473419
 GameObject:
   m_ObjectHideFlags: 0
@@ -666,8 +680,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 1.7428, y: 46.069607}
-  m_SizeDelta: {x: 80, y: 20}
+  m_AnchoredPosition: {x: 0, y: 50}
+  m_SizeDelta: {x: 80, y: 26.5}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &9151549921616853072
 GameObject:
@@ -701,9 +715,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8609814298596505882}
-  - {fileID: 2730713661443661147}
-  - {fileID: 8239390537363649567}
   - {fileID: 3063118473274465734}
+  - {fileID: 8239390537363649567}
+  - {fileID: 2730713661443661147}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -780,9 +794,9 @@ MonoBehaviour:
   CreateLightSoldier:
     m_PersistentCalls:
       m_Calls: []
-  _heavySoldierBarracks: {fileID: 0}
-  _mediumSoldierBarracks: {fileID: 0}
-  _lightSoldierBarracks: {fileID: 0}
+  _heavySoldierBarracks: {fileID: 2730713661443661147}
+  _mediumSoldierBarracks: {fileID: 8239390537363649567}
+  _lightSoldierBarracks: {fileID: 3063118473274465734}
 --- !u!65 &4730465495146006393
 BoxCollider:
   m_ObjectHideFlags: 0

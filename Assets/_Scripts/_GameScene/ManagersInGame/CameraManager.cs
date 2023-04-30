@@ -89,7 +89,7 @@ namespace _Scripts._GameScene.ManagersInGame
         
         private Vector3 CalculateCameraViewSize(float fov, float aspectRatio, float distanceToPlane)
         {
-            float windowsfov = fov / 1.5f; // Camera cant see all plane because of canvas
+            float windowsfov = fov / 1.4f; // Camera cant see all plane because of canvas
             float height =  2.0f * distanceToPlane * Mathf.Tan(windowsfov * 0.5f * Mathf.Deg2Rad);
             float width = height * aspectRatio;
             return new Vector3(width, height,0);

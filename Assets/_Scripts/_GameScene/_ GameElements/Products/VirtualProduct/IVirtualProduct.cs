@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Features;
-using UnityEngine;
-
-namespace _Scripts._GameScene.__GameElements.Products.ProducibleValuables
+namespace _Scripts._GameScene.__GameElements.Products.VirtualProduct
 {
     public abstract class IVirtualProduct : IProduct
     {

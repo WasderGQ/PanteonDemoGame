@@ -1,24 +1,25 @@
 using System;
 using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Creater.BuildingCreaters;
+using _Scripts._GameScene.__GameElements.Creater.RealCreater.BuildingCreaters;
 using _Scripts._GameScene.__GameElements.Factorys;
-using _Scripts._GameScene.__GameElements.Features;
-using _Scripts._GameScene.__GameElements.Products;
-using _Scripts._GameScene.GameObjectPools;
+using _Scripts._GameScene.__GameElements.Products.Soldiers;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace _Scripts._GameScene._GameArea
 {
   public class GameSpace : MonoBehaviour
   {
+
     #region UnityObjects (Set From Editor)
 
     #region Static
 
     [SerializeField] private static Grid _grid;
-
+    
+    
+    
+    
+    
     #endregion
     
     #region BuildingDepos
@@ -52,8 +53,8 @@ namespace _Scripts._GameScene._GameArea
     
     #region BuildCreaters
 
-    private BarracksCreater _barracksCreater;
-    private PowerPlantCreater _powerPlantCreater;
+    private BarracksCreater barracksCreater;
+    private PowerPlantCreater powerPlantCreater;
 
     #endregion
     
@@ -67,22 +68,28 @@ namespace _Scripts._GameScene._GameArea
 
     private Vector3 _gameSpaceStartByPoint;
     private Vector3 _gameSpaceEndByPoint;
-    private List<IProduct> _buildingList;
-    private List<IGameSpaceOccupanter> _occupanterList;
-    
+    private List<IRealProduct> _barracksList;
+    private List<IRealProduct> _powerPlantsList;
+
     #endregion
     
     #endregion
 
     #region Public Propert (Only Get)
-    
-    public List<IGameSpaceOccupanter> OccupanterList { get => _occupanterList; }
-    public List<IProduct> BuildingList { get => _buildingList; }
+
+    public List<IRealProduct> BuildingList { get => ShowAllBuildingList(_barracksList,_powerPlantsList); }
     public Vector3 GameSpaceStartAreaByPoint { get => _gameSpaceStartByPoint; }
     public Vector3 GameSpaceEndAreaByPoint { get => _gameSpaceEndByPoint; }
+    
+    
+    #region Static
+   
+    public static Vector2Int UnValidVector = new Vector2Int(GameSpaceStartAreaByCell.x -1 , GameSpaceEndAreaByCell.y +1);
     public static Vector2Int GameSpaceStartAreaByCell { get => _gameSpaceStartByCell; }
     public static Vector2Int GameSpaceEndAreaByCell { get => _gameSpaceEndByCell; }
     public static Vector2 GameSpaceCellSize { get => _cellSize; }
+    
+    #endregion
     
     #endregion
     
@@ -104,12 +111,12 @@ namespace _Scripts._GameScene._GameArea
     }
     private void SetVariable()
     {
-      _buildingList = new List<IProduct>();
-      _occupanterList = new List<IGameSpaceOccupanter>();
+      _barracksList = new List<IRealProduct>();
+      _powerPlantsList = new List<IRealProduct>();
       _grid = _editableGrid;
       _myPosition = transform.position;
-      _barracksCreater = new BarracksCreater();
-      _powerPlantCreater = new PowerPlantCreater();
+      barracksCreater = new BarracksCreater();
+      powerPlantCreater = new PowerPlantCreater();
       
       
     }
@@ -149,22 +156,20 @@ namespace _Scripts._GameScene._GameArea
     
     private void TriggerBarracksCreater()
     {
-      Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(Barracks.GameObjectSizeByCell, _firstSearchCellPosition, OccupanterList);
+      Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(Barracks.GameObjectSizeByCell, _firstSearchCellPosition);
       Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPositionByCell), Barracks.GameObjectSizeByCell);
-      IProduct barracks = _barracksCreater.FactoryCreate(spawnPositionByPoint,spawnCellPositionByCell);
+      IRealProduct barracks = barracksCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell);
       barracks.MyTransform.SetParent(BarracksStore);
-      BuildingList.Add(barracks);
-      OccupanterList.Add(barracks);
+      _barracksList.Add(barracks);
     }
     
     private void TriggerPowerPlantCreater()
     {
-      Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(PowerPlant.GameObjectSizeByCell, _firstSearchCellPosition, OccupanterList);
+      Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(PowerPlant.GameObjectSizeByCell, _firstSearchCellPosition);
       Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPositionByCell), PowerPlant.GameObjectSizeByCell);
-      IProduct powerPlant = _powerPlantCreater.FactoryCreate(spawnPositionByPoint,spawnCellPositionByCell);
+      IRealProduct powerPlant = powerPlantCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell);
       powerPlant.MyTransform.SetParent(PowerPlantStore);
-      BuildingList.Add(powerPlant);
-      OccupanterList.Add(powerPlant);
+      _powerPlantsList.Add(powerPlant);
     }
 
     
@@ -172,14 +177,20 @@ namespace _Scripts._GameScene._GameArea
     
     #region SearchEmpthyCellForCreate Func.
 
-    private Vector2Int SearchEmptyCellForSpawn(Vector2Int gameObjectSizeByCell, Vector2Int startPointByCell, List<IGameSpaceOccupanter> occupanterList)
+    public Vector2Int SearchEmptyCellForSpawn(Vector2Int gameObjectSizeByCell, Vector2Int startPointByCell)
     {
 
       bool IsSpawnable = false;
       int containsCounter = 0;
       Vector2Int searchCellPosition = startPointByCell;
-      List<IGameSpaceOccupanter> allProductsOnGameSpace = GetAllProductByList(occupanterList);
-
+      List<IRealProduct> allProductsOnGameSpace = GetAllProductByList(BuildingList);
+      foreach (var product in allProductsOnGameSpace)
+      {Debug.Log(product.GetHashCode());
+        Debug.Log(product.StartPositionByCell.x);
+        Debug.Log(product.StartPositionByCell.y);
+        Debug.Log(product.EndPositionByCell.x);
+        Debug.Log(product.EndPositionByCell.y);
+      }
       while (IsSpawnable == false)
       {
         containsCounter = 0;
@@ -187,9 +198,9 @@ namespace _Scripts._GameScene._GameArea
         {
           for (int j = searchCellPosition.y; j < gameObjectSizeByCell.y + searchCellPosition.y; j++)
             {
-              foreach (var occupanter in allProductsOnGameSpace)
+              foreach (var product in allProductsOnGameSpace)
               {
-                containsCounter += IsCellValidForCreate(new Vector2Int(i,j),occupanter);
+                containsCounter += IsCellValidForCreate(new Vector2Int(i,j),product);
               }
             }
         }
@@ -200,8 +211,7 @@ namespace _Scripts._GameScene._GameArea
         }
         
         searchCellPosition = SearchCellCoordinateAdvanceFixer( searchCellPosition, gameObjectSizeByCell);
-       Debug.Log(searchCellPosition);
-        
+
         if (searchCellPosition == startPointByCell)
         {
           Debug.Log("I search all cells on GameSpace but there isn't empty cell for create");
@@ -213,11 +223,11 @@ namespace _Scripts._GameScene._GameArea
 
     }
     
-    private int IsCellValidForCreate(Vector2Int searchGameObjectSizeByCell,IGameSpaceOccupanter occupanter)
+    private int IsCellValidForCreate(Vector2Int searchGameObjectSizeByCell,IRealProduct product)
     {
-      for (int i = occupanter.StartPositionByCell.x; i <= occupanter.EndPositionByCell.x; i++)
+      for (int i = product.StartPositionByCell.x; i <= product.EndPositionByCell.x; i++)
       {
-        for (int j = occupanter.StartPositionByCell.y; j <= occupanter.EndPositionByCell.y; j++)
+        for (int j = product.StartPositionByCell.y; j <= product.EndPositionByCell.y; j++)
         {
           
           if (searchGameObjectSizeByCell == new Vector2Int(i, j))
@@ -231,29 +241,19 @@ namespace _Scripts._GameScene._GameArea
       return 0;
     }
     
-    private List<IGameSpaceOccupanter> GetAllProductByList(List<IGameSpaceOccupanter> buildingList)
+    private List<IRealProduct> GetAllProductByList(List<IRealProduct> buildingList)
     {
-      List<IGameSpaceOccupanter> allProductsOnGameSpace = new List<IGameSpaceOccupanter>();
-      if (buildingList.Count != 0)
+      List<IRealProduct> allProductsOnGameSpace = new List<IRealProduct>();
+
+      foreach (var building in buildingList)
       {
-        foreach (var building in buildingList)
+        allProductsOnGameSpace.Add(building);
+        foreach (var buildingProduct in building.ProductList)
         {
-          allProductsOnGameSpace.Add(building);
-          if (building.Occupanters.Count != 0)
-          {
-            foreach (var buildingProduct in building.Occupanters)
-            {
-              allProductsOnGameSpace.Add(buildingProduct);
-            }
-          }
-          
+          allProductsOnGameSpace.Add(buildingProduct);
         }
       }
-
-
-
       return allProductsOnGameSpace;
-
     }
     
     
@@ -286,7 +286,21 @@ namespace _Scripts._GameScene._GameArea
 
     #endregion
     
-   
+    private List<IRealProduct> ShowAllBuildingList (List<IRealProduct> barracksList, List<IRealProduct> powerPlantList)
+    {
+      List<IRealProduct> allBuildingsOnGameSpace = new List<IRealProduct>();
+      foreach (var heavySoldier in barracksList)
+      {
+        allBuildingsOnGameSpace.Add(heavySoldier);
+      }
+      foreach (var mediumSoldier in powerPlantList)
+      {
+        allBuildingsOnGameSpace.Add(mediumSoldier);
+      }
+      
+      return allBuildingsOnGameSpace;
+            
+    }
     
     
     

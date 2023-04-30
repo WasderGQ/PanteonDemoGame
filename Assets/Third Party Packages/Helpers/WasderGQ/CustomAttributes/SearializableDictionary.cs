@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace Third_Party_Packages.Helpers.WasderGQ.CustomAttributes
-{
+{/*
     [System.Serializable]
     public class SerializableDictionary : PropertyAttribute
     {
@@ -37,5 +37,5 @@ namespace Third_Party_Packages.Helpers.WasderGQ.CustomAttributes
             }
 
         }
-    }
+    }*/
 }

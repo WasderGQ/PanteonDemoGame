@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Task = UnityEditor.VersionControl.Task;
 
 namespace _Scripts._GameScene._UI.Features
 {
@@ -20,7 +19,7 @@ namespace _Scripts._GameScene._UI.Features
             }
             catch
             { 
-                Debug.LogWarning("Rail no crash anything");
+                //Debug.LogWarning("Rail no crash anything");
 
             }
 
@@ -76,7 +75,7 @@ namespace _Scripts._GameScene._UI.Features
             return (new RaycastHit(), false);
         }
 
-        public async Task<RaycastHit> TakeSpecificRaycastHit(string tag, RaycastHit[] raycastHitList)
+        public RaycastHit TakeSpecificRaycastHit(string tag, RaycastHit[] raycastHitList)
         {
             try
             {
@@ -97,7 +96,7 @@ namespace _Scripts._GameScene._UI.Features
             
         }
 
-        public async Task<bool> IsThereSpecificRaycastHit(string tag, RaycastHit[] raycastHitList)
+        public bool IsThereSpecificRaycastHit(string tag, RaycastHit[] raycastHitList)
         {
             try
             {
@@ -119,6 +118,20 @@ namespace _Scripts._GameScene._UI.Features
             
             
         }
+        
+        public async Task<bool> CheckMouseInTruePosition(string gameObjectTag) //In my game this must be gameboard.
+        {
+            var result = await TakeSpecificRaycastHitWithTaskBool(gameObjectTag);
+            if(result.Item2)
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+        
+        
     }
     
 }

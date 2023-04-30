@@ -7,34 +7,24 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 {
     
     
-    public abstract class Soldier : MonoBehaviour ,IAttacker,IVulnerable,IControllableHero,IProduct
+    public abstract class Soldier : MonoBehaviour ,IAttacker,IVulnerable,IControllableHero,IRealProduct
     {
-        
-        
+
+        public static Vector2Int GameSpaceSizeByCell { get => _gameSpaceSizeByCell; }
         protected int _maxHealth;
         protected Vector3 _gameSpacePosition;
         protected int _damage;
         protected int _currentHealth;
-        
-        public int MaxHealth
-        {
-            get => _maxHealth;
-        }
-        public  Vector3 GameSpacePosition
-        {
-            get => _gameSpacePosition;
-        }
-        
 
-        public int Damage
-        {
-            get => _damage;
-        }
-        public  int CurrentHealth
-        {
-            get => _currentHealth;
-        }
         
+        
+        private static Vector2Int _gameSpaceSizeByCell = new Vector2Int(1, 1);
+        
+        public int MaxHealth { get => _maxHealth; }
+        public  Vector3 GameSpacePosition { get => _gameSpacePosition; }
+        
+        public int Damage { get => _damage; }
+        public  int CurrentHealth { get => _currentHealth; }
         
         public UnityEvent<IAttacker> EventTakeDamage => new UnityEvent<IAttacker>();
 
@@ -46,12 +36,14 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         
         #region Start Func.
 
-        public void AbstractInIt()
+        public void AbstractInIt(Vector2Int startPositionByCell,Vector2Int endPositionByCell)
         {
             SetEvents();
             SetStartHealth();
             AddListener();
         }
+        
+        
         private void AddListener()
         {
             EventTakeDamage.AddListener(TakeDamage);
@@ -90,11 +82,11 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 
         #endregion
 
-        public Transform MyTransform { get; }
-        public List<IProduct> BuildingProductList { get; }
-        public Vector2Int StartPositionByCell { get; }
-        public Vector2Int EndPositionByCell { get; }
-        public List<IGameSpaceOccupanter> Occupanters { get; }
+        public abstract Transform MyTransform { get; }
+        public abstract List<IRealProduct> ProductList { get; }
+        public abstract Vector2Int StartPositionByCell { get; }
+        public abstract Vector2Int EndPositionByCell { get; }
+        
     }
 }
 

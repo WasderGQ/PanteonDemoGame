@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Reflection;
 using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Products;
-using _Scripts._GameScene.__GameElements.Products.ProducibleValuables;
 using _Scripts._GameScene.__GameElements.Products.Soldiers;
+using _Scripts._GameScene.__GameElements.Products.VirtualProduct;
 using _Scripts._GameScene._GameArea;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
@@ -53,7 +53,7 @@ namespace _Scripts._GameScene._UI
                 case Soldier:
                     DoAboutSoldiers(obj);
                     break;
-                case ProducibleVariable:
+                case IVirtualProduct:
                     DoAboutProductiableVariable(obj);
                     break;
             }

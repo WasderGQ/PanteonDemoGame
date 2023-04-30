@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Third_Party_Packages.Helpers.WasderGQ.CustomAttributes
 {
-   
+   /*
         public class UniqueID : PropertyAttribute
         {
             
@@ -23,5 +23,5 @@ namespace Third_Party_Packages.Helpers.WasderGQ.CustomAttributes
                 GUI.enabled = true;
             }
         }
-    
+    */
 }

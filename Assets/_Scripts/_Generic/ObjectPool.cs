@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts._GameScene.__GameElements.Factorys;
 using UnityEngine;
 
 namespace _Scripts._Generic
@@ -11,6 +12,7 @@ public class GObjectPool<T> : GObjectPool where T : MonoBehaviour
     [SerializeField]private T _objectToPool;
     [SerializeField]private int _amountToPool;
     [SerializeField]protected Transform _parentPoolObject;
+    public Transform ParentPoolObject {get => _parentPoolObject;}
     public List<T> PooledObjects
     {
         get => _pooledobjects;
@@ -29,14 +31,24 @@ public class GObjectPool<T> : GObjectPool where T : MonoBehaviour
         _pooledobjects = new List<T>();
         FilledList();
     }
+    public void AddToPoolList(T poolObject)
+    {
+        _pooledobjects.Add(poolObject);
+        
+    }
+    public void RemoveFromPoolList(T poolObject)
+    {
+        _pooledobjects.Remove(poolObject);
+        
+    }
     public T GetPooledObject()
     {
         for(int i = 0; i < _amountToPool; i++)
         {
             if(!_pooledobjects[i].gameObject.activeInHierarchy)
-            {
-                return _pooledobjects[i];
-            }
+                {
+                    return _pooledobjects[i];
+                }
             
         }
         return null;
@@ -53,6 +65,21 @@ public class GObjectPool<T> : GObjectPool where T : MonoBehaviour
             _pooledobjects.Add(tmp);
         }
     }
+
+    public bool PoolChecker()
+    {
+        if(PooledObjects.Count == 0)
+        {
+            return false;
+        }
+        return true;
+        
+        
+    }
+
+
+
+
 
 }
 

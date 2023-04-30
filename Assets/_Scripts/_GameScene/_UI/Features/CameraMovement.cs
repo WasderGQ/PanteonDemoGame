@@ -21,17 +21,14 @@ namespace _Scripts._GameScene._UI.Features
     
         public async Task<Vector3> PanCamera()
         {
-        
+            
             if (Input.GetKeyDown(KeyCode.Mouse2) && _mouseWorldPositionOnDown == new Vector3())
             {
-                if (await CheckMouseInTruePosition())
-                {
-                    // Debug.Log("key down summoned.");
+                if(await _clickRay.CheckMouseInTruePosition("GameBoard"))
+                // Debug.Log("key down summoned.");
                     _mouseWorldPositionOnDown = await GetMousePosition();
                     // Debug.Log("press: " + _mouseWorldPositionOnDown);
-                    _isHoldingKey = true; 
-                }
-                
+                    _isHoldingKey = true;
             }
             
             if (_isHoldingKey)
@@ -74,7 +71,7 @@ namespace _Scripts._GameScene._UI.Features
 
         public async Task<float> ZoomCamera(Camera camera)
         {
-            if (await CheckMouseInTruePosition())
+            if (await _clickRay.CheckMouseInTruePosition("GameBoard"))
             {
                 float currentScrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
                 if (currentScrollWheelAxis != 0f)
@@ -88,17 +85,7 @@ namespace _Scripts._GameScene._UI.Features
         
     
     
-        private async Task<bool> CheckMouseInTruePosition() //In my game this must be gameboard.
-        {
-            var result = await _clickRay.TakeSpecificRaycastHitWithTaskBool("GameBoard");
-            if(result.Item2)
-            {
-                return true;
-            }
-
-            return false;
-
-        }
+        
         
         
     }
