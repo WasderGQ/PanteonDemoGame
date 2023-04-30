@@ -5,7 +5,7 @@ namespace _Scripts._GameScene.__GameElements.Creater.PowerPlantCreaters
 {
     public class ElectricCreater : ICreater
     {
-        public IProduct FactoryMethod()
+        public IVirtualProduct FactoryMethod()
         {
             return new Electric();
 

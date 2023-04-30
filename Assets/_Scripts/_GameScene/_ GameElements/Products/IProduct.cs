@@ -1,16 +1,7 @@
-using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Features;
-using Codice.Client.BaseCommands.BranchExplorer.ExplorerData;
-using UnityEngine;
-
-namespace _Scripts._GameScene.__GameElements.Products
+﻿namespace _Scripts._GameScene.__GameElements.Products.ProducibleValuables
 {
-    public interface IProduct : IGameSpaceOccupanter
+    public interface IProduct
     {
-        public Transform MyTransform { get; }
-        public List<IProduct> BuildingProductList { get; }
-
-       
+        
     }
 }
-

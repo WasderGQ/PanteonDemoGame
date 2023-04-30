@@ -5,9 +5,9 @@ using _Scripts._GameScene.__GameElements.Products.Soldiers;
 
 namespace _Scripts._GameScene.__GameElements.Creater.BarackCreaters
 {
-    public class MediumSoldierCreater : SoldierCreater
+    public class MediumSoldierRealCreater : SoldierRealCreater
     {
-        public override IProduct FactoryMethod()
+        public override IRealProduct FactoryMethod()
         {
             return new MediumSoldier();
         }

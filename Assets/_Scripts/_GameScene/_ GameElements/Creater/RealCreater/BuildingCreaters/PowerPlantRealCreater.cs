@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Creater.BuildingCreaters
 {
-    public class PowerPlantCreater : BuildingCreater
+    public class PowerPlantRealCreater : BuildingRealCreater
     {
-        public override IProduct FactoryCreate(Vector3 spawnPositionByPoint,Vector2Int startPositionByCell)
+        public override IRealProduct FactoryCreate(Vector3 spawnPositionByPoint,Vector2Int startPositionByCell)
         {
             return new PowerPlant();
         }
