@@ -11,7 +11,14 @@ namespace _Scripts._GameScene._GameArea
 {
   public class GameSpace : MonoBehaviour //must be singleton
   {
+    
+    #region ReadOnly Values
 
+    private readonly Vector2Int _powerPlantSizeByCell = new Vector2Int(2, 3);
+    private readonly Vector2Int _barracksSizeByCell = new Vector2Int(4, 4);
+
+    #endregion
+    
     #region UnityObjects (Set From Editor)
 
     #region Static
@@ -31,6 +38,13 @@ namespace _Scripts._GameScene._GameArea
     #endregion
     
     #region Public Propertys
+
+    #region Static
+
+    
+
+    #endregion
+    
     
     public Transform BarracksStore { get => _barracksStore; }
     public Transform PowerPlantStore { get => _powerPlantStore; }
@@ -146,7 +160,6 @@ namespace _Scripts._GameScene._GameArea
       {
         case Barracks:
           TriggerBarracksCreater();
-         
           break;
         
         case PowerPlant:
@@ -155,20 +168,21 @@ namespace _Scripts._GameScene._GameArea
       }
     }
     
-    private void TriggerBarracksCreater()
+    private async void TriggerBarracksCreater()
     {
-      Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(Barracks.GameObjectSizeByCell, _firstSearchCellPosition);
-      Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPositionByCell), Barracks.GameObjectSizeByCell);
-      IRealProduct barracks = barracksCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell);
+      Vector2Int barracksAndAttacmentSize = new Vector2Int(_barracksSizeByCell.x + 2, _barracksSizeByCell.y + 2);
+      Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(barracksAndAttacmentSize, _firstSearchCellPosition);
+      Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPositionByCell), _barracksSizeByCell);
+      IRealProduct barracks = await barracksCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell,_barracksSizeByCell);
       barracks.MyTransform.SetParent(BarracksStore);
       _barracksList.Add(barracks);
     }
     
-    private void TriggerPowerPlantCreater()
+    private async void TriggerPowerPlantCreater()
     {
-      Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(PowerPlant.GameObjectSizeByCell, _firstSearchCellPosition);
-      Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPositionByCell), PowerPlant.GameObjectSizeByCell);
-      IRealProduct powerPlant = powerPlantCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell);
+      Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(_powerPlantSizeByCell, _firstSearchCellPosition);
+      Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPositionByCell), _powerPlantSizeByCell);
+      IRealProduct powerPlant = await powerPlantCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell,_powerPlantSizeByCell);
       powerPlant.MyTransform.SetParent(PowerPlantStore);
       _powerPlantsList.Add(powerPlant);
     }
@@ -188,9 +202,9 @@ namespace _Scripts._GameScene._GameArea
       while (IsSpawnable == false)
       {
         containsCounter = 0;
-        for (int i = searchCellPosition.x; i < gameObjectSizeByCell.x + searchCellPosition.x; i++)
+        for (int i = searchCellPosition.x; i <= gameObjectSizeByCell.x + searchCellPosition.x; i++)
         {
-          for (int j = searchCellPosition.y; j < gameObjectSizeByCell.y + searchCellPosition.y; j++)
+          for (int j = searchCellPosition.y; j <= gameObjectSizeByCell.y + searchCellPosition.y; j++)
             {
               containsCounter += IsCellValidForCreate(new Vector2Int(i,j),allProductsOnGameSpace);
             }

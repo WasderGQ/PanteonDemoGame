@@ -1,17 +1,15 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using _Scripts._GameScene.__GameElements.Creater.RealCreater.BarackCreaters;
 using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Features;
-using _Scripts._GameScene.__GameElements.Products;
 using _Scripts._GameScene.__GameElements.Products.Soldiers;
-using _Scripts._GameScene._GameArea;
-using _Scripts._GameScene._PlayerControl;
 using _Scripts._GameScene._UI.Features;
-using Codice.Client.BaseCommands;
 using UnityEngine;
+
 
 namespace _Scripts._GameScene.ManagersInGame
 {
@@ -21,19 +19,14 @@ namespace _Scripts._GameScene.ManagersInGame
         private HeavySoldierCreater heavySoldierCreater;
         private MedimuSoldierCreater mediumSoldierCreater;
         private LightSoldierCreater lightSoldierCreater;
-        private GameObject _Mouse0_selectedGameObject;
-        private Barracks _mouse0_selectedBarracks;
-        private PowerPlant _mouse0_selectedPowerPlant;
-        private HeavySoldier _mouse0_selectedHeavySoldier;
-        private MediumSoldier _mouse0_selectedMediumSoldier;
-        private LightSoldier _mouse0_selectedLightSoldier;
         private bool _isHoldingMouse0;
         private Vector3 _mouseWorldPositionOnDown;
         private Vector3 _mouseWorldPositionOnHold;
         private Vector3 _vectorsDistance;
+        private Barracks _mouse0_SelectedBarracks;
         private IMovable Mouse0_SelectedMovable;
         private IVulnerable _mouse1_selectedVulnerable;
-        private IPaneled _mouse0_SelectedPaneled;
+        private IPaneled _mouse0_SelectedPaneled;    // Dont use variable use Property.
         private IPaneled Mouse0_SelectedPaneled
         {
             get
@@ -42,17 +35,15 @@ namespace _Scripts._GameScene.ManagersInGame
             }
             set
             {
-             CloseSelectedPanel(_mouse0_SelectedPaneled);
-             OpenBarracksPanel(value);
-             _mouse0_SelectedPaneled = value;
+                CloseSelectedPanel(_mouse0_SelectedPaneled);
+                _mouse0_SelectedPaneled = value;
+                OpenBarracksPanel(_mouse0_SelectedPaneled);
             }
         }
+        private IAttacker _mouse0_SelectedAttacker;
+        private Vector3 mousePositionOnWorld;
 
-        private IAttacker Mouse0_SelectedAttacker;
-        
-        
-        
-        
+
         public void InIt()
         {
             SetVariable();
@@ -60,13 +51,15 @@ namespace _Scripts._GameScene.ManagersInGame
         private void SetVariable()
         {
             _clickRay = new ClickRay();
+            
 
         }
         private void Update()
         {
             Mouse0ClickDown();
             Mouse1ClickDown();
-            MoveMovable(Mouse0_SelectedMovable);
+            //MoveMovable(Mouse0_SelectedMovable);
+            
 
         }
 
@@ -91,42 +84,36 @@ namespace _Scripts._GameScene.ManagersInGame
                     
                     if (barrackResult.Result.Item2 && !soldierCreateMenuResult.Result.Item2)
                     {
-                        Barracks barrack = barrackResult.Result.Item1.transform.gameObject.GetComponent<Barracks>();
-                        if (barrack is IVulnerable && Mouse0_SelectedAttacker is IAttacker)
-                        {
-                            Debug.Log("doğru");
-                        }
-                        Debug.Log(Mouse0_SelectedAttacker.Damage);
-                        TriggerAttackEvent<Barracks,IAttacker>(barrack,Mouse0_SelectedAttacker);
+                        Barracks barracks = barrackResult.Result.Item1.transform.gameObject.GetComponent<Barracks>();
+                        TriggerAttackEvent<Barracks,IAttacker>(barracks,_mouse0_SelectedAttacker);
                     }
 
                     if (powerPlantResult.Result.Item2 && !soldierCreateMenuResult.Result.Item2)
                     {
                         PowerPlant powerPlant = barrackResult.Result.Item1.transform.gameObject.GetComponent<PowerPlant>();
-                        TriggerAttackEvent<PowerPlant,IAttacker>(powerPlant,Mouse0_SelectedAttacker);
+                        TriggerAttackEvent<PowerPlant,IAttacker>(powerPlant,_mouse0_SelectedAttacker);
                     }
 
                     if (heavyResult.Result.Item2  && !soldierCreateMenuResult.Result.Item2)
                     {
                         HeavySoldier heavySoldier = barrackResult.Result.Item1.transform.gameObject.GetComponent<HeavySoldier>();
-                        TriggerAttackEvent<HeavySoldier,IAttacker>(heavySoldier,Mouse0_SelectedAttacker);
+                        TriggerAttackEvent<HeavySoldier,IAttacker>(heavySoldier,_mouse0_SelectedAttacker);
                     }
 
                     if (mediumResult.Result.Item2  && !soldierCreateMenuResult.Result.Item2)
                     {
                         MediumSoldier mediumSoldier = barrackResult.Result.Item1.transform.gameObject.GetComponent<MediumSoldier>();
-                        TriggerAttackEvent<MediumSoldier,IAttacker>(mediumSoldier,Mouse0_SelectedAttacker);
+                        TriggerAttackEvent<MediumSoldier,IAttacker>(mediumSoldier,_mouse0_SelectedAttacker);
                     }
 
                     if (lightResult.Result.Item2  && !soldierCreateMenuResult.Result.Item2)
                     {
                         LightSoldier lightSoldier = barrackResult.Result.Item1.transform.gameObject.GetComponent<LightSoldier>();
-                        TriggerAttackEvent<LightSoldier,IAttacker>(lightSoldier,Mouse0_SelectedAttacker);
+                        TriggerAttackEvent<LightSoldier,IAttacker>(lightSoldier,_mouse0_SelectedAttacker);
                     }
                 }
             }
         }
-
         void TriggerAttackEvent<TVulnerable,TAttarker>(TVulnerable vulnerable, TAttarker attacker) where TVulnerable : IVulnerable where TAttarker : IAttacker
         {
             try
@@ -138,16 +125,13 @@ namespace _Scripts._GameScene.ManagersInGame
                 Debug.Log("the attacker did not take damage");
             }
         }
-
-        
-        
         public async void MoveMovable(IMovable movableobject)
         {
             if (movableobject != null)
             {
                 if (Input.GetKeyDown(KeyCode.Mouse2) && _mouseWorldPositionOnDown == new Vector3())
                 {
-                    if(await _clickRay.CheckMouseInTruePosition("GameBoard"))
+                    if(await _clickRay.CheckMouseOnCollider("GameBoard"))
                         
                         _mouseWorldPositionOnDown = await GetMousePosition();
                         _isHoldingMouse0 = true;
@@ -171,10 +155,11 @@ namespace _Scripts._GameScene.ManagersInGame
             
             
         }
+        private Vector3 GetTwoPointDistance()
+        {
+            return _mouseWorldPositionOnDown - _mouseWorldPositionOnHold;
 
-        
-        
-
+        }
         private async void Mouse0ClickDown()
         {
             if (Input.GetMouseButtonDown(0))
@@ -197,61 +182,54 @@ namespace _Scripts._GameScene.ManagersInGame
 
                     if (barrackResult.Result.Item2 && !soldierCreateMenuResult.Result.Item2)
                     {
+                        _mouse0_SelectedBarracks = barrackResult.Result.Item1.transform.gameObject.GetComponent<Barracks>();
+                        SetToMyInheritanceOnMouse0<Barracks>(_mouse0_SelectedBarracks);
                         
-                        _Mouse0_selectedGameObject = barrackResult.Result.Item1.transform.gameObject;
-                        SetToMyInheritanceOnMouse0<Barracks>(barrackResult.Result.Item1.transform.gameObject.GetComponent<Barracks>());
-
                     }
 
                     if (powerPlantResult.Result.Item2 && !soldierCreateMenuResult.Result.Item2)
                     {
-                       
                         SetToMyInheritanceOnMouse0<PowerPlant>(powerPlantResult.Result.Item1.transform.gameObject.GetComponent<PowerPlant>());
-                        _Mouse0_selectedGameObject = powerPlantResult.Result.Item1.transform.gameObject;
-                        
+
                     }
 
                     if (heavyResult.Result.Item2  && !soldierCreateMenuResult.Result.Item2)
                     {
                         
                         SetToMyInheritanceOnMouse0<HeavySoldier>(heavyResult.Result.Item1.transform.gameObject.GetComponent<HeavySoldier>());
-                        _Mouse0_selectedGameObject = heavyResult.Result.Item1.transform.gameObject;
-                        
+
                     }
 
                     if (mediumResult.Result.Item2  && !soldierCreateMenuResult.Result.Item2)
                     {
-                       
-                        _Mouse0_selectedGameObject = mediumResult.Result.Item1.transform.gameObject;
+                        
                         SetToMyInheritanceOnMouse0<MediumSoldier>(mediumResult.Result.Item1.transform.gameObject.GetComponent<MediumSoldier>());
                     }
 
                     if (lightResult.Result.Item2  && !soldierCreateMenuResult.Result.Item2)
                     {
                         
-                        _Mouse0_selectedGameObject = lightResult.Result.Item1.transform.gameObject;
                         SetToMyInheritanceOnMouse0<LightSoldier>(mediumResult.Result.Item1.transform.gameObject.GetComponent<LightSoldier>());
                     }
 
                     if (heavyButtonResult.Result.Item2)
                     {
-                        CreateHeavySoldierButton(heavyButtonResult.Result.Item1, _Mouse0_selectedGameObject);
+                        CreateHeavySoldierButton(heavyButtonResult.Result.Item1, _mouse0_SelectedBarracks);
                     }
 
                     if (mediumButtonResult.Result.Item2)
                     {
-                        CreateMediumSoldierButton(mediumButtonResult.Result.Item1, _Mouse0_selectedGameObject);
+                        CreateMediumSoldierButton(mediumButtonResult.Result.Item1, _mouse0_SelectedBarracks);
                     }
 
                     if (lightButtonResult.Result.Item2)
                     {
-                        CreateLightSoldierButton(lightButtonResult.Result.Item1, _Mouse0_selectedGameObject);
+                        CreateLightSoldierButton(lightButtonResult.Result.Item1, _mouse0_SelectedBarracks);
                     }
                 }
             }
         }
-
-        private void SetToMyInheritanceOnMouse0<T1>(T1 sameobject)
+        private void SetToMyInheritanceOnMouse0<T1>(T1 sameobject) 
         {
             if (sameobject is IMovable)
             {
@@ -260,27 +238,22 @@ namespace _Scripts._GameScene.ManagersInGame
 
             if (sameobject is IAttacker)
             {
-                Mouse0_SelectedAttacker = (IAttacker)sameobject;
+                _mouse0_SelectedAttacker = (IAttacker)sameobject;
             }
             
             if (sameobject is IPaneled)
             {
                 Mouse0_SelectedPaneled = (IPaneled)sameobject;
             }
+            
         }
-        
-        
-        
-        
-        
-
-        private void CreateHeavySoldierButton(RaycastHit raycastHit, GameObject oldSelectedGameObject)
+        private void CreateHeavySoldierButton(RaycastHit raycastHit, Barracks selectedBarracks)
         {
             ClickAnimation(raycastHit);
             
-            if (oldSelectedGameObject != null && oldSelectedGameObject.TryGetComponent<Barracks>(out Barracks barracks))
+            if (selectedBarracks != null )
             {
-              oldSelectedGameObject.GetComponent<Barracks>().EventCreateHeavySoldier.Invoke();
+                selectedBarracks.EventCreateHeavySoldier.Invoke();
             }
             else
             {
@@ -288,12 +261,12 @@ namespace _Scripts._GameScene.ManagersInGame
             }
             
         }
-        private void CreateMediumSoldierButton(RaycastHit raycastHit,GameObject oldSelectedGameObject)
+        private void CreateMediumSoldierButton(RaycastHit raycastHit,Barracks selectedBarracks)
         {
             ClickAnimation(raycastHit);
-            if (oldSelectedGameObject != null && oldSelectedGameObject.TryGetComponent<Barracks>(out Barracks barracks))
+            if (selectedBarracks != null)
             {
-                oldSelectedGameObject.GetComponent<Barracks>().EventCreateMediumSoldier.Invoke();
+                selectedBarracks.EventCreateMediumSoldier.Invoke();
             }
             else
             {
@@ -301,12 +274,12 @@ namespace _Scripts._GameScene.ManagersInGame
             }
             
         }
-        private void CreateLightSoldierButton(RaycastHit raycastHit,GameObject oldSelectedGameObject)
+        private void CreateLightSoldierButton(RaycastHit raycastHit,Barracks selectedBarracks)
         {
             ClickAnimation(raycastHit);
-            if (oldSelectedGameObject != null && oldSelectedGameObject.TryGetComponent<Barracks>(out Barracks barracks))
+            if (selectedBarracks != null)
             {
-                oldSelectedGameObject.GetComponent<Barracks>().EventCreateLightSoldier.Invoke();
+                selectedBarracks.EventCreateLightSoldier.Invoke();
             }
             else
             {
@@ -320,14 +293,16 @@ namespace _Scripts._GameScene.ManagersInGame
         }
         private void CloseSelectedPanel(IPaneled oldSelectedPanel)
         {
-            if (oldSelectedPanel != null)
+            try
             {
-                oldSelectedPanel.MyPanel.SetActive(true);
+                oldSelectedPanel.MyPanel.SetActive(false);
             }
-            else
+            catch
             {
+                _mouse0_SelectedPaneled = null;
                 Debug.Log("I can't close panel because object is empty");
             }
+            
         }
         private async void ClickAnimation(RaycastHit raycastHit)
         {
@@ -336,23 +311,52 @@ namespace _Scripts._GameScene.ManagersInGame
             raycastHit.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.white;
 
         }
-
         private async Task<Vector3> GetMousePosition()
         {
             return await _clickRay.GetRayWorldPosition();
 
 
         }
+       
         
-        private Vector3 GetTwoPointDistance()
+
+       
+        private Vector3 RoundingtoModCellSize(Vector3 distance)
         {
-            return _mouseWorldPositionOnDown - _mouseWorldPositionOnHold;
+            float xValue = distance.x;
+            float xremaining = xValue % 10f;
+            xValue = xValue - xremaining;
+            float yValue = distance.y;
+            float yremaining = yValue % 10f;
+            yValue = yValue - yremaining;
+            return new Vector3(xValue, yValue, distance.z);
+
 
         }
+        public IEnumerable PutBuildingOnSpaceBoard(Transform buildingTransform)
+        {
+            bool isPutBuilding = false;
+            while (!isPutBuilding)
+            {
+                
+                buildingTransform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                if (_clickRay.CheckMouseOnCollider("GameBoard").Result)
+                {
+                    buildingTransform.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                }
+                else
+                {
+                    buildingTransform.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                }
 
-        
-        
-        
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    isPutBuilding = true;
+                }
+            }
+            yield break;
+        }
         
 
     }

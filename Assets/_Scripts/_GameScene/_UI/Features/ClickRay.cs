@@ -80,8 +80,6 @@ namespace _Scripts._GameScene._UI.Features
                 return (new RaycastHit(), false);
         }
         
-        
-        
         public RaycastHit TakeSpecificRaycastHit(string tag, RaycastHit[] raycastHitList)
         {
             try
@@ -126,7 +124,7 @@ namespace _Scripts._GameScene._UI.Features
             
         }
         
-        public async Task<bool> CheckMouseInTruePosition(string gameObjectTag) //In my game this must be gameboard.
+        public async Task<bool> CheckMouseOnCollider(string gameObjectTag) //In my game this must be gameboard.
         {
             var result = await TakeSpecificRaycastHitWithTaskBool(gameObjectTag);
             if(result.Item2)
@@ -137,8 +135,26 @@ namespace _Scripts._GameScene._UI.Features
             return false;
 
         }
-        
-        
+
+        public async Task<bool> IsOnlyGameBoardAndGameWindows()
+        {
+            int counter=0;
+            RaycastHit[] raycastHits = await ThrowRayTryCatchRaycastHits();
+
+            foreach (var hit in raycastHits)
+            {
+                if (hit.collider.gameObject.tag != "Canvas" || hit.collider.gameObject.tag != "GameBoard" || hit.collider.gameObject.tag != "GameSpace")
+                {
+                    counter++;
+                }
+
+                if (counter == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     
 }

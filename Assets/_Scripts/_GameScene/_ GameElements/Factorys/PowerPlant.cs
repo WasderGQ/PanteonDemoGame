@@ -6,6 +6,7 @@ using _Scripts._GameScene.__GameElements.Products;
 using _Scripts._GameScene.__GameElements.Products.Soldiers;
 using _Scripts._GameScene.__GameElements.Products.VirtualProduct;
 using _Scripts._GameScene._GameArea;
+using _Scripts._GameScene.GameObjectPools;
 using _Scripts.Data.Enums;
 using _Scripts.Data.ScriptableObjects;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         
         #region Statics
 
-        public static Vector2Int GameObjectSizeByCell { get { return _staticGameObjectSizeByCell; } }
+        
 
         #endregion
         
@@ -42,8 +43,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         #endregion
 
         #region Private Variable
-
-        private readonly static Vector2Int _staticGameObjectSizeByCell = new Vector2Int(2, 3);
+        
         private List<IRealProduct> _electric;
         private Vector2Int _startPositionByCell;
         private Vector2Int _endPositionByCell;
@@ -79,9 +79,6 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         #endregion
         
         
-
-        
-        
         private int _maxHealth;
         private int _currentHealth;
         public int CurrentHealth
@@ -98,13 +95,14 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         {
             if(_currentHealth <= 0)
             {
-
-                Destroy(this.gameObject);
+                transform.SetParent(PowerPlantPool.SharedInstance.ParentPoolObject);
+                PowerPlantPool.SharedInstance.PooledObjects.Add(this);
+                gameObject.SetActive(false);
                 
             }
         }
        
-        public  GameObject MyGameObject { get => gameObject;}
+        
         
 
 

@@ -29,10 +29,6 @@ namespace _Scripts._GameScene._UI
             _infoElectric.SetActive(false);
 
         }
-        
-        
-        
-        
         public void SelectBarracksPanel()
         {
             SelectedInfoClose();

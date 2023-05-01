@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace _Scripts._GameScene.__GameElements.Products.GameObjectUtility
 {
-    public class SpawnPosition : MonoBehaviour, IRealProduct
+    public class SpawnPosition : MonoBehaviour , IRealProduct
     {
         public bool IsUsable
         {

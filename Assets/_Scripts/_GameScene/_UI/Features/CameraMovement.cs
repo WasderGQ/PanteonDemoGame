@@ -24,7 +24,7 @@ namespace _Scripts._GameScene._UI.Features
             
             if (Input.GetKeyDown(KeyCode.Mouse2) && _mouseWorldPositionOnDown == new Vector3())
             {
-                if(await _clickRay.CheckMouseInTruePosition("GameBoard"))
+                if(await _clickRay.CheckMouseOnCollider("GameBoard"))
                 
                     _mouseWorldPositionOnDown = await GetMousePosition();
                     _isHoldingKey = true;
@@ -66,7 +66,7 @@ namespace _Scripts._GameScene._UI.Features
 
         public async Task<float> ZoomCamera(Camera camera)
         {
-            if (await _clickRay.CheckMouseInTruePosition("GameBoard"))
+            if (await _clickRay.CheckMouseOnCollider("GameBoard"))
             {
                 float currentScrollWheelAxis = Input.GetAxis("Mouse ScrollWheel");
                 if (currentScrollWheelAxis != 0f)

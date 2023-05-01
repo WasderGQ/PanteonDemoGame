@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Products.Soldiers;
 using _Scripts._GameScene.GameObjectPools;
@@ -7,7 +8,7 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BuildingCreater
 {
     public class PowerPlantCreater : Abs_BuildingCreater
     {
-        public override IRealProduct FactoryMethod(Vector3 spawnPositionByPoint,Vector2Int startPositionByCell)
+        public override async Task<IRealProduct> FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int productSizeByCell)
         {
             if (PowerPlantPool.SharedInstance.PoolChecker())
             {
@@ -16,17 +17,18 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BuildingCreater
                 powerPlant.transform.position = spawnPositionByPoint;
                 powerPlant.transform.rotation = Quaternion.identity;
                 powerPlant.gameObject.SetActive(true);
-                Vector2Int endPositionByCell = new Vector2Int(startPositionByCell.x + PowerPlant.GameObjectSizeByCell.x - 1, startPositionByCell.y + PowerPlant.GameObjectSizeByCell.y - 1);
+                Vector2Int endPositionByCell = new Vector2Int(startPositionByCell.x + productSizeByCell.x - 1, startPositionByCell.y + productSizeByCell.y - 1);
                 powerPlant.InIt(startPositionByCell, endPositionByCell);
-
                 return powerPlant;
+
             }
             else
             {
                 Debug.LogWarning("Empty BarrackPool");
-                return new Barracks();
-            } 
+                return new PowerPlant();
+            }
         }
+        
 
     }
 }
