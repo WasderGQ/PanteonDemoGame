@@ -10,7 +10,7 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BarackCreaters
 {
     public class HeavySoldierCreater : Abs_SoldierCreater
     {
-        public override async Task<IRealProduct> FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int productSizeByCell)
+        public override  IRealProduct FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int productSizeByCell)
         {
             if (HeavySoldierPool.SharedInstance.PoolChecker())
             {

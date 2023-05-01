@@ -8,7 +8,7 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BuildingCreater
 {
     public class PowerPlantCreater : Abs_BuildingCreater
     {
-        public override async Task<IRealProduct> FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int productSizeByCell)
+        public override IRealProduct FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int productSizeByCell)
         {
             if (PowerPlantPool.SharedInstance.PoolChecker())
             {

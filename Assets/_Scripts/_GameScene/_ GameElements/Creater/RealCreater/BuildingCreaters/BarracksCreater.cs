@@ -19,11 +19,12 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BuildingCreater
         private SpawnPositionsCreater spawnPositionsCreater;
         
 
-        public override async Task<IRealProduct> FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell, Vector2Int productSizeByCell)
+        public override IRealProduct FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell, Vector2Int productSizeByCell)
         {
-                if (BarracksPool.SharedInstance.PoolChecker())
+            Barracks barracks = BarracksPool.SharedInstance.GetPooledObject();
+            
+                if (barracks !=null)
                 {
-                    Barracks barracks = BarracksPool.SharedInstance.GetPooledObject();
                     BarracksPool.SharedInstance.RemoveFromPoolList(barracks);
                     barracks.gameObject.SetActive(true);
                     barracks.transform.position = spawnPositionByPoint;
@@ -35,7 +36,6 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BuildingCreater
                     List<SpawnPosition> SpawnPositionList = TriggerSpawnPositionCreater(barracks.SpawnPositionHolder, barracks.SpawnPositionSizeByCell, spawnPositionListByCell);
                     barracks.InIt(startPositionByCell, endPositionByCell, SpawnPositionList);
                     return barracks;
-                    
                 }
                 else
                 {

@@ -8,9 +8,9 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.UtilityCreaters
     {
         public SpawnPosition FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int prodcutSizeByCell)
         {
-            if (SpawnPositionPool.SharedInstance.PoolChecker())
+            SpawnPosition spawnPosition = SpawnPositionPool.SharedInstance.GetPooledObject();
+            if (spawnPosition != null)
             {
-                SpawnPosition spawnPosition = SpawnPositionPool.SharedInstance.GetPooledObject();
                 SpawnPositionPool.SharedInstance.RemoveFromPoolList(spawnPosition);
                 spawnPosition.transform.position = spawnPositionByPoint;
                 spawnPosition.transform.rotation = Quaternion.identity;

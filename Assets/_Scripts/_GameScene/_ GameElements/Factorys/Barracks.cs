@@ -200,14 +200,14 @@ namespace _Scripts._GameScene.__GameElements.Factorys
 
         #region EventTrigger Func.
 
-        private async void  TriggerHeavySoldierCreater()
+        private  void  TriggerHeavySoldierCreater()
         {
 
             Vector2Int spawnCellPositionByCell = RandomlyGiveSpawnPositionFromList(_spawnPositionList);
             if (spawnCellPositionByCell != new Vector2Int())
             {
                 Vector3 spawnPositionByPoint = CreatePointFixer(GameSpace.ConvertCellToPoint(spawnCellPositionByCell), Soldier.GameSpaceSizeByCell);
-                IRealProduct heavySolider = await _heavySoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _heavySoldierSizeByCell);
+                IRealProduct heavySolider = _heavySoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _heavySoldierSizeByCell);
                 if (heavySolider != null)
                 {
                     heavySolider.MyTransform.SetParent(_heavySoldierBarracks);
@@ -225,13 +225,13 @@ namespace _Scripts._GameScene.__GameElements.Factorys
 
         }
 
-        private async void TriggerMediumSoldierCreater()
+        private  void TriggerMediumSoldierCreater()
         {
             Vector2Int spawnCellPositionByCell = RandomlyGiveSpawnPositionFromList(_spawnPositionList);
             if (spawnCellPositionByCell != new Vector2Int())
             {
                 Vector3 spawnPositionByPoint = CreatePointFixer(GameSpace.ConvertCellToPoint(spawnCellPositionByCell), Soldier.GameSpaceSizeByCell);
-                IRealProduct mediumSolider = await _medimuSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _mediumSoldierSizeByCell);
+                IRealProduct mediumSolider =  _medimuSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _mediumSoldierSizeByCell);
                 if (mediumSolider != null)
                 {
                     mediumSolider.MyTransform.SetParent(_mediumSoldierBarracks);
@@ -249,13 +249,13 @@ namespace _Scripts._GameScene.__GameElements.Factorys
             }
         }
 
-        private async void TriggerLightSoldierCreater()
+        private  void TriggerLightSoldierCreater()
         {
             Vector2Int spawnCellPositionByCell = RandomlyGiveSpawnPositionFromList(_spawnPositionList);
             if (spawnCellPositionByCell != new Vector2Int())
             {
                 Vector3 spawnPositionByPoint = CreatePointFixer(GameSpace.ConvertCellToPoint(spawnCellPositionByCell), Soldier.GameSpaceSizeByCell);
-                IRealProduct lightSoldier = await _lightSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _lightSoldierSizeByCell);
+                IRealProduct lightSoldier =  _lightSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _lightSoldierSizeByCell);
                 if (lightSoldier != null)
                 {
                     lightSoldier.MyTransform.SetParent(_lightSoldierBarracks);

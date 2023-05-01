@@ -250,17 +250,16 @@ namespace _Scripts._GameScene.ManagersInGame
         private void CreateHeavySoldierButton(RaycastHit raycastHit, Barracks selectedBarracks)
         {
             ClickAnimation(raycastHit);
-            
-            if (selectedBarracks != null )
+            try
             {
                 selectedBarracks.EventCreateHeavySoldier.Invoke();
             }
-            else
+            catch (Exception e)
             {
                 Debug.Log("Select first barracks");
             }
-            
         }
+        
         private void CreateMediumSoldierButton(RaycastHit raycastHit,Barracks selectedBarracks)
         {
             ClickAnimation(raycastHit);

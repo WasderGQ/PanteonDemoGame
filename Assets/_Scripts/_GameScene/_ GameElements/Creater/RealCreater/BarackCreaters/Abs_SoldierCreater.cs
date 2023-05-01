@@ -7,7 +7,7 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BarackCreaters
 {
     public abstract class Abs_SoldierCreater :IRealCreater
     {
-        public abstract  Task<IRealProduct> FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell, Vector2Int productSizeByCell);
+        public abstract  IRealProduct FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell, Vector2Int productSizeByCell);
     }
 }
 

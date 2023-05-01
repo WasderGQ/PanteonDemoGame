@@ -168,21 +168,21 @@ namespace _Scripts._GameScene._GameArea
       }
     }
     
-    private async void TriggerBarracksCreater()
+    private  void TriggerBarracksCreater()
     {
       Vector2Int barracksAndAttacmentSize = new Vector2Int(_barracksSizeByCell.x + 2, _barracksSizeByCell.y + 2);
       Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(barracksAndAttacmentSize, _firstSearchCellPosition);
       Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPositionByCell), _barracksSizeByCell);
-      IRealProduct barracks = await barracksCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell,_barracksSizeByCell);
+      IRealProduct barracks =  barracksCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell,_barracksSizeByCell);
       barracks.MyTransform.SetParent(BarracksStore);
       _barracksList.Add(barracks);
     }
     
-    private async void TriggerPowerPlantCreater()
+    private  void TriggerPowerPlantCreater()
     {
       Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(_powerPlantSizeByCell, _firstSearchCellPosition);
       Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPositionByCell), _powerPlantSizeByCell);
-      IRealProduct powerPlant = await powerPlantCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell,_powerPlantSizeByCell);
+      IRealProduct powerPlant =  powerPlantCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell,_powerPlantSizeByCell);
       powerPlant.MyTransform.SetParent(PowerPlantStore);
       _powerPlantsList.Add(powerPlant);
     }
