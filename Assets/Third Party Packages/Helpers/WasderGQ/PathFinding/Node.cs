@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YusufISIK.PathFinding
+namespace Third_Party_Packages.Helpers.WasderGQ.PathFinding
 {
     [Serializable]
     public class Node : IHeapItem<Node>

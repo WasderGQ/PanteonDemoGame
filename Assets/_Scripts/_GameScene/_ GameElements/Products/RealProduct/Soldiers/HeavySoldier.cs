@@ -1,22 +1,24 @@
-using System;
 using System.Collections.Generic;
 using _Scripts._GameScene.__GameElements.Features;
+using _Scripts._GameScene._GameArea;
+using _Scripts._GameScene._PlayerControl;
 using _Scripts.Data.Enums;
 using _Scripts.Data.ScriptableObjects;
 using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 {
-    public class HeavySoldier : Soldier,IAttacker,IVulnerable,IRealProduct
+    public class HeavySoldier : Soldier,IAttacker,IVulnerable,IRealProduct,IPathFinderMove
     {
         [SerializeField] private SoldierTypeData _soldierTypes;
+        [SerializeField] private SoldierController _soldierController;
         [SerializeField] private int _maxHealth;
         [SerializeField] private int _damage;
         [SerializeField] private int _currentHealth;
         private Vector2Int _startPositionByCell;
         private Vector2Int _endPositionByCell;
         private List<IRealProduct> _products;
-
+        
         public override Transform MyTransform { get => transform; }
 
         public override List<IRealProduct> ProductList { get => _products; }
@@ -33,6 +35,7 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         public void InIt(Vector2Int startPositionByCell, Vector2Int endPositionByCell)
         {
             OnStartSetVariable(startPositionByCell, endPositionByCell);
+            
         }
 
         private void OnStartSetVariable(Vector2Int startPositionByCell, Vector2Int endPositionByCell)
@@ -69,8 +72,13 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         {
             if (_currentHealth <= 0)
             {
-                Destroy(this);
+               
             }
+        }
+
+        public void Move(Vector2Int movingCell)
+        {
+            _soldierController.StartMovement(movingCell);
         }
     }
 }

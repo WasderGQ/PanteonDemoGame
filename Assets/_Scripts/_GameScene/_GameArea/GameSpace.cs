@@ -5,115 +5,57 @@ using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Products.Soldiers;
 using _Scripts._Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 namespace _Scripts._GameScene._GameArea
 {
   public class GameSpace : MonoBehaviour //must be singleton
   {
+    private FactoryBuilder _factoryBuilder;
     
-    #region ReadOnly Values
-
     private readonly Vector2Int _powerPlantSizeByCell = new Vector2Int(2, 3);
     private readonly Vector2Int _barracksSizeByCell = new Vector2Int(4, 4);
-
-    #endregion
-    
-    #region UnityObjects (Set From Editor)
-
-    #region Static
-
     private static Grid _grid;
-    
-    #endregion
-    
-    #region BuildingDepos //Set Form Editor
-
     [SerializeField] private Transform _barracksStore;
     [SerializeField] private Transform _powerPlantStore;
     [SerializeField] private Grid _setFormEditorGrid;
-    
-    #endregion
-
-    #endregion
-    
-    #region Public Propertys
-
-    #region Static
-
-    
-
-    #endregion
-    
-    
     public Transform BarracksStore { get => _barracksStore; }
     public Transform PowerPlantStore { get => _powerPlantStore; }
-
-    #endregion
-    
-    #region Private Variable
-
-    #region Static
-    
     private static Vector3 _myPosition;
     private static Vector2 _cellSize;
     private static Vector2Int _gameSpaceStartByCell;
     private static Vector2Int _gameSpaceSizeByCell;
     private static Vector2Int _gameSpaceEndByCell;
-    private static List<IRealProduct> _barracksList;
-    private static List<IRealProduct> _powerPlantsList;
-    
-    #endregion
-    
-    #region BuildCreaters
-
-    private BarracksCreater barracksCreater;
-    private PowerPlantCreater powerPlantCreater;
-
-    #endregion
-    
-    #region Changeable Value //Set From Editor
-
-    [SerializeField] private Vector2Int _firstSearchCellPosition; 
-
-    #endregion
-
-    #region Regular
-
+    [SerializeField] private Vector2Int _firstSearchCellPosition;
     private Vector3 _gameSpaceStartByPoint;
     private Vector3 _gameSpaceEndByPoint;
+    [SerializeField] private static List<Barracks> _barracksList;
+    [SerializeField] private static List<PowerPlant> _powerPlantList;
     
-
-    #endregion
-    
-    #endregion
-
-    #region Public Propert (Only Get)
-
-    
+   
     public Vector3 GameSpaceStartAreaByPoint { get => _gameSpaceStartByPoint; }
     public Vector3 GameSpaceEndAreaByPoint { get => _gameSpaceEndByPoint; }
     
     
-    #region Static
-   
-    public static List<IRealProduct> BuildingList { get => ShowAllBuildingList(_barracksList,_powerPlantsList); }
     
     public static Vector2Int UnValidVector = new Vector2Int(GameSpaceStartAreaByCell.x -1 , GameSpaceEndAreaByCell.y +1);
     public static Vector2Int GameSpaceStartAreaByCell { get => _gameSpaceStartByCell; }
     public static Vector2Int GameSpaceEndAreaByCell { get => _gameSpaceEndByCell; }
     public static Vector2 CellSize { get => _cellSize; }
-    
-    #endregion
-    
-    #endregion
-    
+
+    public UnityEvent<Barracks> RemoveBarracksFormList;
+    public UnityEvent<PowerPlant> RemovePowerPlantsFormList;
+
+
+
     #region Start Func.
 
     public void InIt()
     {
       SetVariable();
       SetGameSpaceAreaCoordinate();
+      AddListener();
     }
     private void SetGameSpaceAreaCoordinate()
     {
@@ -126,18 +68,39 @@ namespace _Scripts._GameScene._GameArea
     }
     private void SetVariable()
     {
-      _barracksList = new List<IRealProduct>();
-      _powerPlantsList = new List<IRealProduct>();
       _grid = _setFormEditorGrid;
       _myPosition = transform.position;
       barracksCreater = new BarracksCreater();
       powerPlantCreater = new PowerPlantCreater();
-      
-      
+      _barracksList = new List<Barracks>();
+      _powerPlantList = new List<PowerPlant>();
+      RemoveBarracksFormList = new UnityEvent<Barracks>();
+      RemovePowerPlantsFormList = new UnityEvent<PowerPlant>();
+      barracksCreater = new BarracksCreater();
+      powerPlantCreater = new PowerPlantCreater();
+      _factoryBuilder = new FactoryBuilder();
+    }
+
+    private void AddListener()
+    {
+      RemoveBarracksFormList.AddListener(RemoveFromBarracksList);
+      RemovePowerPlantsFormList.AddListener(RemoveFromPowePlantList);
     }
 
     #endregion
 
+    private void RemoveFromBarracksList(Barracks barracks)
+    {
+      _barracksList.Remove(barracks);
+    }
+    private void RemoveFromPowePlantList(PowerPlant powerPlant)
+    {
+      _powerPlantList.Remove(powerPlant);
+    }
+    
+    
+    
+    
     #region Public Static CellToPosition - PositionToCell
     public static Vector2Int ConvertPointToCell(Vector3 worldPos)
     { 
@@ -173,18 +136,16 @@ namespace _Scripts._GameScene._GameArea
       Vector2Int barracksAndAttacmentSize = new Vector2Int(_barracksSizeByCell.x + 2, _barracksSizeByCell.y + 2);
       Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(barracksAndAttacmentSize, _firstSearchCellPosition);
       Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPositionByCell), _barracksSizeByCell);
-      IRealProduct barracks =  barracksCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell,_barracksSizeByCell);
-      barracks.MyTransform.SetParent(BarracksStore);
-      _barracksList.Add(barracks);
+      Barracks barracks = _factoryBuilder.FactoryMethod1(spawnPositionByPoint,spawnCellPositionByCell,_barracksSizeByCell);
+      barracks.transform.SetParent(BarracksStore);
     }
     
     private  void TriggerPowerPlantCreater()
     {
       Vector2Int spawnCellPositionByCell = SearchEmptyCellForSpawn(_powerPlantSizeByCell, _firstSearchCellPosition);
       Vector3 spawnPositionByPoint = SpawnPointFinder(ConvertCellToPoint(spawnCellPositionByCell), _powerPlantSizeByCell);
-      IRealProduct powerPlant =  powerPlantCreater.FactoryMethod(spawnPositionByPoint,spawnCellPositionByCell,_powerPlantSizeByCell);
+      PowerPlant powerPlant = _factoryBuilder.FactoryMethod1(spawnPositionByPoint,spawnCellPositionByCell,_powerPlantSizeByCell);
       powerPlant.MyTransform.SetParent(PowerPlantStore);
-      _powerPlantsList.Add(powerPlant);
     }
 
     
@@ -198,7 +159,7 @@ namespace _Scripts._GameScene._GameArea
       bool IsSpawnable = false;
       int containsCounter = 0;
       Vector2Int searchCellPosition = startPointByCell;
-      List<IRealProduct> allProductsOnGameSpace = GetAllProductByList(BuildingList);
+      List<IRealProduct> allProductsOnGameSpace = GetRealProductsByList(AllRealProducts);
       while (IsSpawnable == false)
       {
         containsCounter = 0;
@@ -245,10 +206,29 @@ namespace _Scripts._GameScene._GameArea
       }
       return 0;
     }
-    
-    private List<IRealProduct> GetAllProductByList(List<IRealProduct> buildingList)
+
+    private static List<IFactoryCreaterProduct> GetProductsByList(List<Barracks> barracksList,List<PowerPlant> powerPlantList)
     {
-      List<IRealProduct> allProductsOnGameSpace = new List<IRealProduct>();
+      List<IFactoryCreaterProduct> gameSpaceProductList = new List<IFactoryCreaterProduct>();
+      foreach (var barracks in barracksList)
+      {
+        gameSpaceProductList.Add(barracks);
+      }
+
+      foreach (var powerPlant in powerPlantList)
+      {
+        gameSpaceProductList.Add(powerPlant);
+      }
+
+      return gameSpaceProductList;
+    }
+    
+    
+    
+    
+    private static List<IRealProduct> GetRealProductsByList(List<IFactoryCreaterProduct> buildingList)
+    {
+      List<IFactoryCreaterProduct> allProductsOnGameSpace = new List<IFactoryCreaterProduct>();
 
       foreach (var building in buildingList)
       {

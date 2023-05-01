@@ -2,9 +2,9 @@
 
 namespace _Scripts._GameScene.__GameElements.Creater.VirtualCreater
 {
-    public interface IVirtualCreater : ICreater
+    public interface IVirtualProductCreater<T> : ICreater
     {
-        public IVirtualProduct FactoryMethod();
+        public T FactoryMethod();
         
     }
 }

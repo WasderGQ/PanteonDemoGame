@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using System;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 
-
-namespace YusufISIK.PathFinding
+namespace Third_Party_Packages.Helpers.WasderGQ.PathFinding
 {
     public class Grid<T>
     {

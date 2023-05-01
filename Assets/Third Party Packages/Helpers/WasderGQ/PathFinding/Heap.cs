@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YusufISIK.PathFinding
+namespace Third_Party_Packages.Helpers.WasderGQ.PathFinding
 {
     public class Heap<T> where T : IHeapItem<T>
     {

@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using _Scripts._GameScene.__GameElements.Creater.RealCreater.BarackCreaters;
 using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Features;
 using _Scripts._GameScene.__GameElements.Products.Soldiers;
+using _Scripts._GameScene._GameArea;
 using _Scripts._GameScene._UI.Features;
 using UnityEngine;
 
@@ -17,16 +14,17 @@ namespace _Scripts._GameScene.ManagersInGame
     {
         private ClickRay _clickRay;
         private HeavySoldierCreater heavySoldierCreater;
-        private MedimuSoldierCreater mediumSoldierCreater;
+        private MediumSoldierCreater mediumSoldierCreater;
         private LightSoldierCreater lightSoldierCreater;
         private bool _isHoldingMouse0;
         private Vector3 _mouseWorldPositionOnDown;
         private Vector3 _mouseWorldPositionOnHold;
         private Vector3 _vectorsDistance;
         private Barracks _mouse0_SelectedBarracks;
-        private IMovable Mouse0_SelectedMovable;
+        private IMovable _mouse0_SelectedMovable;
         private IVulnerable _mouse1_selectedVulnerable;
         private IPaneled _mouse0_SelectedPaneled;    // Dont use variable use Property.
+        private IPathFinderMove _mouse0_SelectedPathFinderMove;
         private IPaneled Mouse0_SelectedPaneled
         {
             get
@@ -41,8 +39,7 @@ namespace _Scripts._GameScene.ManagersInGame
             }
         }
         private IAttacker _mouse0_SelectedAttacker;
-        private Vector3 mousePositionOnWorld;
-
+        private Vector3 _mouseWorldPositionForMove;
 
         public void InIt()
         {
@@ -51,15 +48,15 @@ namespace _Scripts._GameScene.ManagersInGame
         private void SetVariable()
         {
             _clickRay = new ClickRay();
-            
+            _mouse0_SelectedPathFinderMove = null;
 
         }
         private void Update()
         {
             Mouse0ClickDown();
             Mouse1ClickDown();
-            //MoveMovable(Mouse0_SelectedMovable);
-            
+            Mouse0ClickHold();
+            Mouse0ClickUp();
 
         }
 
@@ -125,36 +122,7 @@ namespace _Scripts._GameScene.ManagersInGame
                 Debug.Log("the attacker did not take damage");
             }
         }
-        public async void MoveMovable(IMovable movableobject)
-        {
-            if (movableobject != null)
-            {
-                if (Input.GetKeyDown(KeyCode.Mouse2) && _mouseWorldPositionOnDown == new Vector3())
-                {
-                    if(await _clickRay.CheckMouseOnCollider("GameBoard"))
-                        
-                        _mouseWorldPositionOnDown = await GetMousePosition();
-                        _isHoldingMouse0 = true;
-                        await Task.Delay(100);
-                }
-                if (_isHoldingMouse0)
-                {
-                    _mouseWorldPositionOnHold = await GetMousePosition();
-                    _vectorsDistance = GetTwoPointDistance();
-                    movableobject.Move(_vectorsDistance);
-                }
-                if (Input.GetKeyUp(KeyCode.Mouse2))
-                {
-                    _isHoldingMouse0 = false;
-                    _mouseWorldPositionOnDown = new Vector3();
-                    _mouseWorldPositionOnHold = new Vector3();
-                    _vectorsDistance = Vector3.zero;
-                }
-            }
-           
-            
-            
-        }
+        
         private Vector3 GetTwoPointDistance()
         {
             return _mouseWorldPositionOnDown - _mouseWorldPositionOnHold;
@@ -162,6 +130,7 @@ namespace _Scripts._GameScene.ManagersInGame
         }
         private async void Mouse0ClickDown()
         {
+            
             if (Input.GetMouseButtonDown(0))
             {
                 _isHoldingMouse0 = true;
@@ -226,14 +195,55 @@ namespace _Scripts._GameScene.ManagersInGame
                     {
                         CreateLightSoldierButton(lightButtonResult.Result.Item1, _mouse0_SelectedBarracks);
                     }
+
+                    if (_mouse0_SelectedPathFinderMove != null)
+                    {
+                        Vector2Int movingCell = GameSpace.ConvertPointToCell(await GetMousePosition());
+                        _mouse0_SelectedPathFinderMove.Move(movingCell);
+                        _mouse0_SelectedPathFinderMove = null;
+                    }
+                    
                 }
             }
         }
+        private async void Mouse0ClickHold()
+        {
+            if (_isHoldingMouse0)
+            {
+                if (_mouse0_SelectedMovable != null)
+                {
+                    _mouseWorldPositionForMove = await GetMousePosition();
+                    _mouseWorldPositionForMove = RoundingtoModCellSize(_mouseWorldPositionForMove);
+                    _mouse0_SelectedMovable.Move(_mouseWorldPositionForMove);
+                }
+            }
+        }
+        private void Mouse0ClickUp()
+        {
+            if(Input.GetMouseButtonUp(0) && _mouse0_SelectedMovable != null)
+            {
+                _isHoldingMouse0 = false;
+                int counter=0;
+                counter = GameSpace.IsCellValidForCreate(GameSpace.ConvertPointToCell(_mouseWorldPositionForMove), GameSpace.AllRealProducts);
+                if (counter == 0)
+                {
+                    _mouse0_SelectedMovable.TrueMove(_mouseWorldPositionForMove);
+                    Debug.Log(_mouseWorldPositionForMove);
+                    _mouse0_SelectedMovable = null;
+                }
+                else
+                {
+                    _mouse0_SelectedMovable.MoveDefault();
+                    _mouse0_SelectedMovable = null;
+                }
+            }
+        }
+        
         private void SetToMyInheritanceOnMouse0<T1>(T1 sameobject) 
         {
             if (sameobject is IMovable)
             {
-                Mouse0_SelectedMovable = (IMovable)sameobject;
+                _mouse0_SelectedMovable = (IMovable)sameobject;
             }
 
             if (sameobject is IAttacker)
@@ -245,6 +255,11 @@ namespace _Scripts._GameScene.ManagersInGame
             {
                 Mouse0_SelectedPaneled = (IPaneled)sameobject;
             }
+
+            if (sameobject is IPathFinderMove)
+            {
+                _mouse0_SelectedPathFinderMove = (IPathFinderMove)sameobject;
+            }
             
         }
         private void CreateHeavySoldierButton(RaycastHit raycastHit, Barracks selectedBarracks)
@@ -254,12 +269,11 @@ namespace _Scripts._GameScene.ManagersInGame
             {
                 selectedBarracks.EventCreateHeavySoldier.Invoke();
             }
-            catch (Exception e)
+            catch
             {
                 Debug.Log("Select first barracks");
             }
         }
-        
         private void CreateMediumSoldierButton(RaycastHit raycastHit,Barracks selectedBarracks)
         {
             ClickAnimation(raycastHit);
@@ -313,13 +327,7 @@ namespace _Scripts._GameScene.ManagersInGame
         private async Task<Vector3> GetMousePosition()
         {
             return await _clickRay.GetRayWorldPosition();
-
-
         }
-       
-        
-
-       
         private Vector3 RoundingtoModCellSize(Vector3 distance)
         {
             float xValue = distance.x;
@@ -329,33 +337,8 @@ namespace _Scripts._GameScene.ManagersInGame
             float yremaining = yValue % 10f;
             yValue = yValue - yremaining;
             return new Vector3(xValue, yValue, distance.z);
-
-
         }
-        public IEnumerable PutBuildingOnSpaceBoard(Transform buildingTransform)
-        {
-            bool isPutBuilding = false;
-            while (!isPutBuilding)
-            {
-                
-                buildingTransform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                if (_clickRay.CheckMouseOnCollider("GameBoard").Result)
-                {
-                    buildingTransform.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-                }
-                else
-                {
-                    buildingTransform.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                }
-
-
-                if (Input.GetMouseButtonDown(0))
-                {
-                    isPutBuilding = true;
-                }
-            }
-            yield break;
-        }
+        
         
 
     }

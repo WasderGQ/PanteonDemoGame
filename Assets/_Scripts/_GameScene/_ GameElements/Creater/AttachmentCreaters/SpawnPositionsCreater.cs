@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using _Scripts._GameScene.__GameElements.Products.GameObjectUtility;
 using _Scripts._GameScene.GameObjectPools;
 using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.UtilityCreaters
 {
-    public class SpawnPositionsCreater : IAttachmentCreater<SpawnPosition>
+    public class SpawnPositionsCreater : AttachmentCreater<SpawnPosition>
     {
         public SpawnPosition FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int prodcutSizeByCell)
         {
@@ -24,6 +25,11 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.UtilityCreaters
                 Debug.LogWarning("Empty BarrackPool");
                 return new SpawnPosition();
             }
+            
+            
+            
+            
+            
         }
 
     

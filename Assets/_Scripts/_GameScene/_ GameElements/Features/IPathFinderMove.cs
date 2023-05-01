@@ -1,7 +1,9 @@
-﻿namespace _Scripts._GameScene.__GameElements.Features
+﻿using UnityEngine;
+
+namespace _Scripts._GameScene.__GameElements.Features
 {
-    public interface IPathfinderMove
+    public interface IPathFinderMove
     {
-        
+        public void Move(Vector2Int movingCell);
     }
 }

@@ -14,7 +14,7 @@ using UnityEngine.Events;
 
 namespace _Scripts._GameScene.__GameElements.Factorys
 {
-    public class PowerPlant : FactoryHave1Creater<PowerPlant>, IRealProduct, IVulnerable
+    public class PowerPlant : FactoryHave1Creater<PowerPlant>, IRealProduct, IVulnerable,IFactoryCreaterProduct
     {
         #region Data
 

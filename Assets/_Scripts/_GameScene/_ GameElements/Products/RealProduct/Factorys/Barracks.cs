@@ -13,7 +13,7 @@ using UnityEngine.Events;
 
 namespace _Scripts._GameScene.__GameElements.Factorys
 {
-    public class Barracks : FactoryHave3Creater<Barracks>, IRealProduct, IVulnerable, IMovable, IPaneled
+    public class Barracks : FactoryHave3Creater<Barracks>, IRealProduct, IVulnerable, IMovable, IPaneled,IFactoryCreaterProduct
     {
 
         #region ReadOnly Variable
@@ -40,7 +40,6 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         public UnityEvent EventCreateHeavySoldier { get => _eventCreateHeavySoldier; }
         public UnityEvent EventCreateMediumSoldier { get => _eventCreateMediumSoldier; }
         public UnityEvent EventCreateLightSoldier { get => _eventCreateLightSoldier; }
-        public UnityEvent<Vector2Int> EventMove { get => _eventMove; }
         public UnityEvent<IAttacker> EventTakeDamage { get => _eventTakeDamage; }
 
         #endregion
@@ -135,11 +134,11 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         private List<IRealProduct> _heavySoldierList;
         [SerializeField] private List<SpawnPosition> _spawnPositionList;
         private LightSoldierCreater _lightSoldierCreater;
-        private MedimuSoldierCreater _medimuSoldierCreater;
+        private MediumSoldierCreater mediumSoldierCreater;
         private HeavySoldierCreater _heavySoldierCreater;
         private int _maxHealth;
         private int _currentHealth;
-
+        private Vector3 _mementoSpawnedPosition;
         #endregion
 
 
@@ -165,11 +164,15 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         private void OnStartSetSpawnPositionList(List<SpawnPosition> spawnPositionList)
         {
             _spawnPositionList = spawnPositionList;
+            foreach (var product in spawnPositionList)
+            {
+                ProductList.Add(product);
+            }
+            
         }
 
         private void AddListener()
         {
-            EventMove.AddListener(MoveBarracks);
             EventTakeDamage.AddListener(TakeDamage);
             EventCreateHeavySoldier.AddListener(TriggerHeavySoldierCreater);
             EventCreateMediumSoldier.AddListener(TriggerMediumSoldierCreater);
@@ -192,8 +195,9 @@ namespace _Scripts._GameScene.__GameElements.Factorys
             _heavySoldierList = new List<IRealProduct>();
             _spawnPositionList = new List<SpawnPosition>();
             _lightSoldierCreater = new LightSoldierCreater();
-            _medimuSoldierCreater = new MedimuSoldierCreater();
+            mediumSoldierCreater = new MediumSoldierCreater();
             _heavySoldierCreater = new HeavySoldierCreater();
+            _mementoSpawnedPosition = transform.position;
         }
 
         #endregion
@@ -211,7 +215,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
                 if (heavySolider != null)
                 {
                     heavySolider.MyTransform.SetParent(_heavySoldierBarracks);
-                    _heavySoldierList.Add(heavySolider);
+                    GameSpace.AllRealProducts.Add(heavySolider);
                 }
                 else
                 {
@@ -231,11 +235,11 @@ namespace _Scripts._GameScene.__GameElements.Factorys
             if (spawnCellPositionByCell != new Vector2Int())
             {
                 Vector3 spawnPositionByPoint = CreatePointFixer(GameSpace.ConvertCellToPoint(spawnCellPositionByCell), Soldier.GameSpaceSizeByCell);
-                IRealProduct mediumSolider =  _medimuSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _mediumSoldierSizeByCell);
+                IRealProduct mediumSolider =  mediumSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _mediumSoldierSizeByCell);
                 if (mediumSolider != null)
                 {
                     mediumSolider.MyTransform.SetParent(_mediumSoldierBarracks);
-                    _mediumSoldierList.Add(mediumSolider);
+                    GameSpace.AllRealProducts.Add(mediumSolider);
 
                 }
                 else
@@ -259,7 +263,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
                 if (lightSoldier != null)
                 {
                     lightSoldier.MyTransform.SetParent(_lightSoldierBarracks);
-                    _heavySoldierList.Add(lightSoldier);
+                    GameSpace.AllRealProducts.Add(lightSoldier);
 
                 }
                 else
@@ -340,7 +344,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
                 AllSoldierInBarracks.Add(spawnPotion);
             }
 
-            foreach (var VARIABLE in AllSoldierInBarracks)
+            /*foreach (var VARIABLE in AllSoldierInBarracks)
             {
                 for (int i = VARIABLE.StartPositionByCell.x; i <= VARIABLE.EndPositionByCell.x; i++)
                 {
@@ -351,7 +355,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
                     }
                     
                 }
-            }
+            }*/
             return AllSoldierInBarracks;
 
         }
@@ -374,11 +378,8 @@ namespace _Scripts._GameScene.__GameElements.Factorys
             {
                 transform.SetParent(BarracksPool.SharedInstance.ParentPoolObject);
                 BarracksPool.SharedInstance.PooledObjects.Add(this);
-                _spawnPositionList.Clear();
                 gameObject.SetActive(false);
-                _lightSoldierList.Clear();
-                _mediumSoldierList.Clear();
-                _heavySoldierList.Clear();
+                
                 
             }
         }
@@ -389,13 +390,22 @@ namespace _Scripts._GameScene.__GameElements.Factorys
 
         #region Move Func.
 
-        private void MoveBarracks(Vector2Int MovedPositionByCell)
+        public void TrueMove(Vector3 mousePosition)
         {
+            _mementoSpawnedPosition = mousePosition;
+            
+        }
+        
+        
+        public void Move(Vector3 mousePosition)
+        {
+            transform.position = mousePosition;
+            
+        }
 
-
-
-
-
+        public void MoveDefault()
+        {
+            transform.position = _mementoSpawnedPosition;
         }
 
         #endregion
@@ -408,25 +418,11 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         }
 
 
-        public void Move(Vector3 Distance)
-        {
-            Vector3 mod10Distance = RoundingtoModCellSize(Distance);
-            transform.position = mod10Distance + transform.position;
+        
 
-        }
+        
 
-        private Vector3 RoundingtoModCellSize(Vector3 distance)
-        {
-            float xValue = distance.x;
-            float xremaining = xValue % 10f;
-            xValue = xValue - xremaining;
-            float yValue = distance.y;
-            float yremaining = yValue % 10f;
-            yValue = yValue - yremaining;
-            return new Vector3(xValue, yValue, distance.z);
-
-
-        }
+        
 
         
     }

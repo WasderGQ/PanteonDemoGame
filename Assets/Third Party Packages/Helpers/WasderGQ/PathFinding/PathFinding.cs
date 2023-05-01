@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace YusufISIK.PathFinding
+namespace Third_Party_Packages.Helpers.WasderGQ.PathFinding
 {
     public class PathFinding
     {

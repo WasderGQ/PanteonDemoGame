@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Products.Soldiers;
@@ -7,9 +8,17 @@ using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BarackCreaters
 {
-    public class MedimuSoldierCreater : Abs_SoldierCreater
+    public class MediumSoldierCreater : SoldierCreater<MediumSoldier>
     {
-        public override  IRealProduct FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int productSizeByCell)
+        private List<MediumSoldier> _createdSoldierList;
+        public override List<MediumSoldier> CreatedSoldierList { get; }
+
+
+        public MediumSoldierCreater()
+        {
+            _createdSoldierList = new List<MediumSoldier>();
+        }
+        public override MediumSoldier FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int productSizeByCell)
         {
             if (MediumSoldierPool.SharedInstance.PoolChecker())
             {
@@ -23,7 +32,7 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BarackCreaters
                     Vector2Int endPositionByCell = new Vector2Int(startPositionByCell.x + productSizeByCell.x - 1, startPositionByCell.y + productSizeByCell.y - 1);
                     mediumSoldier.InIt(startPositionByCell, endPositionByCell);
                     mediumSoldier.GetComponent<SoldierController>().InIt();
-                    return mediumSoldier;
+                    _createdSoldierList.Add(mediumSoldier);
                 }
                 else
                 {
