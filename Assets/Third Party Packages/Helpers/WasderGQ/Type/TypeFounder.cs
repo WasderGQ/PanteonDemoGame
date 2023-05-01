@@ -1,24 +1,23 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
 
-public class TypeFounder 
+namespace Third_Party_Packages.Helpers.WasderGQ.Type
 {
-    private int HowMuchProductTypeYouHave<T>(object SearchObject)//Every ICreater creating one product type.
+    public class TypeFounder 
     {
-        Type factorType = SearchObject.GetType();
-        int variableCount = 0;
-
-        foreach (FieldInfo field in factorType.GetFields(BindingFlags.Public | BindingFlags.Instance))
+        private int HowMuchProductTypeYouHave<T>(object SearchObject)//Every ICreater creating one product type.
         {
-            if (field.FieldType == typeof(T))
-            {
-                variableCount++;
-            }
-        }
+            System.Type factorType = SearchObject.GetType();
+            int variableCount = 0;
 
-        return variableCount;
+            foreach (FieldInfo field in factorType.GetFields(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (field.FieldType == typeof(T))
+                {
+                    variableCount++;
+                }
+            }
+
+            return variableCount;
+        }
     }
 }

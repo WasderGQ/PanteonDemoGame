@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using _Scripts._GameScene._GameArea;
+using Third_Party_Packages.Helpers.WasderGQ.PathFinding;
 using UnityEngine;
 using UnityEngine.Events;
-using YusufISIK.PathFinding;
 
 namespace _Scripts._GameScene._PlayerControl
 {
-  public class SoldierController : MonoBehaviour 
-{
-    
+  public class SoldierController : MonoBehaviour
+  {
+   /*   private GameSpace _gameSpace;
     public UnityEvent EventStartMovement
     {
         get => _eventStartMovement;
@@ -35,18 +35,17 @@ namespace _Scripts._GameScene._PlayerControl
 
     public void InIt()
     {
-        _eventStartMovement = new UnityEvent();
-        _eventStartMovement.AddListener(StartMovement);
+        //_eventStartMovement = new UnityEvent();
+        //_eventStartMovement.AddListener(StartMovement);
         pathFinding = new PathFinding(gridSize.x, gridSize.y, cellSize, Vector3.zero); //Initiate pathfinding
     }
 
-    private void StartMovement() 
+    public void StartMovement(Vector2Int movingCell) 
     {
 		if(Input.GetKeyDown(KeyCode.Mouse0))//Left Click
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
-            
+            Vector2 mousePos2D = new Vector2(movingCell.x, movingCell.y);
+            Debug.Log(mousePos2D);
             if(moveRoutine != null)
                 StopCoroutine(moveRoutine);
             moveRoutine = StartCoroutine(Movement(mousePos2D));
@@ -140,7 +139,7 @@ namespace _Scripts._GameScene._PlayerControl
     private void MarkBlockedNodes()
     {
         blockedNodes.Clear();
-        foreach (var building in GameSpace.BuildingList)
+        foreach (var building in _gameSpace.RealProductList )
         {
             foreach (var product in building.ProductList )
             {
@@ -167,7 +166,7 @@ namespace _Scripts._GameScene._PlayerControl
             
         
     }
-   
+   */
 }  
 }
 

@@ -1,46 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Timer 
+namespace Third_Party_Packages.Helpers.WasderGQ.PrimalFunc
 {
-    public static async Task<bool> TimerCounter(float counttime)
+    public class Timer 
     {
-        float time = 0f;
-        do
+        public static async Task<bool> TimerCounter(float counttime)
         {
+            float time = 0f;
+            do
+            {
             
-            time += Time.deltaTime;
-        } while (time <= counttime);
+                time += Time.deltaTime;
+            } while (time <= counttime);
 
-        return true;
-    }
-    public static async Task<int> TimerCounterToInt(float counttime,int value)
-    {
-        float time = 0f;
-        do
+            return true;
+        }
+        public static async Task<int> TimerCounterToInt(float counttime,int value)
         {
+            float time = 0f;
+            do
+            {
             
-            time += Time.deltaTime;
-        } while (time <= counttime);
+                time += Time.deltaTime;
+            } while (time <= counttime);
 
-        value = 0;
-        return value;
-    }
-    public static async Task<int> AsyncTimeSetIntToZero(int counttime, int value)
-    {
+            value = 0;
+            return value;
+        }
+        public static async Task<int> AsyncTimeSetIntToZero(int counttime, int value)
+        {
 
-        value = TimerCounterToInt(counttime, value).Result;
-        Debug.Log("Timers Up");
-        return value;
+            value = TimerCounterToInt(counttime, value).Result;
+            Debug.Log("Timers Up");
+            return value;
        
 
 
-    }
+        }
 
-    public static async Task<bool> SetAsyncTimerCounterBoolToDefault()
-    {
-        return false;
+        public static async Task<bool> SetAsyncTimerCounterBoolToDefault()
+        {
+            return false;
+        }
     }
 }
