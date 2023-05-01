@@ -1,9 +1,13 @@
 using System.Collections.Generic;
+using _Scripts._GameScene._UI;
 using _Scripts.Data.ScriptableObjects;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Scripts.Managers
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(SoldierTypeData))]
     public class EditorManager : Editor
     {
@@ -29,5 +33,11 @@ namespace _Scripts.Managers
     
     
     }
+    
+    
+    
+#endif
+
+    
 }
         

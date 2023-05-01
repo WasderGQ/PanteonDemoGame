@@ -6,14 +6,24 @@ TagManager:
   tags:
   - GameBoard
   - GameSpace
+  - MediumSoldier
+  - PowerPlant
+  - HeavySoldier
+  - LightSolder
+  - Barracks
+  - HeavySoldierButton
+  - MediumSoldierButton
+  - LightSoldierButton
+  - SoldierCreateMenu
+  - Canvas
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - ddd
   - Water
   - UI
-  - 
+  - deneme
   - 
   - 
   - 
@@ -42,4 +52,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: New Layer 1
+    uniqueID: 2859480745
     locked: 0

@@ -7,7 +7,7 @@ namespace Third_Party_Packages.Helpers.WasderGQ.CustomAttributes
     public class ReadValueLockValue : PropertyAttribute
     {
     }
-    
+    /*
     
     [CustomPropertyDrawer(typeof(ReadValueLockValue))] 
     public class ReadValueLockValueEditor : PropertyDrawer 
@@ -20,5 +20,5 @@ namespace Third_Party_Packages.Helpers.WasderGQ.CustomAttributes
         }
     }
 
-    
+    */
 }

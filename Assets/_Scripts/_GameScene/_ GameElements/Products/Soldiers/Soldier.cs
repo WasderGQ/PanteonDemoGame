@@ -1,97 +1,41 @@
+using System.Collections.Generic;
 using _Scripts._GameScene.__GameElements.Features;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 {
-    
-    
-    public abstract class Soldier : MonoBehaviour,IAttacker,IVulnerable,IProduct,IControllableHero
+    public abstract class Soldier : MonoBehaviour ,IAttacker,IVulnerable,IRealProduct
     {
-        
-        
-        protected int _maxHealth;
-        protected Vector3 _gameSpacePosition;
-        protected int _damage;
-        protected int _currentHealth;
-        
-        public  int MaxHealth
-        {
-            get => _maxHealth;
-        }
-        public  Vector3 GameSpacePosition
-        {
-            get => _gameSpacePosition;
-        }
 
-        public void Move()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public int Damage
-        {
-            get => _damage;
-        }
-        public  int CurrentHealth
-        {
-            get => _currentHealth;
-        }
+        #region Abstract Property
+        public abstract Transform MyTransform { get; }
+        public abstract List<IRealProduct> ProductList { get; }
+        public abstract Vector2Int StartPositionByCell { get; }
+        public abstract Vector2Int EndPositionByCell { get; }
+        public abstract int Damage { get; }
+        public abstract int CurrentHealth { get; }
+        #endregion
         
-        
-        public UnityEvent<IAttacker> EventTakeDamage => new UnityEvent<IAttacker>();
-
-        
-        #region Start Func.
-
-        public void AbstractInIt()
-        {
-            SetEvents();
-            SetStartHealth();
-        }
-        protected void SetEvents()
-        {
-            EventTakeDamage.AddListener(TakeDamage);
-        }
-        protected void SetStartHealth()
-        {
-            _currentHealth = _maxHealth;
-        }
+        #region Same Property and Variable
+        public static Vector2Int GameSpaceSizeByCell { get => _gameSpaceSizeByCell; }
+        private static Vector2Int _gameSpaceSizeByCell = new Vector2Int(1, 1);
         
         #endregion
         
         #region Abstract Func.
 
-        protected abstract void SetMaxHealthOnStart();
-        protected abstract void SetDamageOnStart();
+        protected abstract void OnStartSetPositions(Vector2Int startPositionByCell, Vector2Int endPositionByCell);
+        protected abstract void OnStartSetMaxHealth();
+        protected abstract void OnStartSetDamageOnStart();
         
-        #endregion
-
-        #region Attacker Func.
-
-        public void GiveDamage(IVulnerable vulnerable)
-        {
-            vulnerable.EventTakeDamage.Invoke(this);
-        }
-
-        #endregion
-
         #region Vulnerable Func.
-
+        public abstract void TakeDamage(IAttacker attacker);
         
-        
-        
-        public void TakeDamage(IAttacker attacker)
-        {
-            _currentHealth -= attacker.Damage;
-        }
-
-        
-        
-
         #endregion
         
-
+        
+        #endregion
         
     }
 }

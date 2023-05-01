@@ -16,11 +16,10 @@ namespace _Scripts.Data.ScriptableObjects
       public SoldierTypeData()
       {
          _soldierTypeList = new List<SoldierData>();
-         EnumSoldierTyper[] typers = (EnumSoldierTyper[])EnumSoldierTyper.GetValues(typeof(EnumSoldierTyper));
-         foreach (var varıableTyper in typers)
+         EnumSoldierTyper[] typers = (EnumSoldierTyper[])Enum.GetValues(typeof(EnumSoldierTyper));
+         foreach (var variableTyper in typers)
          {
-            Debug.Log("enum dönüyor");
-            _soldierTypeList.Add(new SoldierData(varıableTyper));
+            _soldierTypeList.Add(new SoldierData(variableTyper));
          }
       
      
@@ -34,15 +33,15 @@ namespace _Scripts.Data.ScriptableObjects
          [SerializeField] private int _damage = default(int);
          [SerializeField] private int _health = default(int); 
        
-         [field:NonSerialized]public EnumSoldierTyper Type
+         public EnumSoldierTyper Type
          {
             get => _type;
          }
-         [field:NonSerialized] public int Damage
+         public int Damage
          {
             get => _damage;
          }
-         [field:NonSerialized] public int Health
+          public int Health
          {
             get => _health;
          }
