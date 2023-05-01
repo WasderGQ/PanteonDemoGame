@@ -7,15 +7,15 @@ using UnityEngine.Events;
 
 namespace _Scripts._GameScene._PlayerControl
 {
-  public class SoldierController : MonoBehaviour 
-{
-    
-   /* public UnityEvent EventStartMovement
+  public class SoldierController : MonoBehaviour
+  {
+   /*   private GameSpace _gameSpace;
+    public UnityEvent EventStartMovement
     {
         get => _eventStartMovement;
     }
 
-   */ private UnityEvent _eventStartMovement;
+    private UnityEvent _eventStartMovement;
 
     [Header("PathFinding")]
     public Vector2Int gridSize;
@@ -139,7 +139,7 @@ namespace _Scripts._GameScene._PlayerControl
     private void MarkBlockedNodes()
     {
         blockedNodes.Clear();
-        foreach (var building in GameSpace.AllRealProducts)
+        foreach (var building in _gameSpace.RealProductList )
         {
             foreach (var product in building.ProductList )
             {
@@ -166,7 +166,7 @@ namespace _Scripts._GameScene._PlayerControl
             
         
     }
-   
+   */
 }  
 }
 

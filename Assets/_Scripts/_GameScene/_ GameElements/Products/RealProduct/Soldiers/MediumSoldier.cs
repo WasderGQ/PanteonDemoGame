@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Features;
 using _Scripts.Data.Enums;
 using _Scripts.Data.ScriptableObjects;
 using UnityEngine;
 
-namespace _Scripts._GameScene.__GameElements.Products.Soldiers
+namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
 {
     
     public class MediumSoldier : Soldier ,IAttacker,IVulnerable,IRealProduct
@@ -18,7 +17,6 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         private Vector2Int _endPositionByCell;
         private List<IRealProduct> _products;
         private Vector2Int _mementoBornPlace;
-        public override Transform MyTransform { get => transform; }
         public override List<IRealProduct> ProductList { get => _products; }
         public override Vector2Int StartPositionByCell { get => _startPositionByCell; }
         public override Vector2Int EndPositionByCell { get => _endPositionByCell; }

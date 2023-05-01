@@ -1,9 +1,8 @@
-
 using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Creater.RealCreater.BarackCreaters;
+using _Scripts._GameScene.__GameElements.Creater.Barracks;
 using _Scripts._GameScene.__GameElements.Features;
-using _Scripts._GameScene.__GameElements.Products.GameObjectUtility;
-using _Scripts._GameScene.__GameElements.Products.Soldiers;
+using _Scripts._GameScene.__GameElements.Products.RealProduct.GameObjectUtility;
+using _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers;
 using _Scripts._GameScene._GameArea;
 using _Scripts._GameScene.GameObjectPools;
 using _Scripts.Data.Enums;
@@ -11,9 +10,9 @@ using _Scripts.Data.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace _Scripts._GameScene.__GameElements.Factorys
+namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Factorys
 {
-    public class Barracks : FactoryHave3Creater<Barracks>, IRealProduct, IVulnerable, IMovable, IPaneled,IFactoryCreaterProduct
+    public class Barracks : FactoryHave3Creater<Barracks>, IVulnerable, IMovable, IPaneled,IRealProduct
     {
 
         #region ReadOnly Variable
@@ -28,15 +27,24 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         #region Data
 
         [SerializeField] private BuildingTypeData _buildingTypeData;
-        [SerializeField] private SpawnPosition _spawnPosition;
         [SerializeField] private GameObject _myPanel;
 
         #endregion
 
         #region Public Property
 
+        #region MyRegion
+
+        public List<IRealProduct> RealProductList { get; }
+        
+        #endregion
+        
+        
         #region Events
 
+        public UnityEvent<IRealProduct> RemoveMe { get; }
+        
+        
         public UnityEvent EventCreateHeavySoldier { get => _eventCreateHeavySoldier; }
         public UnityEvent EventCreateMediumSoldier { get => _eventCreateMediumSoldier; }
         public UnityEvent EventCreateLightSoldier { get => _eventCreateLightSoldier; }
@@ -44,15 +52,14 @@ namespace _Scripts._GameScene.__GameElements.Factorys
 
         #endregion
 
-        #region Barracks
+        #region Barracks Objects
 
-        public Transform HeavySoldierBarrack { get => _heavySoldierBarracks; }
-        public Transform MediumSoldierBarrack { get => _mediumSoldierBarracks; }
-        public Transform LightSoldierBarrrack { get => _lightSoldierBarracks; } 
-        public Transform SpawnPositionHolder { get => _spawnPositions; }
+        public Transform HeavySoldierBarrack { get; }
+        public Transform MediumSoldierBarrack { get; }
+        public Transform LightSoldierBarrrack { get; } 
+        public Transform SpawnPositionHolder { get; }
         
         #endregion
-
         
         #region Regular
         
@@ -69,11 +76,6 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         public Vector2Int EndPositionByCell
         {
             get => _endPositionByCell;
-        }
-
-        public Transform MyTransform
-        {
-            get => transform;
         }
 
         public int CurrentHealth
@@ -102,9 +104,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         #endregion
 
         #region Private Variable
-
-
-
+        
         #region Events
 
         private UnityEvent _eventCreateHeavySoldier;
@@ -114,8 +114,7 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         private UnityEvent<IAttacker> _eventTakeDamage;
 
         #endregion
-
-
+        
         #region Barracks && SpawnPositions
 
         [SerializeField] private Transform _spawnPositions;
@@ -211,16 +210,9 @@ namespace _Scripts._GameScene.__GameElements.Factorys
             if (spawnCellPositionByCell != new Vector2Int())
             {
                 Vector3 spawnPositionByPoint = CreatePointFixer(GameSpace.ConvertCellToPoint(spawnCellPositionByCell), Soldier.GameSpaceSizeByCell);
-                IRealProduct heavySolider = _heavySoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _heavySoldierSizeByCell);
-                if (heavySolider != null)
-                {
-                    heavySolider.MyTransform.SetParent(_heavySoldierBarracks);
-                    GameSpace.AllRealProducts.Add(heavySolider);
-                }
-                else
-                {
-                    Debug.Log("I cant use created HeavySoldier beacuse inside empty ");
-                }
+                HeavySoldier heavySolider = _heavySoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _heavySoldierSizeByCell);
+                heavySolider.transform.SetParent(HeavySoldierBarrack);
+                RealProductList.Add(heavySolider);
             }
             else
             {
@@ -235,17 +227,10 @@ namespace _Scripts._GameScene.__GameElements.Factorys
             if (spawnCellPositionByCell != new Vector2Int())
             {
                 Vector3 spawnPositionByPoint = CreatePointFixer(GameSpace.ConvertCellToPoint(spawnCellPositionByCell), Soldier.GameSpaceSizeByCell);
-                IRealProduct mediumSolider =  mediumSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _mediumSoldierSizeByCell);
-                if (mediumSolider != null)
-                {
-                    mediumSolider.MyTransform.SetParent(_mediumSoldierBarracks);
-                    GameSpace.AllRealProducts.Add(mediumSolider);
-
-                }
-                else
-                {
-                    Debug.Log("I cant use created HeavySoldier beacuse inside empty ");
-                }
+                MediumSoldier mediumSolider =  mediumSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _mediumSoldierSizeByCell);
+                mediumSolider.transform.SetParent(MediumSoldierBarrack);
+                RealProductList.Add(mediumSolider);
+                
             }
             else
             {
@@ -259,17 +244,9 @@ namespace _Scripts._GameScene.__GameElements.Factorys
             if (spawnCellPositionByCell != new Vector2Int())
             {
                 Vector3 spawnPositionByPoint = CreatePointFixer(GameSpace.ConvertCellToPoint(spawnCellPositionByCell), Soldier.GameSpaceSizeByCell);
-                IRealProduct lightSoldier =  _lightSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _lightSoldierSizeByCell);
-                if (lightSoldier != null)
-                {
-                    lightSoldier.MyTransform.SetParent(_lightSoldierBarracks);
-                    GameSpace.AllRealProducts.Add(lightSoldier);
-
-                }
-                else
-                {
-                    Debug.Log("I cant use created HeavySoldier beacuse inside empty ");
-                }
+                LightSoldier lightSoldier =  _lightSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _lightSoldierSizeByCell);
+                lightSoldier.transform.SetParent(LightSoldierBarrrack);
+                RealProductList.Add(lightSoldier);
             }
             else
             {

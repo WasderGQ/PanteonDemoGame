@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using _Scripts._GameScene.__GameElements.Features;
-using _Scripts._GameScene._GameArea;
 using _Scripts._GameScene._PlayerControl;
 using _Scripts.Data.Enums;
 using _Scripts.Data.ScriptableObjects;
 using UnityEngine;
 
-namespace _Scripts._GameScene.__GameElements.Products.Soldiers
+namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
 {
     public class HeavySoldier : Soldier,IAttacker,IVulnerable,IRealProduct,IPathFinderMove
     {
@@ -19,7 +18,6 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         private Vector2Int _endPositionByCell;
         private List<IRealProduct> _products;
         
-        public override Transform MyTransform { get => transform; }
 
         public override List<IRealProduct> ProductList { get => _products; }
 
@@ -78,7 +76,7 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
 
         public void Move(Vector2Int movingCell)
         {
-            _soldierController.StartMovement(movingCell);
+            //_soldierController.StartMovement(movingCell);
         }
     }
 }

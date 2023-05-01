@@ -1,13 +1,12 @@
-using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Products.GameObjectUtility;
+using _Scripts._GameScene.__GameElements.Products.RealProduct.GameObjectUtility;
 using _Scripts._GameScene.GameObjectPools;
 using UnityEngine;
 
-namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.UtilityCreaters
+namespace _Scripts._GameScene.__GameElements.Creater.AttachmentCreaters
 {
     public class SpawnPositionsCreater : AttachmentCreater<SpawnPosition>
     {
-        public SpawnPosition FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int prodcutSizeByCell)
+        public override SpawnPosition FactoryMethod(Vector3 spawnPositionByPoint, Vector2Int startPositionByCell,Vector2Int prodcutSizeByCell)
         {
             SpawnPosition spawnPosition = SpawnPositionPool.SharedInstance.GetPooledObject();
             if (spawnPosition != null)

@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using _Scripts._GameScene.__GameElements.Features;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace _Scripts._GameScene.__GameElements.Products.Soldiers
+namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
 {
     public abstract class Soldier : MonoBehaviour ,IAttacker,IVulnerable,IRealProduct
     {
 
         #region Abstract Property
-        public abstract Transform MyTransform { get; }
         public abstract List<IRealProduct> ProductList { get; }
+        public List<IRealProduct> RealProductList { get; }
         public abstract Vector2Int StartPositionByCell { get; }
         public abstract Vector2Int EndPositionByCell { get; }
+        
         public abstract int Damage { get; }
         public abstract int CurrentHealth { get; }
         #endregion

@@ -1,13 +1,9 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using _Scripts._GameScene.__GameElements.Factorys;
-using _Scripts._GameScene.__GameElements.Products.Soldiers;
-using _Scripts._GameScene._PlayerControl;
+using _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers;
 using _Scripts._GameScene.GameObjectPools;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
-namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BarackCreaters
+namespace _Scripts._GameScene.__GameElements.Creater.Barracks
 {
     public  class HeavySoldierCreater : SoldierCreater<HeavySoldier>
     {
@@ -33,7 +29,7 @@ namespace _Scripts._GameScene.__GameElements.Creater.RealCreater.BarackCreaters
                     heavySoldier.gameObject.SetActive(true);
                     Vector2Int endPositionByCell = new Vector2Int(startPositionByCell.x + productSizeByCell.x - 1, startPositionByCell.y + productSizeByCell.y - 1);
                     heavySoldier.InIt(startPositionByCell, endPositionByCell);
-                    heavySoldier.GetComponent<SoldierController>().InIt();
+                    //heavySoldier.GetComponent<SoldierController>().InIt();
                     _createdSoldierList.Add(heavySoldier);
                 }
                 else

@@ -4,7 +4,7 @@ using _Scripts.Data.Enums;
 using _Scripts.Data.ScriptableObjects;
 using UnityEngine;
 
-namespace _Scripts._GameScene.__GameElements.Products.Soldiers
+namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
 {
     
     public  class LightSoldier : Soldier ,IAttacker,IVulnerable,IRealProduct
@@ -17,7 +17,7 @@ namespace _Scripts._GameScene.__GameElements.Products.Soldiers
         private Vector2Int _endPositionByCell;
         private List<IRealProduct> _products;
         
-        public override Transform MyTransform { get => transform; }
+        
         public override List<IRealProduct> ProductList { get => _products; }
         public override Vector2Int StartPositionByCell { get => _startPositionByCell; }
         public override Vector2Int EndPositionByCell { get => _endPositionByCell; }

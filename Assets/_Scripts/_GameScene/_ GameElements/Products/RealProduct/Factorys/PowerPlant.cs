@@ -1,20 +1,14 @@
 using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Creater;
-using _Scripts._GameScene.__GameElements.Creater.VirtualCreater.PowerPlantCreaters;
 using _Scripts._GameScene.__GameElements.Features;
-using _Scripts._GameScene.__GameElements.Products;
-using _Scripts._GameScene.__GameElements.Products.Soldiers;
-using _Scripts._GameScene.__GameElements.Products.VirtualProduct;
-using _Scripts._GameScene._GameArea;
 using _Scripts._GameScene.GameObjectPools;
 using _Scripts.Data.Enums;
 using _Scripts.Data.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace _Scripts._GameScene.__GameElements.Factorys
+namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Factorys
 {
-    public class PowerPlant : FactoryHave1Creater<PowerPlant>, IRealProduct, IVulnerable,IFactoryCreaterProduct
+    public class PowerPlant : FactoryHave1Creater<PowerPlant>, IVulnerable,IFactoryCreaterProduct
     {
         #region Data
 
@@ -34,9 +28,12 @@ namespace _Scripts._GameScene.__GameElements.Factorys
         #region Regular
 
         public List<IRealProduct> ProductList { get => _electric; }
+        public List<IRealProduct> RealProductList { get; }
         public Vector2Int StartPositionByCell { get => _startPositionByCell; }
         public Vector2Int EndPositionByCell { get => _endPositionByCell; }
-        public Transform MyTransform { get => transform; }
+        
+        
+        
 
         #endregion
         

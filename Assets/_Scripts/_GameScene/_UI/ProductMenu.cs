@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reflection;
-using _Scripts._GameScene.__GameElements.Factorys;
 using _Scripts._GameScene.__GameElements.Products;
-using _Scripts._GameScene.__GameElements.Products.Soldiers;
+using _Scripts._GameScene.__GameElements.Products.RealProduct.Factorys;
+using _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers;
 using _Scripts._GameScene.__GameElements.Products.VirtualProduct;
 using _Scripts._GameScene._GameArea;
 using Unity.Collections.LowLevel.Unsafe;

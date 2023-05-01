@@ -1,15 +1,17 @@
 using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Features;
 using UnityEngine;
 
-namespace _Scripts._GameScene.__GameElements.Products.Soldiers
+namespace _Scripts._GameScene.__GameElements.Products.RealProduct
 {
-    public interface IRealProduct : IProduct 
+    public interface IRealProduct : IProduct
     {
-        public Transform MyTransform { get; }
         public Vector2Int StartPositionByCell { get; }
         public Vector2Int EndPositionByCell { get; }
-        public static Vector3Int GameObjectSizeByCell { get;}
+        public List<IRealProduct> ProductList { get; }
     }
+    
+
+
+
 }
 

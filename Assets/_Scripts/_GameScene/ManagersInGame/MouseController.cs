@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using _Scripts._GameScene.__GameElements.Creater.RealCreater.BarackCreaters;
-using _Scripts._GameScene.__GameElements.Factorys;
+using _Scripts._GameScene.__GameElements.Creater.Barracks;
 using _Scripts._GameScene.__GameElements.Features;
-using _Scripts._GameScene.__GameElements.Products.Soldiers;
+using _Scripts._GameScene.__GameElements.Products.RealProduct.Factorys;
+using _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers;
 using _Scripts._GameScene._GameArea;
 using _Scripts._GameScene._UI.Features;
 using UnityEngine;
@@ -224,7 +224,7 @@ namespace _Scripts._GameScene.ManagersInGame
             {
                 _isHoldingMouse0 = false;
                 int counter=0;
-                counter = GameSpace.IsCellValidForCreate(GameSpace.ConvertPointToCell(_mouseWorldPositionForMove), GameSpace.AllRealProducts);
+                counter = GameSpace.IsCellValidForCreate(GameSpace.ConvertPointToCell(_mouseWorldPositionForMove), GameSpace.GameSpaceRealProduct);
                 if (counter == 0)
                 {
                     _mouse0_SelectedMovable.TrueMove(_mouseWorldPositionForMove);

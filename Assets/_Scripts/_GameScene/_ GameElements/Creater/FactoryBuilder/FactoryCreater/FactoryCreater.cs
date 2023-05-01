@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Products.Soldiers;
+using _Scripts._GameScene.__GameElements.Products.RealProduct;
 using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Creater.FactoryBuilder.FactoryCreater

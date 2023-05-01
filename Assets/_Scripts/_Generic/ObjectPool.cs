@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using _Scripts._GameScene.__GameElements.Factorys;
 using UnityEngine;
 
 namespace _Scripts._Generic
@@ -68,13 +67,20 @@ public class GObjectPool<T> : GObjectPool where T : MonoBehaviour
 
     public bool PoolChecker()
     {
-        if(PooledObjects.Count == 0)
+        int counter = 0;
+        foreach (var gobject in PooledObjects)
         {
-            return false;
+            if (gobject.isActiveAndEnabled)
+            {
+                counter++;
+            }
+
+            if (counter == PooledObjects.Count)
+            {
+                return false;
+            }
         }
         return true;
-        
-        
     }
 
 
