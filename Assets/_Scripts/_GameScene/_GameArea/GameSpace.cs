@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Scripts._GameScene.__GameElements.Creater.FactoryBuilder.FactoryCreater;
 using _Scripts._GameScene.__GameElements.Products.RealProduct;
@@ -115,7 +116,7 @@ namespace _Scripts._GameScene._GameArea
       get => _powerPlantStore;
     }
 
-    #endregion
+    
 
     #region Public RealProductLists
 

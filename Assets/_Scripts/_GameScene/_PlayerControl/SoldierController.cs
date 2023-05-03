@@ -9,13 +9,8 @@ namespace _Scripts._GameScene._PlayerControl
 {
   public class SoldierController : MonoBehaviour
   {
-   /*   private GameSpace _gameSpace;
-    public UnityEvent EventStartMovement
-    {
-        get => _eventStartMovement;
-    }
-
-    private UnityEvent _eventStartMovement;
+      private GameSpace _gameSpace;
+      private UnityEvent _eventStartMovement;
 
     [Header("PathFinding")]
     public Vector2Int gridSize;
@@ -35,8 +30,6 @@ namespace _Scripts._GameScene._PlayerControl
 
     public void InIt()
     {
-        //_eventStartMovement = new UnityEvent();
-        //_eventStartMovement.AddListener(StartMovement);
         pathFinding = new PathFinding(gridSize.x, gridSize.y, cellSize, Vector3.zero); //Initiate pathfinding
     }
 
@@ -166,7 +159,7 @@ namespace _Scripts._GameScene._PlayerControl
             
         
     }
-   */
+   
 }  
 }
 

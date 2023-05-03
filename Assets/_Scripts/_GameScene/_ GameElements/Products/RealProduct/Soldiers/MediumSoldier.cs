@@ -7,7 +7,7 @@ using UnityEngine;
 namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
 {
     
-    public class MediumSoldier : Soldier ,IAttacker,IVulnerable,IRealProduct
+    public class MediumSoldier : Soldier 
     {
         [SerializeField]private SoldierTypeData _soldierTypes;
         [SerializeField] private int _maxHealth;
@@ -24,7 +24,7 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
         public override int CurrentHealth { get => _currentHealth; }
 
         
-        public void InIt(Vector2Int startPositionByCell,Vector2Int endPositionByCell)
+        public override void InIt(Vector2Int startPositionByCell,Vector2Int endPositionByCell)
         {
             OnStartSetVariable(startPositionByCell, endPositionByCell);
         }
@@ -37,14 +37,17 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
             OnStartSetBornedPlace(startPositionByCell);
             OnStartSetDamageOnStart();
             OnStartSetMaxHealth();
-            
+            base.SoldierInIt();
         }
 
         private void OnStartSetBornedPlace(Vector2Int startPositionByCell)
         {
             _mementoBornPlace = startPositionByCell;
         }
+
         
+        
+
         protected override void OnStartSetPositions(Vector2Int startPositionByCell,Vector2Int endPositionByCell)
         {
             _startPositionByCell = startPositionByCell;
@@ -67,7 +70,7 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
             CheckAmIDead();
         }
 
-        private void CheckAmIDead()
+        protected override void CheckAmIDead()
         {
             if(_currentHealth <= 0)
             {

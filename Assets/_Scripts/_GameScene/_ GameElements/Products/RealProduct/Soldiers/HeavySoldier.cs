@@ -7,16 +7,15 @@ using UnityEngine;
 
 namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
 {
-    public class HeavySoldier : Soldier,IAttacker,IVulnerable,IRealProduct,IPathFinderMove
+    public class HeavySoldier : Soldier
     {
         [SerializeField] private SoldierTypeData _soldierTypes;
-        [SerializeField] private SoldierController _soldierController;
         [SerializeField] private int _maxHealth;
         [SerializeField] private int _damage;
         [SerializeField] private int _currentHealth;
         private Vector2Int _startPositionByCell;
         private Vector2Int _endPositionByCell;
-        private List<IRealProduct> _products;
+        private List<IRealProduct> _products; // 
         
 
         public override List<IRealProduct> ProductList { get => _products; }
@@ -30,7 +29,7 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
         public override int CurrentHealth { get => _currentHealth; }
 
 
-        public void InIt(Vector2Int startPositionByCell, Vector2Int endPositionByCell)
+        public override void InIt(Vector2Int startPositionByCell, Vector2Int endPositionByCell)
         {
             OnStartSetVariable(startPositionByCell, endPositionByCell);
             
@@ -41,6 +40,7 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
             OnStartSetPositions(startPositionByCell, endPositionByCell);
             OnStartSetDamageOnStart();
             OnStartSetMaxHealth();
+            base.SoldierInIt();
         }
 
         protected override void OnStartSetPositions(Vector2Int startPositionByCell, Vector2Int endPositionByCell)
@@ -66,7 +66,7 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
             CheckAmIDead();
         }
 
-        private void CheckAmIDead()
+        protected override void CheckAmIDead()
         {
             if (_currentHealth <= 0)
             {
@@ -74,9 +74,6 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
             }
         }
 
-        public void Move(Vector2Int movingCell)
-        {
-            //_soldierController.StartMovement(movingCell);
-        }
+        
     }
 }

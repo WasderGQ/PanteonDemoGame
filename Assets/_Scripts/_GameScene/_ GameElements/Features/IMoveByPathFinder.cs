@@ -2,7 +2,7 @@
 
 namespace _Scripts._GameScene.__GameElements.Features
 {
-    public interface IPathFinderMove
+    public interface IMoveByPathFinder
     {
         public void Move(Vector2Int movingCell);
     }

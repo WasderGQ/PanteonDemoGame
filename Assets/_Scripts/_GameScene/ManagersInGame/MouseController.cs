@@ -24,7 +24,7 @@ namespace _Scripts._GameScene.ManagersInGame
         private IMovable _mouse0_SelectedMovable;
         private IVulnerable _mouse1_selectedVulnerable;
         private IPaneled _mouse0_SelectedPaneled;    // Dont use variable use Property.
-        private IPathFinderMove _mouse0_SelectedPathFinderMove;
+        private IMoveByPathFinder mouse0SelectedMoveByPathFinder;
         private IPaneled Mouse0_SelectedPaneled
         {
             get
@@ -48,7 +48,7 @@ namespace _Scripts._GameScene.ManagersInGame
         private void SetVariable()
         {
             _clickRay = new ClickRay();
-            _mouse0_SelectedPathFinderMove = null;
+            mouse0SelectedMoveByPathFinder = null;
 
         }
         private void Update()
@@ -196,11 +196,11 @@ namespace _Scripts._GameScene.ManagersInGame
                         CreateLightSoldierButton(lightButtonResult.Result.Item1, _mouse0_SelectedBarracks);
                     }
 
-                    if (_mouse0_SelectedPathFinderMove != null)
+                    if (mouse0SelectedMoveByPathFinder != null)
                     {
                         Vector2Int movingCell = GameSpace.ConvertPointToCell(await GetMousePosition());
-                        _mouse0_SelectedPathFinderMove.Move(movingCell);
-                        _mouse0_SelectedPathFinderMove = null;
+                        mouse0SelectedMoveByPathFinder.Move(movingCell);
+                        mouse0SelectedMoveByPathFinder = null;
                     }
                     
                 }
@@ -256,9 +256,9 @@ namespace _Scripts._GameScene.ManagersInGame
                 Mouse0_SelectedPaneled = (IPaneled)sameobject;
             }
 
-            if (sameobject is IPathFinderMove)
+            if (sameobject is IMoveByPathFinder)
             {
-                _mouse0_SelectedPathFinderMove = (IPathFinderMove)sameobject;
+                mouse0SelectedMoveByPathFinder = (IMoveByPathFinder)sameobject;
             }
             
         }
