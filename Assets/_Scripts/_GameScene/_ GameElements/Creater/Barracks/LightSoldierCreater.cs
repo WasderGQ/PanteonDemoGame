@@ -31,6 +31,7 @@ namespace _Scripts._GameScene.__GameElements.Creater.Barracks
                     lightSoldier.InIt(startPositionByCell, endPositionByCell);
                  //   lightSoldier.GetComponent<SoldierController>().InIt();
                     _createdSoldierList.Add(lightSoldier);
+                    return lightSoldier;
                 }
                 else
                 {

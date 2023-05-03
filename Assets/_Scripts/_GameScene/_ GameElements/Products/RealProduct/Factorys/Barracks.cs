@@ -28,15 +28,18 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Factorys
 
         [SerializeField] private BuildingTypeData _buildingTypeData;
         [SerializeField] private GameObject _myPanel;
-
+        
         #endregion
 
         #region Public Property
 
         #region MyRegion
 
-        public List<IRealProduct> RealProductList { get; }
-        
+        public List<IRealProduct> RealProductList
+        {
+            get => _realProducts;
+        }
+        private List<IRealProduct> _realProducts;
         #endregion
         
         
@@ -197,6 +200,7 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Factorys
             mediumSoldierCreater = new MediumSoldierCreater();
             _heavySoldierCreater = new HeavySoldierCreater();
             _mementoSpawnedPosition = transform.position;
+            _realProducts = new List<IRealProduct>();
         }
 
         #endregion
@@ -211,7 +215,7 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Factorys
             {
                 Vector3 spawnPositionByPoint = CreatePointFixer(GameSpace.ConvertCellToPoint(spawnCellPositionByCell), Soldier.GameSpaceSizeByCell);
                 HeavySoldier heavySolider = _heavySoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _heavySoldierSizeByCell);
-                heavySolider.transform.SetParent(HeavySoldierBarrack);
+                heavySolider.transform.SetParent(_heavySoldierBarracks);
                 RealProductList.Add(heavySolider);
             }
             else
@@ -228,7 +232,7 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Factorys
             {
                 Vector3 spawnPositionByPoint = CreatePointFixer(GameSpace.ConvertCellToPoint(spawnCellPositionByCell), Soldier.GameSpaceSizeByCell);
                 MediumSoldier mediumSolider =  mediumSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _mediumSoldierSizeByCell);
-                mediumSolider.transform.SetParent(MediumSoldierBarrack);
+                mediumSolider.transform.SetParent(_mediumSoldierBarracks);
                 RealProductList.Add(mediumSolider);
                 
             }
@@ -245,7 +249,7 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Factorys
             {
                 Vector3 spawnPositionByPoint = CreatePointFixer(GameSpace.ConvertCellToPoint(spawnCellPositionByCell), Soldier.GameSpaceSizeByCell);
                 LightSoldier lightSoldier =  _lightSoldierCreater.FactoryMethod(spawnPositionByPoint, spawnCellPositionByCell, _lightSoldierSizeByCell);
-                lightSoldier.transform.SetParent(LightSoldierBarrrack);
+                lightSoldier.transform.SetParent(_lightSoldierBarracks);
                 RealProductList.Add(lightSoldier);
             }
             else

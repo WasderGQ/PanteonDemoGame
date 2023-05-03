@@ -31,6 +31,7 @@ namespace _Scripts._GameScene.__GameElements.Creater.Barracks
                     heavySoldier.InIt(startPositionByCell, endPositionByCell);
                     //heavySoldier.GetComponent<SoldierController>().InIt();
                     _createdSoldierList.Add(heavySoldier);
+                    return heavySoldier;
                 }
                 else
                 {

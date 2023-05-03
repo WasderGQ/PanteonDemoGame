@@ -30,6 +30,7 @@ namespace _Scripts._GameScene.__GameElements.Creater.Barracks
                     mediumSoldier.InIt(startPositionByCell, endPositionByCell);
                    // mediumSoldier.GetComponent<SoldierController>().InIt();
                     _createdSoldierList.Add(mediumSoldier);
+                    return mediumSoldier;
                 }
                 else
                 {

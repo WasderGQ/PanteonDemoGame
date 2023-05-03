@@ -818,10 +818,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buildingTypeData: {fileID: 11400000, guid: 44deee0a970a2a047b892cfea400a191, type: 2}
-  _spawnPosition: {fileID: 5351262078170785075, guid: 487b6cf37acb91144a7fb5a212e4a4c4, type: 3}
-  _gameSpace: {fileID: 0}
   _myPanel: {fileID: 9129262295627473419}
-  _spawnPositions: {fileID: 1201813704973760380}
+  _spawnPositions: {fileID: 2730713661443661147}
   _heavySoldierBarracks: {fileID: 2730713661443661147}
   _mediumSoldierBarracks: {fileID: 8239390537363649567}
   _lightSoldierBarracks: {fileID: 3063118473274465734}
