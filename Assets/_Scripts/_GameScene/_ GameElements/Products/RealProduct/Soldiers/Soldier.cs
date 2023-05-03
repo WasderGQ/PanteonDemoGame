@@ -60,7 +60,7 @@ namespace _Scripts._GameScene.__GameElements.Products.RealProduct.Soldiers
         
         public void Move(Vector2Int movingCell)
         {
-            _soldierController.StartMovement(movingCell);
+          //  _soldierController.StartMovement(movingCell);
         }
 
         protected abstract void CheckAmIDead();

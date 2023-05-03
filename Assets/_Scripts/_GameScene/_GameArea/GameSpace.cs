@@ -116,7 +116,7 @@ namespace _Scripts._GameScene._GameArea
       get => _powerPlantStore;
     }
 
-    
+    #endregion
 
     #region Public RealProductLists
 

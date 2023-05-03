@@ -9,7 +9,7 @@ namespace _Scripts._GameScene._PlayerControl
 {
   public class SoldierController : MonoBehaviour
   {
-      private GameSpace _gameSpace;
+   /*   private GameSpace _gameSpace;
       private UnityEvent _eventStartMovement;
 
     [Header("PathFinding")]
@@ -158,7 +158,7 @@ namespace _Scripts._GameScene._PlayerControl
         
             
         
-    }
+    }*/
    
 }  
 }
